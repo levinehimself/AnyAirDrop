@@ -1,0 +1,15 @@
+{
+  // Signaling server for AnyAirDrop.com: introduces devices to each other so their
+  // browsers can open a direct WebRTC connection. File data never passes through here.
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "anyairdrop-signal",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "Room" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Room"] }],
+  "observability": { "enabled": true }
+  // Production: serve this worker on the site's own origin so the page can use /ws,
+  // e.g. "routes": [{ "pattern": "anyairdrop.com/ws*", "zone_name": "anyairdrop.com" }]
+}

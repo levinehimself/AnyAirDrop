@@ -147,3 +147,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# AnyAirDrop.com project
+.wrangler/
+.dev.vars
+.DS_Store
+
+# Saved copies of competitor pages used as design references, not project code
+*Sample.txt

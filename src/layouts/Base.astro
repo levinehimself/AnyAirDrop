@@ -1,0 +1,150 @@
+---
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description, jsonLd } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AnyAirDrop.com" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="mark" aria-hidden="true"><span></span></span>
+        <span>AnyAirDrop.com</span>
+      </a>
+      <nav aria-label="Main">
+        <a href="/guides/">Guides</a>
+        <a href="/help/">Help</a>
+      </nav>
+    </header>
+
+    <slot />
+
+    <footer class="site-footer">
+      <nav aria-label="Guides">
+        <a href="/airdrop-to-android/">AirDrop to Android</a>
+        <a href="/airdrop-for-windows/">AirDrop for Windows</a>
+        <a href="/android-to-iphone/">Android to iPhone</a>
+        <a href="/guides/">All guides</a>
+      </nav>
+      <nav aria-label="Legal">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+      </nav>
+      <p>AirDrop is a trademark of Apple Inc. AnyAirDrop.com is not affiliated with or endorsed by Apple.</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header,
+  .site-footer {
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: var(--space-4);
+  }
+
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    min-height: 44px;
+  }
+
+  .mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    display: grid;
+    place-items: center;
+  }
+
+  .mark span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  .site-header nav {
+    display: flex;
+    gap: 28px;
+  }
+
+  .site-header nav a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 0;
+  }
+
+  .site-header nav a:hover {
+    color: var(--color-text);
+  }
+
+  .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-6);
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  .site-footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .site-footer a {
+    color: var(--color-text-muted);
+  }
+
+  .site-footer p {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 13px;
+  }
+</style>
