@@ -1,4 +1,5 @@
 import { Emitter } from './emitter';
+import { IceProvider, iceEndpoint } from './ice';
 import { loadIdentity, type Identity } from './identity';
 import { PeerLink } from './link';
 import { SignalingRoom, type RemotePeer } from './signaling';
@@ -31,12 +32,29 @@ export class Hub extends Emitter<HubEvents> {
   private lastRoom = new Map<string, string>();
   private outgoing = new Map<string, OutgoingTransfer>();
   private incoming = new Map<string, IncomingTransfer>();
+  private readonly ice: IceProvider;
+  private readonly forceRelay: boolean;
 
-  constructor(private readonly endpoint: string) {
+  constructor(
+    private readonly endpoint: string,
+    options: { forceRelay?: boolean } = {},
+  ) {
     super();
+    this.forceRelay = options.forceRelay ?? false;
+    this.ice = new IceProvider(iceEndpoint(endpoint));
+    // Renewed relay credentials reach connections that are already open.
+    this.ice.on('updated', (servers) => {
+      for (const link of this.links.values()) link.updateIceServers(servers);
+    });
+  }
+
+  /** True once the worker has handed out relay (TURN) credentials. */
+  get relayAvailable(): boolean {
+    return this.ice.relay;
   }
 
   start(): void {
+    this.ice.start();
     this.addRoom('net', this.endpoint);
   }
 
@@ -47,6 +65,7 @@ export class Hub extends Emitter<HubEvents> {
   }
 
   stop(): void {
+    this.ice.stop();
     for (const room of this.rooms.values()) room.close();
     for (const link of this.links.values()) link.close();
     this.rooms.clear();
@@ -143,7 +162,10 @@ export class Hub extends Emitter<HubEvents> {
     if (existing && !existing.isDead) return existing;
     existing?.close();
 
-    const link = new PeerLink(peerId, this.me.id, (data) => this.signalTo(peerId, data));
+    const link = new PeerLink(peerId, this.me.id, (data) => this.signalTo(peerId, data), {
+      iceServers: this.ice.servers,
+      forceRelay: this.forceRelay,
+    });
     link.on('message', (data) => this.onMessage(peerId, link, data));
     link.on('closed', () => {
       this.incoming.get(peerId)?.fail('connection-lost');

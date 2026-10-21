@@ -1,4 +1,5 @@
 import { Emitter } from './emitter';
+import { FALLBACK_ICE } from './ice';
 
 export type Route = 'lan' | 'internet' | 'relay' | 'unknown';
 
@@ -13,9 +14,11 @@ interface SignalData {
   candidate?: RTCIceCandidateInit;
 }
 
-const DEFAULT_ICE: RTCIceServer[] = [
-  { urls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'] },
-];
+export interface LinkOptions {
+  iceServers?: RTCIceServer[];
+  /** Testing aid: send everything through the relay even when a direct path exists. */
+  forceRelay?: boolean;
+}
 
 // Keep a few MB queued so the network stays busy without holding a whole file in memory.
 const HIGH_WATER = 8 * 1024 * 1024;
@@ -38,11 +41,13 @@ export class PeerLink extends Emitter<LinkEvents> {
     readonly peerId: string,
     myId: string,
     private readonly sendSignal: (data: SignalData) => void,
-    iceServers: RTCIceServer[] = DEFAULT_ICE,
+    { iceServers = FALLBACK_ICE, forceRelay = false }: LinkOptions = {},
   ) {
     super();
     this.polite = myId < peerId;
-    this.pc = new RTCPeerConnection({ iceServers });
+    // With relay servers in the list, ICE still prefers a direct path and only falls
+    // back to the relay when the network blocks one.
+    this.pc = new RTCPeerConnection({ iceServers, iceTransportPolicy: forceRelay ? 'relay' : 'all' });
     // Both sides create the same pre-negotiated channel, so neither waits for the other's.
     this.dc = this.pc.createDataChannel('files', { negotiated: true, id: 0, ordered: true });
     this.dc.binaryType = 'arraybuffer';
@@ -84,6 +89,22 @@ export class PeerLink extends Emitter<LinkEvents> {
 
   get isDead(): boolean {
     return this.dc.readyState === 'closed' || this.pc.connectionState === 'closed';
+  }
+
+  /**
+   * Swaps in fresh ICE servers, e.g. renewed relay credentials. If the connection has
+   * already failed or dropped, retries it so the new servers get a chance.
+   */
+  updateIceServers(iceServers: RTCIceServer[]): void {
+    if (this.pc.signalingState === 'closed') return;
+    try {
+      this.pc.setConfiguration({ ...this.pc.getConfiguration(), iceServers });
+    } catch (err) {
+      console.warn('[AnyAirDrop] could not update ICE servers', err);
+      return;
+    }
+    const state = this.pc.iceConnectionState;
+    if (state === 'failed' || state === 'disconnected') this.pc.restartIce();
   }
 
   /** Largest message every browser in use accepts; Safari is the strictest. */

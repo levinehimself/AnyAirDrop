@@ -1,0 +1,7 @@
+# Copy to signaling/.dev.vars (git-ignored) to test the relay locally.
+# From the Cloudflare dashboard: Realtime > TURN keys > Create.
+TURN_KEY_ID=
+TURN_KEY_API_TOKEN=
+
+# Optional: let pages on other origins fetch /ws/ice (comma-separated).
+# ALLOWED_ORIGINS=https://anyairdrop.com,https://www.anyairdrop.com

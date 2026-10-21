@@ -1,0 +1,124 @@
+// Hands browsers the ICE servers they need: STUN to find a direct path, and short-lived
+// Cloudflare Realtime TURN credentials so a relay can carry the transfer when a network
+// blocks direct connections. The long-term TURN key never leaves the worker.
+
+export interface IceEnv {
+  ICE_LIMITER?: RateLimit;
+  TURN_KEY_ID?: string;
+  TURN_KEY_API_TOKEN?: string;
+  TURN_TTL?: string;
+  TURN_API_BASE?: string;
+  ALLOWED_ORIGINS?: string;
+}
+
+interface IceServer {
+  urls: string | string[];
+  username?: string;
+  credential?: string;
+}
+
+const STUN_ONLY: IceServer[] = [{ urls: ['stun:stun.cloudflare.com:3478'] }];
+const DEFAULT_TTL_SECONDS = 4 * 60 * 60;
+const MIN_TTL_SECONDS = 10 * 60;
+const MAX_TTL_SECONDS = 48 * 60 * 60;
+// After a failed credential request, have clients ask again in a few minutes.
+const RETRY_AFTER_ERROR_MS = 10 * 60 * 1000;
+
+export async function handleIce(request: Request, env: IceEnv): Promise<Response> {
+  const cors = corsHeaders(request, env);
+  if (cors === null) return new Response('Forbidden', { status: 403 });
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: { ...cors, 'Access-Control-Allow-Methods': 'GET', 'Access-Control-Max-Age': '86400' },
+    });
+  }
+  if (request.method !== 'GET') {
+    return new Response('Method not allowed', { status: 405, headers: { Allow: 'GET, OPTIONS' } });
+  }
+
+  // Credentials cost nothing to mint but relay traffic is billed, so cap how fast any
+  // one address can collect them.
+  if (env.ICE_LIMITER) {
+    const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+    const { success } = await env.ICE_LIMITER.limit({ key: `ice:${ip}` });
+    if (!success) return json({ error: 'rate-limited' }, 429, cors);
+  }
+
+  const ttl = ttlSeconds(env.TURN_TTL);
+  if (!env.TURN_KEY_ID || !env.TURN_KEY_API_TOKEN) {
+    return json({ iceServers: STUN_ONLY, relay: false, expiresAt: Date.now() + ttl * 1000 }, 200, cors);
+  }
+
+  try {
+    const base = (env.TURN_API_BASE || 'https://rtc.live.cloudflare.com').replace(/\/$/, '');
+    const response = await fetch(
+      `${base}/v1/turn/keys/${encodeURIComponent(env.TURN_KEY_ID)}/credentials/generate-ice-servers`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${env.TURN_KEY_API_TOKEN}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ttl }),
+      },
+    );
+    if (!response.ok) throw new Error(`TURN API responded ${response.status}`);
+    const data = (await response.json()) as { iceServers?: unknown };
+    const iceServers = sanitize(data.iceServers);
+    const relay = iceServers.some((server) => urlList(server).some((url) => url.startsWith('turn')));
+    if (!relay) throw new Error('TURN API returned no relay servers');
+    return json({ iceServers, relay, expiresAt: Date.now() + ttl * 1000 }, 200, cors);
+  } catch (err) {
+    console.error('[ice] serving STUN only:', err instanceof Error ? err.message : String(err));
+    return json({ iceServers: STUN_ONLY, relay: false, expiresAt: Date.now() + RETRY_AFTER_ERROR_MS }, 200, cors);
+  }
+}
+
+// The page normally calls this on its own origin. A browser request from any other site
+// is refused unless that origin is listed in ALLOWED_ORIGINS (comma-separated). Requests
+// without fetch metadata (non-browser clients) still go through the rate limit.
+function corsHeaders(request: Request, env: IceEnv): Record<string, string> | null {
+  const origin = request.headers.get('Origin');
+  const allowed = (env.ALLOWED_ORIGINS ?? '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+  if (origin && allowed.includes(origin)) return { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' };
+  const site = request.headers.get('Sec-Fetch-Site');
+  if (!site || site === 'same-origin' || site === 'none') return {};
+  return null;
+}
+
+function ttlSeconds(raw: string | undefined): number {
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value <= 0) return DEFAULT_TTL_SECONDS;
+  return Math.min(MAX_TTL_SECONDS, Math.max(MIN_TTL_SECONDS, Math.floor(value)));
+}
+
+function urlList(server: IceServer): string[] {
+  return Array.isArray(server.urls) ? server.urls : [server.urls];
+}
+
+// Keep only well-formed entries, and drop alternate port 53, which browsers block and
+// would otherwise time out on.
+function sanitize(input: unknown): IceServer[] {
+  if (!Array.isArray(input)) return [];
+  const servers: IceServer[] = [];
+  for (const entry of input as Partial<IceServer>[]) {
+    if (!entry || (typeof entry.urls !== 'string' && !Array.isArray(entry.urls))) continue;
+    const urls = (Array.isArray(entry.urls) ? entry.urls : [entry.urls]).filter(
+      (url): url is string => typeof url === 'string' && /^(stun|turns?):/.test(url) && !/:53(\?|$)/.test(url),
+    );
+    if (urls.length === 0) continue;
+    const server: IceServer = { urls };
+    if (typeof entry.username === 'string') server.username = entry.username;
+    if (typeof entry.credential === 'string') server.credential = entry.credential;
+    servers.push(server);
+  }
+  return servers;
+}
+
+function json(body: unknown, status: number, headers: Record<string, string>): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...headers, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
+}

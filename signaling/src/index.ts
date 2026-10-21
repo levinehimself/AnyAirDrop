@@ -1,6 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
+import { handleIce, type IceEnv } from './ice';
 
-export interface Env {
+export interface Env extends IceEnv {
   ROOMS: DurableObjectNamespace<Room>;
 }
 
@@ -18,6 +19,8 @@ const MAX_MESSAGE_BYTES = 64 * 1024;
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    // The trailing-slash form matches the site's URL style, so it passes the Astro dev proxy.
+    if (url.pathname === '/ws/ice' || url.pathname === '/ws/ice/') return handleIce(request, env);
     if (url.pathname !== '/ws') return new Response('Not found', { status: 404 });
     if (request.headers.get('Upgrade') !== 'websocket') {
       return new Response('Expected a WebSocket upgrade', { status: 426 });

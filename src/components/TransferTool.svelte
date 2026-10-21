@@ -96,7 +96,9 @@
 
   onMount(() => {
     canHover = matchMedia('(hover: hover)').matches;
-    hub = new Hub(signalingEndpoint());
+    // ?relay=force sends everything through the relay: a QA aid for testing that path.
+    const params = new URL(location.href).searchParams;
+    hub = new Hub(signalingEndpoint(), { forceRelay: params.get('relay') === 'force' });
     myName = hub.me.name;
     const offs = [
       hub.on('peers', (list) => {
@@ -111,7 +113,7 @@
     ];
     hub.start();
     // A shared link like AnyAirDrop.com/?pair=123456 joins that pairing room directly.
-    const code = new URL(location.href).searchParams.get('pair');
+    const code = params.get('pair');
     if (code && /^\d{6}$/.test(code)) hub.joinPair(code);
     return () => {
       for (const off of offs) off();
@@ -182,7 +184,9 @@
         view = {
           kind: 'notice',
           title: `Couldn’t connect to ${peer.name}`,
-          detail: 'This network may block direct connections between devices. Try “Pair with a code”, or another Wi-Fi.',
+          detail: hub?.relayAvailable
+            ? 'Check that both devices are still online, then try again.'
+            : 'This network may block direct connections between devices. Try another Wi-Fi, or mobile data on one device.',
         };
       else view = { kind: 'notice', title: 'Transfer stopped', detail: `The connection to ${peer.name} was lost.` };
     } finally {
