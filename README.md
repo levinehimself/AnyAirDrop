@@ -80,11 +80,17 @@ For local development, copy [signaling/.dev.vars.example](signaling/.dev.vars.ex
 
 Code map: [src/lib/transfer/](src/lib/transfer/) holds the engine (`hub.ts` is the entry point), [src/components/TransferTool.svelte](src/components/TransferTool.svelte) the radar UI, [src/pages/index.astro](src/pages/index.astro) the homepage.
 
-## Deploy (Cloudflare)
+## Deploy
 
-1. `npx wrangler login`, then `npm run deploy:signal` to deploy the signaling worker. Add the TURN secrets (above) to enable the relay.
-2. In [signaling/wrangler.jsonc](signaling/wrangler.jsonc), add the route `anyairdrop.com/ws*` so the worker answers on the site's own origin, and deploy again.
-3. `npm run build` and deploy the `dist/` folder as static assets on the same zone (Cloudflare Workers static assets or Pages).
+The pages are static files on a cPanel host. The domain's DNS is on Cloudflare with the proxy (orange cloud) on, so Cloudflare sends `anyairdrop.com/ws*` and `www.anyairdrop.com/ws*` to the signaling worker (routes in [signaling/wrangler.jsonc](signaling/wrangler.jsonc)) and everything else to cPanel.
+
+1. **Signaling worker:** `npx wrangler login` once, then `npm run deploy:signal`. Add the TURN secrets (see Relay) to enable the relay. Check https://anyairdrop.com/ws/ice/ returns JSON.
+2. **Pages:** `npm run build`, then upload the **contents** of `dist/` to the `anyairdrop.com` folder in cPanel File Manager (zip them, upload, Extract). Build the zip with forward-slash paths: Windows PowerShell 5.1's `Compress-Archive` writes backslashes, which unpack as wrong file names on Linux hosts.
+3. **Cloudflare settings:** SSL/TLS mode Full (strict), Always Use HTTPS on, and a redirect rule from `www` to the root domain.
+
+Live checks against production: `node signaling/test/rooms.test.mjs wss://anyairdrop.com/ws` and `node signaling/test/ice.test.mjs https://anyairdrop.com/ws/ice/`.
+
+On Windows PowerShell, if `npm` or `npx` fail with "running scripts is disabled", use `npm.cmd` and `npx.cmd`.
 
 If the worker must live on another host, build the site with `PUBLIC_SIGNAL_URL=wss://your-worker-host/ws`.
 

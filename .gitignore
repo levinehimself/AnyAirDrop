@@ -150,6 +150,7 @@ vite.config.ts.timestamp-*
 
 # AnyAirDrop.com project
 .wrangler/
+anyairdrop-site.zip
 .dev.vars
 .DS_Store
 

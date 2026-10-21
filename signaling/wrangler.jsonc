@@ -24,7 +24,11 @@
   //   npx wrangler secret put TURN_KEY_ID --config signaling/wrangler.jsonc
   //   npx wrangler secret put TURN_KEY_API_TOKEN --config signaling/wrangler.jsonc
   // Locally, put them in signaling/.dev.vars (see .dev.vars.example).
-  "observability": { "enabled": true }
-  // Production: serve this worker on the site's own origin so the page can use /ws,
-  // e.g. "routes": [{ "pattern": "anyairdrop.com/ws*", "zone_name": "anyairdrop.com" }]
+  "observability": { "enabled": true },
+  // The site's pages come from the cPanel host behind Cloudflare's proxy; only /ws and
+  // /ws/ice/ on these hostnames reach this worker.
+  "routes": [
+    { "pattern": "anyairdrop.com/ws*", "zone_name": "anyairdrop.com" },
+    { "pattern": "www.anyairdrop.com/ws*", "zone_name": "anyairdrop.com" }
+  ]
 }
