@@ -25,6 +25,7 @@
   //   npx wrangler secret put TURN_KEY_API_TOKEN --config signaling/wrangler.jsonc
   // Locally, put them in signaling/.dev.vars (see .dev.vars.example).
   "observability": { "enabled": true },
+  // /ws/whoami/ reports which shared-network group a device lands in (see ?debug=1).
   // The site's pages come from the cPanel host behind Cloudflare's proxy; only /ws and
   // /ws/ice/ on these hostnames reach this worker.
   "routes": [
