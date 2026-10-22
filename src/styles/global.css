@@ -17,6 +17,10 @@
   --color-success: #15803d;
   --color-scrim: rgba(15, 23, 42, 0.25);
 
+  /* QR code: always dark modules on a white tile (every scanner reads it). The frame
+     around the tile is what separates it from the page. */
+  --qr-frame: #0b1220;
+
   --font-sans: 'Urbanist Variable', 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --space-1: 8px;
@@ -51,6 +55,7 @@
     --color-link-hover: #a8c8ff;
     --color-success: #4ade80;
     --color-scrim: rgba(0, 0, 0, 0.55);
+    --qr-frame: #2a3750;
   }
 }
 
@@ -68,6 +73,7 @@
   --color-link-hover: #a8c8ff;
   --color-success: #4ade80;
   --color-scrim: rgba(0, 0, 0, 0.55);
+  --qr-frame: #2a3750;
 }
 
 :root[data-theme='light'] {

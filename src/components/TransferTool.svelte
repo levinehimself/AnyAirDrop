@@ -401,9 +401,11 @@
       <div class="pair">
         <div class="mycode">
           {#if qr}
-            <svg class="qr" viewBox={qr.viewBox} shape-rendering="crispEdges" role="img" aria-label="QR code: scan it with the other device’s camera to connect">
-              <path d={qr.path} fill="#0b1220" />
-            </svg>
+            <span class="qr-frame">
+              <svg class="qr" viewBox={qr.viewBox} shape-rendering="crispEdges" role="img" aria-label="QR code: scan it with the other device’s camera to connect">
+                <path d={qr.path} />
+              </svg>
+            </span>
           {/if}
           <p class="mycode-text">
             <span class="label">Your code</span>
@@ -827,13 +829,26 @@
     gap: 16px;
   }
 
-  /* Always dark on white, in both themes, so cameras can read it. */
-  .qr {
-    width: 100px;
-    height: 100px;
+  /* Dark modules on a white tile in both themes, so any camera reads it. The solid frame
+     gives it strong contrast against the page: near-black on the light theme. */
+  .qr-frame {
+    display: flex;
     flex: none;
+    padding: 7px;
+    background: var(--qr-frame);
+    border-radius: 16px;
+  }
+
+  .qr {
+    display: block;
+    width: 94px;
+    height: 94px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 9px;
+  }
+
+  .qr path {
+    fill: #0b1220;
   }
 
   /* The label, the code and the hint share one centered column. */
@@ -889,9 +904,14 @@
   }
 
   @media (max-width: 720px) {
+    .qr-frame {
+      padding: 6px;
+      border-radius: 14px;
+    }
+
     .qr {
-      width: 80px;
-      height: 80px;
+      width: 76px;
+      height: 76px;
     }
 
     .mycode {
