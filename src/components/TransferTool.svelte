@@ -33,7 +33,6 @@
   let total = $state(0);
   let route = $state<Route>('unknown');
 
-  let pairOpen = $state(false);
   let myCode = $state('');
   let codeInput = $state('');
   let pairNote = $state('');
@@ -46,7 +45,9 @@
 
   const pct = $derived(total > 0 ? Math.min(100, Math.floor((done / total) * 100)) : 0);
   const free = $derived(view.kind === 'idle' || view.kind === 'sent' || view.kind === 'received' || view.kind === 'notice');
-  const sheetOpen = $derived(view.kind !== 'idle' || pairOpen);
+  const sheetOpen = $derived(view.kind !== 'idle');
+  const peerNames = $derived(peers.map((p) => p.name).join(', '));
+  const myCodeLabel = $derived(myCode ? `${myCode.slice(0, 3)} ${myCode.slice(3)}` : '');
 
   const hint = $derived(
     status === 'offline'
@@ -54,7 +55,7 @@
       : peers.length === 0
         ? status === 'connecting'
           ? 'Looking for devices on your Wi-Fi…'
-          : 'Open AnyAirDrop.com on another device on this Wi-Fi'
+          : 'Searching for devices on this Wi-Fi. Or use the code below.'
         : canHover
           ? 'Click a device, or drop files on it'
           : 'Tap a device to send files',
@@ -103,6 +104,7 @@
     const offs = [
       hub.on('peers', (list) => {
         place(list);
+        if (list.length > 0) pairNote = '';
         const v = view;
         if (v.kind === 'confirm' && !list.some((p) => p.id === v.peer.id)) {
           view = { kind: 'notice', title: `${v.peer.name} left`, detail: 'That device closed AnyAirDrop.com.' };
@@ -112,6 +114,11 @@
       hub.on('incoming', onIncoming),
     ];
     hub.start();
+    // Join our own pairing room right away, so the code on screen works from the first
+    // second. It keeps two devices connected even when a VPN gives them different
+    // public addresses, because it does not depend on the network address at all.
+    myCode = loadCode();
+    hub.joinPair(myCode);
     // A shared link like AnyAirDrop.com/?pair=123456 joins that pairing room directly.
     const code = params.get('pair');
     if (code && /^\d{6}$/.test(code)) hub.joinPair(code);
@@ -120,6 +127,24 @@
       hub?.stop();
     };
   });
+
+  function loadCode(): string {
+    try {
+      const saved = sessionStorage.getItem('anyairdrop:code');
+      if (saved && /^\d{6}$/.test(saved)) return saved;
+    } catch {
+      // Storage unavailable: use a fresh code.
+    }
+    const n = new Uint32Array(1);
+    crypto.getRandomValues(n);
+    const code = String(n[0] % 1_000_000).padStart(6, '0');
+    try {
+      sessionStorage.setItem('anyairdrop:code', code);
+    } catch {
+      // Not persisted; fine.
+    }
+    return code;
+  }
 
   function pick(peer: RemotePeer): void {
     if (!free || !fileInput) return;
@@ -131,7 +156,6 @@
   function onFilesChosen(): void {
     const files = Array.from(fileInput?.files ?? []);
     if (!target || files.length === 0) return;
-    pairOpen = false;
     view = { kind: 'confirm', peer: target, files };
   }
 
@@ -142,7 +166,6 @@
     // Dropped folders arrive as empty, typeless entries; skip them.
     const files = Array.from(event.dataTransfer?.files ?? []).filter((f) => f.size > 0 || f.type !== '');
     if (files.length === 0) return;
-    pairOpen = false;
     view = { kind: 'confirm', peer, files };
   }
 
@@ -214,7 +237,6 @@
       transfer.decline();
       return;
     }
-    pairOpen = false;
     view = { kind: 'incoming', transfer };
     transfer.on('progress', setProgress);
     transfer.on('done', (files) => {
@@ -261,8 +283,7 @@
 
   // Tapping outside the phone sheet closes it only when nothing is in progress.
   function dismiss(): void {
-    if (pairOpen) pairOpen = false;
-    else if (view.kind === 'confirm' || view.kind === 'sent' || view.kind === 'notice') reset();
+    if (view.kind === 'confirm' || view.kind === 'sent' || view.kind === 'notice') reset();
   }
 
   async function readRoute(link: PeerLink): Promise<void> {
@@ -303,31 +324,20 @@
     files.forEach((file, i) => setTimeout(() => save(file), i * 400));
   }
 
-  function openPair(): void {
-    pairOpen = true;
-    pairNote = '';
-    if (!myCode) {
-      const n = new Uint32Array(1);
-      crypto.getRandomValues(n);
-      myCode = String(n[0] % 1_000_000).padStart(6, '0');
-      hub?.joinPair(myCode);
-    }
-  }
-
   function joinCode(event: SubmitEvent): void {
     event.preventDefault();
     const code = codeInput.replace(/\D/g, '');
     if (code.length !== 6) {
-      pairNote = 'Enter the 6 digits shown on the other device.';
+      pairNote = 'Type the 6 digits shown on the other device.';
       return;
     }
     if (code === myCode) {
-      pairNote = 'That’s this device’s code. Enter the one on the other device.';
+      pairNote = 'That’s this device’s own code. Type the one on the other device.';
       return;
     }
     hub?.joinPair(code);
     codeInput = '';
-    pairNote = 'Connecting. The other device will appear on the radar.';
+    pairNote = 'Connecting… the other device appears on the radar in a moment.';
   }
 </script>
 
@@ -356,7 +366,7 @@
         ondragleave={() => (dragOver = null)}
         ondrop={(e) => onDrop(e, peer)}
       >
-        <span class="dot"><DeviceIcon kind={peer.device} /></span>
+        <span class="dot"><DeviceIcon kind={peer.device} /><span class="badge" aria-hidden="true"></span></span>
         <span class="name">{peer.name}</span>
         <span class="os">{peer.os}</span>
       </button>
@@ -366,32 +376,27 @@
   <button type="button" class="scrim" class:open={sheetOpen} aria-label="Close" tabindex="-1" onclick={dismiss}></button>
 
   <div class="actions" class:open={sheetOpen} aria-live="polite">
-    {#if pairOpen}
-      <p class="title">Pair with a code</p>
-      <p class="muted">Use this when the other device doesn’t appear, like on guest Wi-Fi or a different network.</p>
-      <p class="code" aria-label={`Your code is ${myCode.split('').join(' ')}`}>{myCode.slice(0, 3)} {myCode.slice(3)}</p>
-      <form class="pair-form" onsubmit={joinCode}>
-        <label class="visually-hidden" for="pair-code">Code from the other device</label>
-        <input
-          id="pair-code"
-          inputmode="numeric"
-          autocomplete="off"
-          maxlength="7"
-          placeholder="Their code"
-          bind:value={codeInput}
-        />
-        <button type="submit" class="primary">Connect</button>
-      </form>
-      {#if pairNote}<p class="muted small">{pairNote}</p>{/if}
-      <button type="button" class="text-btn" onclick={() => (pairOpen = false)}>Close</button>
-    {:else if view.kind === 'idle'}
-      <p class="muted">{hint}</p>
-      <p class="small muted inline">
-        {#if myName}
-          <span>You appear as <strong>{myName}</strong></span>
-          <span aria-hidden="true">·</span>
-        {/if}
-        <button type="button" class="link-btn" onclick={openPair}>Pair with a code</button>
+    {#if view.kind === 'idle'}
+      {#if peers.length > 0}
+        <p class="connected" role="status">
+          <span class="live" aria-hidden="true"></span>Connected to {peerNames}
+        </p>
+      {/if}
+      <p class="muted hint">{hint}</p>
+      <div class="pair">
+        <p class="mycode">
+          <span class="label">Your code</span>
+          <span class="code" aria-label={`Your code is ${myCode.split('').join(' ')}`}>{myCodeLabel}</span>
+        </p>
+        <form class="pair-form" onsubmit={joinCode}>
+          <label class="visually-hidden" for="pair-code">Code shown on the other device</label>
+          <input id="pair-code" inputmode="numeric" autocomplete="off" maxlength="7" placeholder="Their code" bind:value={codeInput} />
+          <button type="submit" class="secondary">Connect</button>
+        </form>
+      </div>
+      <p class="small muted note">
+        {#if pairNote}{pairNote}{:else}On a VPN or guest Wi-Fi? Type this code on your other device.{/if}
+        {#if myName}<span class="you"> You appear as <strong>{myName}</strong>.</span>{/if}
       </p>
     {:else if view.kind === 'confirm'}
       <p class="title">Send {countFiles(view.files.length)} ({formatBytes(view.files.reduce((s, f) => s + f.size, 0))}) to {view.peer.name}?</p>
@@ -471,6 +476,14 @@
     margin-top: var(--space-6);
   }
 
+  /* Desktop: size the radar to the window so the whole page fits without scrolling. */
+  @media (min-width: 721px) and (min-height: 640px) {
+    .radar {
+      width: min(86vw, clamp(200px, calc(100dvh - 440px), 440px));
+      margin-top: var(--space-3);
+    }
+  }
+
   .ring,
   .pulse {
     position: absolute;
@@ -529,7 +542,19 @@
     cursor: default;
   }
 
+  .badge {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-success);
+    border: 2px solid var(--color-surface);
+  }
+
   .dot {
+    position: relative;
     width: 52px;
     height: 52px;
     border-radius: 50%;
@@ -562,10 +587,10 @@
   }
 
   .actions {
-    margin-top: 28px;
-    min-height: 112px;
+    margin-top: 20px;
+    min-height: 130px;
     width: 100%;
-    max-width: 460px;
+    max-width: 540px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -735,11 +760,55 @@
     color: var(--color-text-muted);
   }
 
-  .code {
-    font-size: 32px;
+  .connected {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    color: var(--color-success);
+  }
+
+  .live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-success);
+    flex: none;
+  }
+
+  .hint {
+    min-height: 1.5em;
+  }
+
+  .pair {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px 24px;
+  }
+
+  .mycode {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .label {
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  .code {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     font-variant-numeric: tabular-nums;
+  }
+
+  .note {
+    max-width: 440px;
   }
 
   .pair-form {
@@ -748,7 +817,7 @@
   }
 
   .pair-form input {
-    width: 150px;
+    width: 140px;
     min-height: 44px;
     padding: 0 12px;
     border: 1px solid var(--color-line-strong);

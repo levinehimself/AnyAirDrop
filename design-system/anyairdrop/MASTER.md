@@ -10,7 +10,7 @@ Built with UI UX Pro Max guidance: style "Minimalism & Swiss Style", landing pat
 
 ## Principles
 
-1. **The tool is the page.** The homepage holds the header, one headline, one line of copy, the radar, three benefit lines and a footer. Nothing else.
+1. **The tool is the page.** The homepage holds the header, one headline, one line of copy, the radar, the pairing code row, three benefit lines and a footer. Nothing else. On desktop it fits the window with no page scrolling (the benefit lines hide in windows shorter than 780px).
 2. **One accent.** Blue marks only "You", primary buttons, links and the selected device.
 3. **Thin, quiet, flat.** 1px hairlines, no shadows, no gradients, no cards on the homepage.
 4. **Explain elsewhere.** FAQs, feature grids, how-it-works and comparisons live on guide pages, linked from the footer.
@@ -70,13 +70,13 @@ Built with UI UX Pro Max guidance: style "Minimalism & Swiss Style", landing pat
 | Primary button | Accent fill, white text, 44px min height, 10px radius, 15px/600 |
 | Secondary button | White fill, 1px `--color-line` border, text color, same size |
 | Benefits | One row of three, centered, above a 1px top divider: bold 15px line plus muted 14px line. Stacks under 720px |
-| Footer | Guide links left, Privacy and Terms right, trademark line full width in 13px muted: "AirDrop is a trademark of Apple Inc. AnyAirDrop.com is not affiliated with Apple." |
+| Footer | Guide links left, Privacy and Terms right, a disclaimer line full width in 12px muted: "AnyAirDrop.com is an independent service, not affiliated with or endorsed by Apple Inc. Apple's trademarks belong to Apple Inc." |
 | Phone bottom sheet | Selecting a device opens a white sheet from the bottom over a 25% scrim: 36x4px handle, title, file summary, Cancel / Send. The same sheet shows progress, then "Sent" with Done |
 
 ## Rules
 
 - Write the brand exactly "AnyAirDrop" / "AnyAirDrop.com" in visible text. URLs stay lowercase.
-- Use "AirDrop" only referentially ("works like AirDrop", "AirDrop to Android"), never as part of our name, and never Apple's AirDrop icon.
+- Never write "AirDrop" on its own anywhere in the site UI, titles, descriptions, footer or URLs: always "AnyAirDrop" / "AnyAirDrop.com". Never use Apple's icons. The footer disclaims affiliation with Apple without naming Apple's products. (Blog posts that target "AirDrop" search terms are a separate decision for the trademark review.)
 - Text contrast at least 4.5:1. Focus ring: 2px accent outline, 3px offset, on every button and link.
 - Touch targets at least 44x44px, 8px apart.
 - Respect `prefers-reduced-motion`: no pulse, no fade, final states shown at once.
