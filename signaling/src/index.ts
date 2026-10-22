@@ -21,6 +21,7 @@ export default {
     const url = new URL(request.url);
     // The trailing-slash form matches the site's URL style, so it passes the Astro dev proxy.
     if (url.pathname === '/ws/ice' || url.pathname === '/ws/ice/') return handleIce(request, env);
+    if (url.pathname === '/ws/whoami' || url.pathname === '/ws/whoami/') return whoami(request);
     if (url.pathname !== '/ws') return new Response('Not found', { status: 404 });
     if (request.headers.get('Upgrade') !== 'websocket') {
       return new Response('Expected a WebSocket upgrade', { status: 426 });
@@ -185,4 +186,19 @@ function ipv6Prefix64(ip: string): string {
   const missing = 8 - headParts.length - tailParts.length;
   const full = [...headParts, ...Array(Math.max(0, missing)).fill('0'), ...tailParts];
   return full.slice(0, 4).map((part) => part.padStart(4, '0')).join(':');
+}
+
+// Diagnostics for "why don't my two devices see each other?": which address family this
+// connection arrives on and a short label for the shared-network room it would join.
+// Devices only find each other automatically when their labels match. The address itself
+// is never returned.
+async function whoami(request: Request): Promise<Response> {
+  const site = request.headers.get('Sec-Fetch-Site');
+  if (site && site !== 'same-origin' && site !== 'none') return new Response('Forbidden', { status: 403 });
+  const ip = request.headers.get('CF-Connecting-IP');
+  const key = await networkKey(ip);
+  const family = !ip ? 'unknown' : isPrivate(ip) ? 'private' : ip.includes(':') && !/^::ffff:/i.test(ip) ? 'ipv6' : 'ipv4';
+  return new Response(JSON.stringify({ family, group: key.slice(0, 6) }), {
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
 }

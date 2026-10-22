@@ -37,6 +37,11 @@
   let codeInput = $state('');
   let pairNote = $state('');
 
+  // ?debug=1 shows which shared-network group this device lands in. Two devices find each
+  // other automatically only when their groups match.
+  let debugNet = $state('');
+  let relayOn = $state(false);
+
   let fileInput = $state<HTMLInputElement>();
   let target: RemotePeer | null = null;
   let dragOver = $state<string | null>(null);
@@ -114,6 +119,13 @@
       hub.on('incoming', onIncoming),
     ];
     hub.start();
+    if (params.has('debug')) {
+      fetch(new URL('/ws/whoami/', signalingEndpoint().replace(/^ws/, 'http')), { cache: 'no-store' })
+        .then((r) => r.json())
+        .then((info: { family: string; group: string }) => (debugNet = `${info.family} group ${info.group}`))
+        .catch(() => (debugNet = 'unknown (could not reach the server)'));
+      setTimeout(() => (relayOn = hub?.relayAvailable ?? false), 2500);
+    }
     // Join our own pairing room right away, so the code on screen works from the first
     // second. It keeps two devices connected even when a VPN gives them different
     // public addresses, because it does not depend on the network address at all.
@@ -394,10 +406,12 @@
           <button type="submit" class="secondary">Connect</button>
         </form>
       </div>
-      <p class="small muted note">
-        {#if pairNote}{pairNote}{:else}On a VPN or guest Wi-Fi? Type this code on your other device.{/if}
-        {#if myName}<span class="you"> You appear as <strong>{myName}</strong>.</span>{/if}
-      </p>
+      {#if pairNote}<p class="small muted note" role="status">{pairNote}</p>{/if}
+      {#if debugNet}
+        <p class="small muted note" role="status">
+          Network: {debugNet} · relay {relayOn ? 'on' : 'off'} · {peers.length} device{peers.length === 1 ? '' : 's'} found · you are {myName}
+        </p>
+      {/if}
     {:else if view.kind === 'confirm'}
       <p class="title">Send {countFiles(view.files.length)} ({formatBytes(view.files.reduce((s, f) => s + f.size, 0))}) to {view.peer.name}?</p>
       <div class="row">
@@ -692,7 +706,7 @@
     border: 0;
     background: none;
     padding: 0;
-    color: var(--color-accent);
+    color: var(--color-link);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -704,7 +718,7 @@
   }
 
   .link-btn:hover {
-    color: var(--color-accent-hover);
+    color: var(--color-link-hover);
     text-decoration: underline;
   }
 

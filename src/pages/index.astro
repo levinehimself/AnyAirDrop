@@ -45,9 +45,18 @@ const jsonLd = {
     <noscript><p class="lead">AnyAirDrop.com needs JavaScript to find nearby devices.</p></noscript>
 
     <ul class="benefits" aria-label="Why AnyAirDrop.com">
-      <li><strong>No app or account</strong><span>Works in any browser</span></li>
-      <li><strong>Nothing uploaded</strong><span>Device to device, encrypted</span></li>
-      <li><strong>No size limit</strong><span>One photo or a whole folder</span></li>
+      <li>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 9h20M6 6.5h.01M9 6.5h.01" /></svg>
+        <strong>No app or account</strong>
+      </li>
+      <li>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.6 17A5 5 0 0 0 18 10h-1.3a8 8 0 0 0-7-6M5 5a8 8 0 0 0 4 15h9a5 5 0 0 0 1.7-.3" /><path d="M2 2l20 20" /></svg>
+        <strong>Nothing uploaded</strong>
+      </li>
+      <li>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16c5 0 7-8 12-8a4 4 0 0 1 0 8c-5 0-7-8-12-8a4 4 0 1 0 0 8" /></svg>
+        <strong>No size limit</strong>
+      </li>
     </ul>
   </main>
 </Base>
@@ -89,9 +98,9 @@ const jsonLd = {
 
   h1 {
     margin: 0;
-    font-size: 40px;
-    line-height: 1.12;
-    font-weight: 600;
+    font-size: 44px;
+    line-height: 1.08;
+    font-weight: 700;
     letter-spacing: -0.03em;
     text-wrap: balance;
   }
@@ -99,7 +108,7 @@ const jsonLd = {
   .lead {
     margin: 8px 0 0;
     max-width: 680px;
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.5;
     color: var(--color-text-muted);
     text-wrap: balance;
@@ -120,14 +129,14 @@ const jsonLd = {
 
   .benefits li {
     display: flex;
-    gap: 6px;
-    align-items: baseline;
-    font-size: 14px;
-    color: var(--color-text-muted);
+    gap: 8px;
+    align-items: center;
+    font-size: 15px;
+    color: var(--color-link);
   }
 
   .benefits strong {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text);
   }
 
@@ -138,7 +147,7 @@ const jsonLd = {
     }
 
     h1 {
-      font-size: 34px;
+      font-size: 36px;
     }
   }
 

@@ -7,9 +7,10 @@ interface Props {
   heading: string;
   lead?: string;
   type?: 'AboutPage' | 'ContactPage' | 'WebPage';
+  noindex?: boolean;
 }
 
-const { title, description, heading, lead, type = 'WebPage' } = Astro.props;
+const { title, description, heading, lead, type = 'WebPage', noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 
 const jsonLd = {
@@ -24,7 +25,7 @@ const jsonLd = {
 };
 ---
 
-<Base title={title} description={description} jsonLd={jsonLd}>
+<Base title={title} description={description} jsonLd={jsonLd} noindex={noindex}>
   <main class="page">
     <article class="prose">
       <h1>{heading}</h1>
@@ -48,9 +49,9 @@ const jsonLd = {
 
   h1 {
     margin: 0;
-    font-size: 40px;
-    line-height: 1.12;
-    font-weight: 600;
+    font-size: 42px;
+    line-height: 1.1;
+    font-weight: 700;
     letter-spacing: -0.03em;
     text-wrap: balance;
   }
@@ -64,15 +65,15 @@ const jsonLd = {
 
   .prose :global(h2) {
     margin: var(--space-6) 0 var(--space-1);
-    font-size: 22px;
+    font-size: 24px;
     line-height: 1.25;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.01em;
   }
 
   .prose :global(p),
   .prose :global(li) {
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.7;
   }
 

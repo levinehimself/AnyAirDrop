@@ -86,3 +86,12 @@ Built with UI UX Pro Max guidance: style "Minimalism & Swiss Style", landing pat
 ## Avoid
 
 Cards and feature grids on the homepage, more than one accent color, shadows, gradients, big illustrations, stock photos, carousels, FAQ blocks above the footer, more than two header links.
+
+## Update 2026-10-22: Urbanist, dark theme, header and footer
+
+- **Font:** Urbanist (self-hosted via `@fontsource-variable/urbanist`), body 17px / weight 500, headings 700, H1 44px (36px in short windows, 34px on phones). Inter is no longer used.
+- **Themes:** light and dark share the same tokens. Dark: bg #0B1220, surface #131C2E, text #F1F5F9, muted #A3B1C6, lines #1F2A3D / #33415A, link #7FB0FF, success #4ADE80. A saved choice (localStorage `anyairdrop:theme`) wins; otherwise the device's `prefers-color-scheme`; light if neither can be read. A header button toggles it. Use `--color-link` for blue text, `--color-accent` only for fills.
+- **Header:** logo left; right: a small "Blog" link and the theme toggle. No other links.
+- **Benefits row:** three icons with bold labels only ("No app or account", "Nothing uploaded", "No size limit"), one line.
+- **Footer:** the Apple-independence disclaimer on the left; About, Contact, Privacy, Terms on the right. No guide links.
+- **Pairing row:** "Your code" + input always visible. No explanatory VPN note on the homepage. `?debug=1` shows the network group for troubleshooting.

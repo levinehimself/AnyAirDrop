@@ -1,5 +1,8 @@
 /* Quiet Radar tokens. Source: design-system/anyairdrop/MASTER.md */
 :root {
+  color-scheme: light dark;
+
+  /* Light theme: also the fallback when the device's preference is unknown */
   --color-bg: #f8fafc;
   --color-surface: #ffffff;
   --color-text: #0f172a;
@@ -9,10 +12,12 @@
   --color-accent: #2563eb;
   --color-accent-hover: #1d4ed8;
   --color-on-accent: #ffffff;
+  --color-link: #2563eb;
+  --color-link-hover: #1d4ed8;
   --color-success: #15803d;
   --color-scrim: rgba(15, 23, 42, 0.25);
 
-  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Urbanist Variable', 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --space-1: 8px;
   --space-2: 12px;
@@ -28,6 +33,45 @@
   --radius-sheet: 20px;
   --dur-color: 200ms;
   --dur-enter: 350ms;
+}
+
+/* Dark theme. Applied when the device prefers dark and the visitor has not chosen
+   light, or when the visitor chose dark with the toggle (data-theme="dark"). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: #0b1220;
+    --color-surface: #131c2e;
+    --color-text: #f1f5f9;
+    --color-text-muted: #a3b1c6;
+    --color-line: #1f2a3d;
+    --color-line-strong: #33415a;
+    --color-accent: #2563eb;
+    --color-accent-hover: #3b82f6;
+    --color-link: #7fb0ff;
+    --color-link-hover: #a8c8ff;
+    --color-success: #4ade80;
+    --color-scrim: rgba(0, 0, 0, 0.55);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #0b1220;
+  --color-surface: #131c2e;
+  --color-text: #f1f5f9;
+  --color-text-muted: #a3b1c6;
+  --color-line: #1f2a3d;
+  --color-line-strong: #33415a;
+  --color-accent: #2563eb;
+  --color-accent-hover: #3b82f6;
+  --color-link: #7fb0ff;
+  --color-link-hover: #a8c8ff;
+  --color-success: #4ade80;
+  --color-scrim: rgba(0, 0, 0, 0.55);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
 }
 
 *,
@@ -48,18 +92,19 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 500;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-link);
   transition: color var(--dur-color) ease;
 }
 
 a:hover {
-  color: var(--color-accent-hover);
+  color: var(--color-link-hover);
 }
 
 :where(a, button, input):focus-visible {

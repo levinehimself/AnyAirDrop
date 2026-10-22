@@ -13,7 +13,8 @@ export default defineConfig({
   site: 'https://anyairdrop.com',
   output: 'static',
   trailingSlash: 'always',
-  integrations: [svelte(), sitemap()],
+  // The blog index stays out of the sitemap until the first post is published.
+  integrations: [svelte(), sitemap({ filter: (page) => !page.endsWith('/blog/') })],
   vite: {
     plugins: lan ? [basicSsl()] : [],
     server: {
