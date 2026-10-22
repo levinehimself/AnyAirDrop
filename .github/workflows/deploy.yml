@@ -30,7 +30,7 @@ env:
 jobs:
   check:
     name: Check and build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       worker: ${{ steps.changes.outputs.worker }}
     steps:
@@ -84,7 +84,7 @@ jobs:
   deploy-site:
     name: Upload pages to cPanel
     needs: check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: production
       url: https://anyairdrop.com
@@ -173,7 +173,7 @@ jobs:
     name: Deploy signaling worker
     needs: check
     if: needs.check.outputs.worker == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 

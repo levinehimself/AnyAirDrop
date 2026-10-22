@@ -1,0 +1,58 @@
+# Weekly check that the live site still works, even when nobody has pushed code.
+# A failure sends the usual GitHub failure email. Run it by hand from the Actions tab.
+#
+# GitHub pauses scheduled workflows in a public repository after 60 days without
+# activity; if the emails stop, re-enable this workflow in the Actions tab.
+name: Health check
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-site:
+    name: Check the live site
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # Each check is tried three times, 20 seconds apart, so a short blip at Cloudflare or
+      # the host does not raise a false alarm.
+      - name: Run the checks
+        run: |
+          retry() {
+            for attempt in 1 2 3; do
+              "$@" && return 0
+              [ "$attempt" -lt 3 ] && sleep 20
+            done
+            return 1
+          }
+
+          check_home() { curl -sfL --max-time 20 https://anyairdrop.com/ | grep -q '<title>AnyAirDrop.com'; }
+          check_https() { [ "$(curl -s -o /dev/null -w '%{redirect_url}' --max-time 20 http://anyairdrop.com/)" = "https://anyairdrop.com/" ]; }
+          check_www() { [ "$(curl -s -o /dev/null -w '%{redirect_url}' --max-time 20 https://www.anyairdrop.com/)" = "https://anyairdrop.com/" ]; }
+          check_relay() { curl -sf --max-time 20 https://anyairdrop.com/ws/ice/ | jq -e '.relay == true and (.iceServers | length) > 0' > /dev/null; }
+          check_rooms() { node signaling/test/rooms.test.mjs wss://anyairdrop.com/ws > rooms.log 2>&1; }
+
+          failed=""
+          retry check_home || failed="$failed homepage"
+          retry check_https || failed="$failed http-to-https-redirect"
+          retry check_www || failed="$failed www-redirect"
+          retry check_relay || failed="$failed relay-credentials"
+          retry check_rooms || failed="$failed signaling-rooms"
+
+          if [ -n "$failed" ]; then
+            echo "::error title=Live site check failed::These checks failed:$failed"
+            [ -f rooms.log ] && tail -n 15 rooms.log
+            exit 1
+          fi
+          echo "All live checks passed"
