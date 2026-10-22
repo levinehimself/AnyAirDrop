@@ -1,0 +1,101 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  lead?: string;
+  type?: 'AboutPage' | 'ContactPage' | 'WebPage';
+}
+
+const { title, description, heading, lead, type = 'WebPage' } = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': type,
+  '@id': `${url}#page`,
+  url,
+  name: heading,
+  description,
+  isPartOf: { '@id': 'https://anyairdrop.com/#website' },
+  publisher: { '@id': 'https://anyairdrop.com/#organization' },
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <main class="page">
+    <article class="prose">
+      <h1>{heading}</h1>
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </article>
+  </main>
+</Base>
+
+<style>
+  .page {
+    flex: 1;
+    width: 100%;
+    padding: var(--space-6) var(--space-4) var(--space-7);
+  }
+
+  .prose {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 40px;
+    line-height: 1.12;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .lead {
+    margin: var(--space-2) 0 0;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(h2) {
+    margin: var(--space-6) 0 var(--space-1);
+    font-size: 22px;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .prose :global(p),
+  .prose :global(li) {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .prose :global(p) {
+    margin: var(--space-1) 0 0;
+  }
+
+  .prose :global(ul) {
+    margin: var(--space-1) 0 0;
+    padding-left: 22px;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 6px;
+  }
+
+  @media (max-width: 720px) {
+    .page {
+      padding-top: var(--space-5);
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+  }
+</style>

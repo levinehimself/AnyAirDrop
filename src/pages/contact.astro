@@ -1,0 +1,39 @@
+---
+import Page from '../layouts/Page.astro';
+import { CONTACT_EMAIL, GITHUB_URL } from '../config';
+---
+
+<Page
+  title="Contact AnyAirDrop.com"
+  description="Contact AnyAirDrop.com: report a problem, ask a question about privacy, or share an idea."
+  heading="Contact us"
+  lead="Questions, problems and ideas are all welcome."
+  type="ContactPage"
+>
+  <h2>Email</h2>
+  <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
+
+  <h2>Reporting a problem</h2>
+  <p>The more detail you give, the faster it can be fixed. Please include:</p>
+  <ul>
+    <li>The two devices involved, for example “iPhone 15, iOS 19” and “Windows 11 laptop”.</li>
+    <li>The browser on each one, for example Safari or Chrome.</li>
+    <li>Whether you were on the same Wi-Fi, a VPN, guest Wi-Fi or mobile data.</li>
+    <li>What you expected to happen, and what happened instead.</li>
+  </ul>
+  <p>
+    Developers can also open an issue on <a href={`${GITHUB_URL}/issues`}>GitHub</a>.
+  </p>
+
+  <h2>Please do not send us your files</h2>
+  <p>
+    Never attach private photos, documents or passwords to a message. A screenshot of the problem, with anything private
+    covered up, is all we need.
+  </p>
+
+  <h2>Privacy and other questions</h2>
+  <p>
+    For questions about how AnyAirDrop.com handles data, start with the <a href="/about/">about page</a>, then write to us
+    at the address above.
+  </p>
+</Page>

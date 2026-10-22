@@ -1,0 +1,59 @@
+---
+import Page from '../layouts/Page.astro';
+import { GITHUB_URL } from '../config';
+---
+
+<Page
+  title="About AnyAirDrop.com: Free File Sharing Between Any Devices"
+  description="AnyAirDrop.com sends files between phones and computers over your Wi-Fi, in the browser. Learn how it works, what our server sees, and who is behind it."
+  heading="About AnyAirDrop.com"
+  lead="AnyAirDrop.com sends files between iPhones, Android phones, Windows PCs, Macs and Linux computers over your Wi-Fi, right in the browser. No app, no account, no upload."
+  type="AboutPage"
+>
+  <h2>Why it exists</h2>
+  <p>
+    Sending a photo or a video from one device to another is harder than it should be when the two devices come from
+    different companies. AnyAirDrop.com is a small, free tool that makes it one tap: open the page on both devices, tap the
+    other one, and the files go straight across.
+  </p>
+
+  <h2>How your files travel</h2>
+  <ul>
+    <li>
+      <strong>Device to device.</strong> When both devices can reach each other, your browser connects directly to the other
+      browser and sends the file. It never passes through our server and is never stored anywhere.
+    </li>
+    <li>
+      <strong>Encrypted.</strong> The browser encrypts every connection it opens. Nothing starts until the receiving device
+      taps Accept.
+    </li>
+    <li>
+      <strong>No size limit from us.</strong> Large files stream in pieces, so a long video does not have to fit in memory.
+    </li>
+    <li>
+      <strong>If a network blocks direct connections,</strong> an encrypted relay can carry the transfer instead, and the
+      page tells you when that is happening.
+    </li>
+  </ul>
+
+  <h2>What our server sees</h2>
+  <p>
+    Our server only introduces devices to each other. To do that it briefly sees a random device name (like “Sage Finch”), the
+    kind of device and browser, and either a hashed match of the shared network or the pairing code you typed. It never sees
+    your files or their names.
+  </p>
+  <p>
+    Like any website, the companies that host it keep standard technical logs, such as IP addresses. We do not run ads or
+    trackers on the transfer screen, and there is nothing to sign up for.
+  </p>
+
+  <h2>Independent and open source</h2>
+  <p>
+    AnyAirDrop.com is an independent project. It is not affiliated with, endorsed by or sponsored by Apple Inc. or any other
+    device maker. The code is open source under the MIT license, so you can read exactly what it does:
+    <a href={GITHUB_URL}>AnyAirDrop on GitHub</a>.
+  </p>
+
+  <h2>Get in touch</h2>
+  <p>Found a bug, or have an idea? Visit the <a href="/contact/">contact page</a>.</p>
+</Page>
