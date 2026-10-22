@@ -4,6 +4,7 @@
   import type { IncomingTransfer, OutgoingTransfer, ReceivedFile } from '../lib/transfer/transfer';
   import type { PeerLink, Route } from '../lib/transfer/link';
   import { countFiles, formatBytes } from '../lib/transfer/format';
+  import { makeQr } from '../lib/qr';
   import DeviceIcon from './DeviceIcon.svelte';
 
   type View =
@@ -53,6 +54,8 @@
   const sheetOpen = $derived(view.kind !== 'idle');
   const peerNames = $derived(peers.map((p) => p.name).join(', '));
   const myCodeLabel = $derived(myCode ? `${myCode.slice(0, 3)} ${myCode.slice(3)}` : '');
+  // Scanning this opens AnyAirDrop.com/?pair=… on the other device, which joins our room.
+  const qr = $derived(myCode ? makeQr(`${location.origin}/?pair=${myCode}`) : null);
 
   const hint = $derived(
     status === 'offline'
@@ -396,10 +399,18 @@
       {/if}
       <p class="muted hint">{hint}</p>
       <div class="pair">
-        <p class="mycode">
-          <span class="label">Your code</span>
-          <span class="code" aria-label={`Your code is ${myCode.split('').join(' ')}`}>{myCodeLabel}</span>
-        </p>
+        <div class="mycode">
+          {#if qr}
+            <svg class="qr" viewBox={qr.viewBox} shape-rendering="crispEdges" role="img" aria-label="QR code: scan it with the other device’s camera to connect">
+              <path d={qr.path} fill="#0b1220" />
+            </svg>
+          {/if}
+          <p class="mycode-text">
+            <span class="label">Your code</span>
+            <span class="code" aria-label={`Your code is ${myCode.split('').join(' ')}`}>{myCodeLabel}</span>
+            <span class="scan">Scan it with the other device’s camera</span>
+          </p>
+        </div>
         <form class="pair-form" onsubmit={joinCode}>
           <label class="visually-hidden" for="pair-code">Code shown on the other device</label>
           <input id="pair-code" inputmode="numeric" autocomplete="off" maxlength="7" placeholder="Their code" bind:value={codeInput} />
@@ -493,7 +504,7 @@
   /* Desktop: size the radar to the window so the whole page fits without scrolling. */
   @media (min-width: 721px) and (min-height: 640px) {
     .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 505px), 440px));
+      width: min(86vw, clamp(200px, calc(100dvh - 515px), 440px));
       margin-top: var(--space-3);
     }
   }
@@ -501,7 +512,7 @@
   /* The benefit row is hidden in short windows, which frees up room for the radar. */
   @media (min-width: 721px) and (min-height: 640px) and (max-height: 780px) {
     .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 440px), 440px));
+      width: min(86vw, clamp(200px, calc(100dvh - 450px), 440px));
     }
   }
 
@@ -611,7 +622,7 @@
     margin-top: 20px;
     min-height: 130px;
     width: 100%;
-    max-width: 540px;
+    max-width: 640px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -807,13 +818,31 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 12px 24px;
+    gap: 14px 32px;
   }
 
   .mycode {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* Always dark on white, in both themes, so cameras can read it. */
+  .qr {
+    width: 100px;
+    height: 100px;
+    flex: none;
+    background: #fff;
+    border-radius: 10px;
+  }
+
+  /* The label, the code and the hint share one centered column. */
+  .mycode-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-align: center;
   }
 
   .label {
@@ -822,10 +851,18 @@
   }
 
   .code {
-    font-size: 24px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.08em;
     font-variant-numeric: tabular-nums;
+  }
+
+  .scan {
+    max-width: 190px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
   }
 
   .note {
@@ -849,6 +886,21 @@
     letter-spacing: 0.08em;
     background: var(--color-surface);
     color: var(--color-text);
+  }
+
+  @media (max-width: 720px) {
+    .qr {
+      width: 80px;
+      height: 80px;
+    }
+
+    .mycode {
+      gap: 12px;
+    }
+
+    .code {
+      font-size: 26px;
+    }
   }
 
   .scrim {

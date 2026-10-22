@@ -160,10 +160,23 @@ const jsonLd = {
       font-size: 34px;
     }
 
+    /* Phones: the three benefits sit side by side, icon above label, to save height. */
     .benefits {
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: nowrap;
+      justify-content: space-between;
       gap: var(--space-1);
+      margin-top: var(--space-3);
+      padding: var(--space-2) 0;
+    }
+
+    .benefits li {
+      flex: 1 1 0;
+      min-width: 0;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+      line-height: 1.25;
+      text-align: center;
     }
   }
 </style>
