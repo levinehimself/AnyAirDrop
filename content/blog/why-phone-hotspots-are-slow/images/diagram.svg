@@ -7,12 +7,12 @@
   <!-- Step 1 -->
   <rect x="30" y="64" width="330" height="76" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
   <text x="195" y="96" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">1. Test the phone alone</text>
-  <text x="195" y="120" text-anchor="middle" font-size="13" fill="#475569">Wi-Fi off, cellular only</text>
+  <text x="195" y="120" text-anchor="middle" font-size="13" fill="#475569">on cellular data, laptop idle</text>
 
   <!-- Step 2 -->
   <rect x="440" y="64" width="330" height="76" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
   <text x="605" y="96" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">2. Test the laptop on the hotspot</text>
-  <text x="605" y="120" text-anchor="middle" font-size="13" fill="#475569">same minute, same speed test</text>
+  <text x="605" y="120" text-anchor="middle" font-size="13" fill="#475569">same test, same minute, not at once</text>
 
   <!-- Arrows to compare -->
   <path d="M195 140 V157 H350 V172" fill="none" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"/>

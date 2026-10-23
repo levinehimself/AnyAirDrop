@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Five jobs a router does for a laptop that has just joined Wi-Fi, and when they are skipped</title>
+  <defs>
+    <symbol id="i-laptop" viewBox="0 0 48 48"><rect x="9" y="9" width="30" height="21" rx="3" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M3 37h42l-3.5 4h-35z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">ROUTERS AND NETWORKS · STEP BY STEP</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Five jobs a router does for a new laptop</text>
+
+  <!-- 1 DHCP -->
+  <rect x="32" y="108" width="234" height="130" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="63" cy="137" r="13" fill="#2563EB"/><text x="63" y="142" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">1</text>
+  <text x="84" y="143" font-size="18" font-weight="700" fill="#0F172A">DHCP</text>
+  <text x="50" y="164" font-size="14" font-weight="700" fill="#2563EB">Who am I?</text>
+  <text x="50" y="184" font-size="14" fill="#475569">Four messages lend the</text>
+  <text x="50" y="202" font-size="14" fill="#475569">laptop an address, gateway</text>
+  <text x="50" y="220" font-size="14" fill="#475569">and DNS server on a lease.</text>
+
+  <!-- 2 ARP -->
+  <rect x="283" y="108" width="234" height="130" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="314" cy="137" r="13" fill="#2563EB"/><text x="314" y="142" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">2</text>
+  <text x="335" y="143" font-size="18" font-weight="700" fill="#0F172A">ARP</text>
+  <text x="301" y="164" font-size="14" font-weight="700" fill="#2563EB">Where is the router?</text>
+  <text x="301" y="184" font-size="14" fill="#475569">A broadcast asks who has</text>
+  <text x="301" y="202" font-size="14" fill="#475569">the gateway address. The</text>
+  <text x="301" y="220" font-size="14" fill="#475569">router sends its MAC.</text>
+
+  <!-- 3 DNS -->
+  <rect x="534" y="108" width="234" height="130" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="565" cy="137" r="13" fill="#2563EB"/><text x="565" y="142" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">3</text>
+  <text x="586" y="143" font-size="18" font-weight="700" fill="#0F172A">DNS</text>
+  <text x="552" y="164" font-size="14" font-weight="700" fill="#2563EB">What number is this name?</text>
+  <text x="552" y="184" font-size="14" fill="#475569">In most homes the router</text>
+  <text x="552" y="202" font-size="14" fill="#475569">forwards the question and</text>
+  <text x="552" y="220" font-size="14" fill="#475569">caches the answer.</text>
+
+  <!-- 4 NAT -->
+  <rect x="32" y="254" width="234" height="130" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="63" cy="283" r="13" fill="#2563EB"/><text x="63" y="288" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">4</text>
+  <text x="84" y="289" font-size="18" font-weight="700" fill="#0F172A">NAT</text>
+  <text x="50" y="310" font-size="14" font-weight="700" fill="#2563EB">How do replies find me?</text>
+  <text x="50" y="330" font-size="14" fill="#475569">The router swaps in its</text>
+  <text x="50" y="348" font-size="14" fill="#475569">public address and a free</text>
+  <text x="50" y="366" font-size="14" fill="#475569">port, and records the row.</text>
+
+  <!-- 5 Firewall -->
+  <rect x="283" y="254" width="234" height="130" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="314" cy="283" r="13" fill="#2563EB"/><text x="314" y="288" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">5</text>
+  <text x="335" y="289" font-size="18" font-weight="700" fill="#0F172A">Firewall</text>
+  <text x="301" y="310" font-size="14" font-weight="700" fill="#2563EB">Who may come back in?</text>
+  <text x="301" y="330" font-size="14" fill="#475569">Only replies that match a</text>
+  <text x="301" y="348" font-size="14" fill="#475569">table row get through.</text>
+  <text x="301" y="366" font-size="14" fill="#475569">Unsolicited packets drop.</text>
+
+  <!-- 6 Same Wi-Fi callout -->
+  <rect x="534" y="254" width="234" height="130" rx="16" fill="#0F172A"/>
+  <circle cx="565" cy="283" r="15" fill="#2563EB"/><use href="#i-laptop" x="553" y="271" width="24" height="24" color="#FFFFFF"/>
+  <text x="590" y="289" font-size="18" font-weight="700" fill="#FFFFFF">Same Wi-Fi?</text>
+  <text x="552" y="310" font-size="14" font-weight="700" fill="#FFFFFF">Steps 4 and 5 are skipped.</text>
+  <text x="552" y="330" font-size="14" fill="#FFFFFF">NAT only acts when traffic</text>
+  <text x="552" y="348" font-size="14" fill="#FFFFFF">crosses the router&apos;s border,</text>
+  <text x="552" y="366" font-size="14" fill="#FFFFFF">so local transfers skip it.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Simplified: one laptop, one web request</text>
+</svg>

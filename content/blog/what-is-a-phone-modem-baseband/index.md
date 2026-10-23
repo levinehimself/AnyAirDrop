@@ -19,7 +19,7 @@ Every Android phone and iPhone contains a cellular modem: a dedicated processor 
 
 ## Two computers in one phone
 
-A phone has two very different jobs. One is to run apps, draw the screen and respond to your finger. The other is to hold a continuous, tightly timed conversation with a cell tower, whose rules come from the 3GPP (3rd Generation Partnership Project), the industry group that writes the specifications for LTE and 5G. The two jobs need different software, different timing guarantees and different certification, so phones have long treated them as separate processors.
+A phone has two very different jobs. One is to run apps, draw the screen and respond to your finger. The other is to hold a continuous, tightly timed conversation with a cell tower, whose rules come from [3GPP](https://www.3gpp.org/technologies/5g-system-overview) (the 3rd Generation Partnership Project), the industry group that writes the specifications for LTE and 5G. The two jobs need different software, different timing guarantees and different certification, so phones have long treated them as separate processors.
 
 | | Application processor | Baseband processor |
 | --- | --- | --- |
@@ -29,9 +29,9 @@ A phone has two very different jobs. One is to run apps, draw the screen and res
 | Talks to | Screen, storage, Wi-Fi and Bluetooth chip, sensors | Cell towers, SIM, the application processor |
 | Certified by | General product and safety rules | Regulators and carrier or industry certification programs |
 
-The baseband is not an optional extra. Without it, the phone can still use Wi-Fi, but it cannot make a call, send a text over the carrier or use mobile data.
+The baseband is not an optional extra. Without it, the phone can still use Wi-Fi, but it cannot make a cellular call, send a text over the carrier or use mobile data.
 
-## What the baseband actually does
+## What the baseband does
 
 Four jobs make up most of the work.
 
@@ -55,14 +55,17 @@ The sequence below is simplified, but it shows how much the baseband does before
 
 From then on, the baseband keeps measuring the signal and the neighboring cells. When you drive away from one tower, it arranges a *handover* so the session continues on another.
 
+![A vertical five-step sequence of what the baseband does after power-on: cell search, reading broadcast information, random access, SIM authentication and starting a data session, all before the first signal bar appears.](./images/figure.svg)
+*The baseband does all five steps itself, then hands the main processor what looks like an ordinary network interface.*
+
 ## Standalone chip or part of the main chip
 
 Where the baseband physically sits varies by design.
 
 - **Separate modem chip.** The modem is its own chip, placed beside the main processor and connected by a high-speed link. This was common for years, and it is how Apple built iPhones that paired its own processor with a modem from another company.
-- **Integrated into the system-on-chip.** A *system-on-chip* (SoC) puts the processors, graphics and other blocks on one piece of silicon. Some phone platforms combine the modem into the same package or die, which saves space and power. Which Android phones do this depends on the platform and the generation.
+- **Integrated into the system-on-chip.** A *system-on-chip* (SoC) puts the processors, graphics and other blocks on one piece of silicon. Some phone platforms combine the modem into the same package or die, which can save space and power. Which Android phones do this depends on the platform and the generation.
 
-Apple's iPhone 16e, announced in February 2025, introduced the C1, which [Apple describes](https://www.apple.com/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/) as the first modem designed by Apple and the most power-efficient modem ever on an iPhone. Apple credits it, together with the A18 chip and iOS power management, for that phone's battery life. It is a good example of a company choosing to build the modem itself rather than buy one, and it makes the point that "the modem" is a distinct component with its own design team and its own roadmap.
+Apple's iPhone 16e, announced in February 2025, introduced the C1, which [Apple describes](https://www.apple.com/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/) as the first cellular modem designed by Apple and the most power-efficient modem ever on an iPhone. Apple credits the C1, the A18 chip and iOS 18 power management together for that phone's battery life. Apple names the C1 as a component in its own right, next to the A18, which shows that "the modem" is a distinct part of the phone even when one company makes both.
 
 Whether integrated or separate, the logical split stays. The baseband has its own firmware and runs its own boot process.
 
@@ -70,15 +73,15 @@ Whether integrated or separate, the logical split stays. The baseband has its ow
 
 The application processor never manipulates the radio directly. It sends the baseband requests such as "register on the network", "dial this number" or "open a data connection", and receives events such as "signal strength changed" or "incoming message".
 
-On Android, the layer that does this is the Radio Interface Layer (RIL). As [Android's documentation](https://source.android.com/docs/core/connect/ril) describes it, requests flow from the Java telephony framework through native code to vendor-supplied RIL code, which communicates with the modem and returns responses. Because each phone maker plugs in the code for its own modem, Android can run the same framework on very different modems. Modern Android versions define this boundary as a hardware abstraction layer, but the idea is the same: a standard set of requests in front, vendor-specific modem code behind.
+On Android, the layer that does this is the Radio Interface Layer (RIL). [Android's RIL documentation](https://source.android.com/docs/core/connect/ril) shows the path: Java code on the framework side hands each request to native code (`ril.cpp`), which passes it to vendor-supplied code that talks to the modem. Responses come back the same way, and the modem can also push unsolicited events, such as a change in signal. Because each phone maker plugs in the code for its own modem, Android can run the same framework on very different modems. Newer Android versions describe the vendor side as a hardware abstraction layer, but the idea is the same: a standard set of requests in front, vendor-specific modem code behind.
 
-Older modems exposed this interface as text commands (the "AT commands" that dial-up modems used), and many still support them for diagnostics. Apple does not publish its internal interface, but the principle holds on iPhone too: the operating system sends high-level requests, and the baseband handles the radio.
+Many modems have exposed this interface as text commands (the "AT commands" that dial-up modems used), and some still accept them for diagnostics. Apple does not publish its internal interface, but the principle holds on iPhone too: the operating system sends high-level requests, and the baseband handles the radio.
 
 ## Why modem firmware updates come with OS updates
 
-The baseband runs software, called firmware, and that software must be kept consistent with the rest of the phone. Apple's [Platform Security guide](https://support.apple.com/guide/security/boot-process-for-ipad-and-iphone-devices-secb3000f149/web) states that the signed boot chain includes "cellular baseband firmware", and that on devices with cellular access a baseband subsystem performs additional secure booting with signed software verified by the baseband processor. In practice that means the modem firmware is delivered inside the same signed update package as the operating system.
+The baseband runs software, called firmware, and that software must be kept consistent with the rest of the phone. Apple's [Platform Security guide](https://support.apple.com/guide/security/boot-process-for-ipad-and-iphone-devices-secb3000f149/web) states that the signed boot chain includes "cellular baseband firmware", and that on devices with cellular access a baseband subsystem performs additional secure booting with signed software verified by the baseband processor. In practice, iPhone modem firmware ships inside the iOS update itself rather than as a separate download.
 
-On Android, the modem firmware is likewise shipped by the phone maker as part of its firmware, so it normally arrives in the same system update, and you rarely update it separately. There are three reasons it is bundled:
+On Android, the modem firmware is likewise shipped by the phone maker as part of its firmware, so it normally arrives in the same system update, and you rarely update it separately. Bundling makes sense for three reasons:
 
 - **Compatibility.** The interface between the operating system and the modem changes over time. Updating one without the other could break calls or data.
 - **Certification.** Modem firmware is tested against carrier and regulatory requirements. Phone makers ship tested combinations rather than letting users mix versions.
@@ -89,13 +92,13 @@ On Android, the modem firmware is likewise shipped by the phone maker as part of
 A phone model often comes in several hardware variants, and the baseband side is the main reason.
 
 - **Bands.** Different countries use different frequencies. A phone must have the right filters and amplifiers for a band to use it, and that is hardware that cannot be added later by software. Variants made for different regions often differ in this list.
-- **mmWave.** Very high frequency 5G (millimeter wave) needs extra antenna modules. For several iPhone generations, only models sold in the United States included them, and some other phones follow the same pattern. Whether a specific model has mmWave depends on the regional version you own.
+- **mmWave.** Very high frequency 5G (millimeter wave) needs extra antenna modules, and some phone lines include them only in certain regional versions. In the iPhone 16 lineup, for example, [launch coverage reported](https://9to5mac.com/2024/09/09/5g-mmwave-esim-iphone-16-us/) that only the U.S. models supported mmWave. Whether a specific model has mmWave depends on the regional version you own, so check the spec sheet for your exact model number.
 - **Carrier configuration.** Settings for voice over LTE, Wi-Fi calling, roaming and hotspot behavior are loaded per carrier, so the same hardware can behave differently on different networks.
 - **Regulation.** Allowed transmit power and permitted frequencies vary by country, and the firmware enforces the local rules.
 
 If a phone shows slower 5G than a friend's model of the same name, the band list is the first place to look. Your phone's published specifications or the manufacturer's regional spec page will list supported bands.
 
-## What the modem has to do with sending files between your devices
+## Why a local file transfer never touches the baseband
 
 The baseband matters for one surprising reason when you move files: it is not involved in a local transfer at all. Wi-Fi and Bluetooth are handled by a different radio chip, often a combined "connectivity" chip, which is why airplane mode can switch off the cellular radio while you keep Wi-Fi on. Sending a photo from one phone to a laptop over the same Wi-Fi network does not use your data plan, your cellular signal or the baseband, as long as the transfer stays on the local network. We compare that with going through the internet in [local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/).
 
@@ -117,7 +120,7 @@ On most phones, no. The modem firmware is packaged with the system software, and
 
 ### Why does my phone have an IMEI if it has a SIM card?
 
-The SIM identifies your subscription, and the IMEI identifies the hardware. A carrier can see both, so it can move your number to a new phone, or block a specific device without canceling the subscription. The two are independent, which is why you can swap a SIM between phones.
+The SIM identifies your subscription, and the IMEI identifies the hardware. A carrier can see both, so it can block a reported-stolen device without canceling the subscription, and you can move your number to another phone by moving the SIM. The two are independent, which is why you can swap a SIM between phones.
 
 ### Is the baseband a security risk?
 
@@ -136,5 +139,6 @@ It is a processor that handles untrusted radio input, so it is a target for secu
 
 - Apple: [iPhone 16e newsroom announcement (C1 modem)](https://www.apple.com/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/)
 - Apple Support: [Boot process for iPad and iPhone devices, Apple Platform Security](https://support.apple.com/guide/security/boot-process-for-ipad-and-iphone-devices-secb3000f149/web)
-- Android Open Source Project: [Radio Interface Layer (RIL)](https://source.android.com/docs/core/connect/ril)
+- Android Open Source Project: [RIL refactoring (Radio Interface Layer)](https://source.android.com/docs/core/connect/ril)
 - 3GPP: [5G System Overview](https://www.3gpp.org/technologies/5g-system-overview)
+- 9to5Mac: [Only U.S. iPhone 16 models support 5G mmWave](https://9to5mac.com/2024/09/09/5g-mmwave-esim-iphone-16-us/)

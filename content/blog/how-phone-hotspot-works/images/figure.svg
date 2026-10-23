@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Where the hotspot swaps the laptop's private address for the phone's cellular address</title>
+  <defs>
+  <symbol id="i-laptop" viewBox="0 0 48 48"><rect x="9" y="9" width="30" height="21" rx="3" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M3 37h42l-3.5 4h-35z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-tower" viewBox="0 0 48 48"><path d="M24 15L15 43M24 15l9 28M18.5 31h11M16.5 37h15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="24" cy="11" r="3" fill="currentColor"/><path d="M15 7.5a12 12 0 0 0 0 7M33 7.5a12 12 0 0 1 0 7M10.5 4.5a18 18 0 0 0 0 13M37.5 4.5a18 18 0 0 1 0 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">PHONES AS MODEMS · WHERE IT HAPPENS</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Private address in, cellular address out</text>
+
+  <circle cx="90" cy="140" r="26" fill="#DBEAFE"/>
+  <use href="#i-laptop" x="75" y="125" width="30" height="30" color="#2563EB"/>
+  <text x="90" y="188" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">Laptop</text>
+  <text x="90" y="206" font-size="13" text-anchor="middle" fill="#475569">private address</text>
+
+  <circle cx="400" cy="140" r="26" fill="#DBEAFE"/>
+  <use href="#i-phone" x="385" y="125" width="30" height="30" color="#2563EB"/>
+  <text x="400" y="188" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">Phone</text>
+  <text x="400" y="206" font-size="13" text-anchor="middle" fill="#475569">cellular address</text>
+
+  <circle cx="710" cy="140" r="26" fill="#DBEAFE"/>
+  <use href="#i-tower" x="695" y="125" width="30" height="30" color="#2563EB"/>
+  <text x="710" y="188" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">Cell tower</text>
+  <text x="710" y="206" font-size="13" text-anchor="middle" fill="#475569">then the internet</text>
+
+  <line x1="122" y1="140" x2="366" y2="140" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M359 133 L368 140 L359 147" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="245.0" y="130" font-size="13" font-weight="700" text-anchor="middle" fill="#2563EB">over Wi-Fi, encrypted</text>
+  <line x1="245.0" y1="150" x2="245.0" y2="224" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="2 5" stroke-linecap="round"/>
+
+  <line x1="432" y1="140" x2="676" y2="140" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M669 133 L678 140 L669 147" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="555.0" y="130" font-size="13" font-weight="700" text-anchor="middle" fill="#2563EB">over the cellular radio</text>
+  <line x1="555.0" y1="150" x2="555.0" y2="224" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="2 5" stroke-linecap="round"/>
+
+  <rect x="125" y="224" width="240" height="76" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="141" y="246" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">ON THE WI-FI SIDE</text>
+  <text x="141" y="268" font-size="15" font-weight="700" fill="#0F172A"><tspan font-weight="500" fill="#475569">From </tspan>192.168.49.12:51022</text>
+  <text x="141" y="288" font-size="15" font-weight="700" fill="#0F172A"><tspan font-weight="500" fill="#475569">To </tspan>203.0.113.9:443</text>
+
+  <rect x="435" y="224" width="240" height="76" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="451" y="246" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">ON THE CELLULAR SIDE</text>
+  <text x="451" y="268" font-size="15" font-weight="700" fill="#2563EB"><tspan font-weight="500" fill="#475569">From </tspan>10.64.18.7:51022</text>
+  <text x="451" y="288" font-size="15" font-weight="700" fill="#0F172A"><tspan font-weight="500" fill="#475569">To </tspan>203.0.113.9:443</text>
+
+  <rect x="32" y="316" width="736" height="62" rx="14" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <circle cx="68" cy="347" r="20" fill="#DBEAFE"/>
+  <use href="#i-arrows" x="55" y="334" width="26" height="26" color="#2563EB"/>
+  <text x="100" y="342" font-size="16" font-weight="700" fill="#0F172A">The phone notes each swap in a table</text>
+  <text x="100" y="363" font-size="14" fill="#475569">When the reply comes back, it finds the matching entry and swaps the address back.</text>
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Made-up addresses, for illustration</text>
+</svg>

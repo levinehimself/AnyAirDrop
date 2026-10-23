@@ -39,7 +39,7 @@ SMB 3 can encrypt traffic end to end. Microsoft's [SMB security page](https://le
 - **Discovery:** Windows, macOS and Linux each use their own discovery mechanisms, and what you see in a network list varies by version and settings. Apple and Linux systems commonly advertise shares with [mDNS](/blog/mdns-bonjour-device-discovery/). You can always connect by typing the server's name or IP address.
 - **Sign-in:** user accounts on the server, with passwords checked using Kerberos or NTLM. Guest access exists but is increasingly restricted.
 - **Good at:** shared drives, large files, many small files, permission control, and working inside Windows and macOS.
-- **Weak at:** crossing the internet without a VPN, and any setup that leaves old SMB1 compatibility switched on.
+- **Weak at:** crossing the internet over TCP port 445 without a VPN, and any setup that leaves old SMB1 compatibility switched on.
 
 ## NFS: Unix and Linux file sharing
 
@@ -64,7 +64,10 @@ Client:  PASV
 Server:  227 Entering Passive Mode (192,168,1,20,195,80)
 ```
 
-The first four numbers are the IP address, 192.168.1.20. The last two give the port as (first × 256) + second: 195 × 256 = 49,920, and 49,920 + 80 = 50,000. So the client opens a second connection to 192.168.1.20 on port 50,000 for the data. That is why firewalls and NAT routers have so much trouble with FTP: the port is not fixed, and the address is carried inside the data stream.
+The first four numbers are the IP address, 192.168.1.20. The last two give the port as (first × 256) + second: 195 × 256 = 49,920, and 49,920 + 80 = 50,000. So the client opens a second connection to 192.168.1.20 on port 50,000 for the data. That is why firewalls and NAT routers have so much trouble with FTP: the data port is not fixed, and the address and port are carried inside the text of the control connection rather than in packet headers, so a NAT router or firewall has to read the FTP commands to cope.
+
+![A server reply, 227 Entering Passive Mode, holds six numbers: the first four, 192.168.1.20, are the IP address, and the last two, 195 and 80, give port 50,000 as 195 times 256 plus 80, so the client opens a second connection there.](./images/figure.svg)
+*Six numbers in one text reply carry both the address and the port, so there is no fixed data port to open in advance.*
 
 The user name and password in that trace travel as plain text on the control connection. Anyone able to capture traffic on the same network can read them.
 
@@ -124,7 +127,7 @@ Port numbers in this table are the well-known defaults, and any service can be s
 - **Avoid guest or anonymous access** to shares that hold anything private.
 - **Check host keys and certificates.** SFTP and HTTPS protect you only if you confirm you are talking to the right server.
 
-## What this means for sending files between your own devices
+## Why a file server is overkill for one photo
 
 For a quick one-off transfer between your own phone and laptop, running a file server is a lot of setup: you need an address, a port, an account and a client app on the other side. These protocols are better suited to a permanent shared folder, a NAS or a server, where the setup is done once. For a laptop and a desktop that need a shared folder, SMB is the natural fit, as [sharing files between Windows PCs over a LAN](/blog/share-files-between-windows-pcs-over-lan/) explains. For moving a photo from phone to PC today, a method that needs no server on either side is simpler; see [transferring files between a PC and a phone over Wi-Fi](/blog/transfer-files-between-pc-and-phone-over-wifi/). AnyAirDrop.com is our own tool in that category, running in the browser with no server for you to set up. If you are weighing local routes against uploading to a service, [local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/) compares them.
 
@@ -167,3 +170,5 @@ There is no single answer. On the same network the link, disk speed and software
 - IETF: [RFC 7530, NFS Version 4 Protocol](https://www.rfc-editor.org/rfc/rfc7530)
 - IETF: [RFC 4918, HTTP Extensions for WebDAV](https://www.rfc-editor.org/rfc/rfc4918)
 - Microsoft Learn: [Detect, enable, and disable SMBv1, SMBv2, and SMBv3 in Windows](https://learn.microsoft.com/en-us/windows-server/storage/file-server/troubleshoot/detect-enable-and-disable-smbv1-v2-v3)
+- Microsoft Learn: [SMB security enhancements](https://learn.microsoft.com/en-us/windows-server/storage/file-server/smb-security)
+- MDN Web Docs: [An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)

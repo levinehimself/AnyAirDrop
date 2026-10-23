@@ -2,7 +2,7 @@
   <title>ICE tries connection routes from best to last resort</title>
   <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
 
-  <text x="400" y="44" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">ICE tries routes in priority order and keeps the first that works</text>
+  <text x="400" y="44" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">ICE tries routes best-first and keeps the first that works</text>
 
   <!-- Row 1 -->
   <rect x="50" y="64" width="700" height="76" rx="12" fill="#FFFFFF" stroke="#15803D" stroke-width="3"/>

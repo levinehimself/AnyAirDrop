@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>The slowest stage sets how long a phone-to-PC transfer takes</title>
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 48 48"><rect x="9" y="9" width="30" height="21" rx="3" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M3 37h42l-3.5 4h-35z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 48 48"><path d="M5 19a28 28 0 0 1 38 0M11 26.5a19 19 0 0 1 26 0M17.5 33.5a10 10 0 0 1 13 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="24" cy="40" r="2.8" fill="currentColor"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">TRANSFER IN PRACTICE · BY THE NUMBERS</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">The slowest stage sets the transfer time</text>
+
+  <!-- Stage 1: phone storage -->
+  <g>
+    <rect x="32" y="112" width="216" height="152" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="68" cy="148" r="22" fill="#DBEAFE"/>
+    <use href="#i-phone" x="54" y="134" width="28" height="28" color="#2563EB"/>
+    <text x="102" y="142" font-size="17" font-weight="700" fill="#0F172A">Phone storage</text>
+    <text x="102" y="162" font-size="14" fill="#475569">reads the file</text>
+    <text x="52" y="198" font-size="26" font-weight="700" fill="#0F172A">150 MB/s</text>
+    <rect x="52" y="208" width="176" height="10" rx="5" fill="#E2E8F0"/>
+    <rect x="52" y="208" width="66" height="10" rx="5" fill="#2563EB"/>
+    <text x="52" y="244" font-size="14" fill="#475569">Not the limit</text>
+  </g>
+
+  <!-- Stage 2: Wi-Fi link (the slowest) -->
+  <g>
+    <rect x="292" y="112" width="216" height="152" rx="16" fill="#FFFFFF" stroke="#B45309" stroke-width="2"/>
+    <circle cx="328" cy="148" r="22" fill="#DBEAFE"/>
+    <use href="#i-wifi" x="314" y="134" width="28" height="28" color="#2563EB"/>
+    <text x="362" y="142" font-size="17" font-weight="700" fill="#0F172A">Wi-Fi link</text>
+    <text x="362" y="162" font-size="14" fill="#475569">240 Mbps ÷ 8</text>
+    <text x="312" y="198" font-size="26" font-weight="700" fill="#0F172A">30 MB/s</text>
+    <rect x="312" y="208" width="176" height="10" rx="5" fill="#E2E8F0"/>
+    <rect x="312" y="208" width="13.2" height="10" rx="5" fill="#B45309"/>
+    <rect x="312" y="228" width="112" height="22" rx="11" fill="#FEF3C7"/>
+    <text x="368" y="244" font-size="13" font-weight="700" text-anchor="middle" fill="#B45309">Slowest stage</text>
+  </g>
+
+  <!-- Stage 3: PC storage -->
+  <g>
+    <rect x="552" y="112" width="216" height="152" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="588" cy="148" r="22" fill="#DBEAFE"/>
+    <use href="#i-laptop" x="574" y="134" width="28" height="28" color="#2563EB"/>
+    <text x="622" y="142" font-size="17" font-weight="700" fill="#0F172A">PC storage</text>
+    <text x="622" y="162" font-size="14" fill="#475569">writes the file</text>
+    <text x="572" y="198" font-size="26" font-weight="700" fill="#0F172A">400 MB/s</text>
+    <rect x="572" y="208" width="176" height="10" rx="5" fill="#E2E8F0"/>
+    <rect x="572" y="208" width="176" height="10" rx="5" fill="#2563EB"/>
+    <text x="572" y="244" font-size="14" fill="#475569">Not the limit</text>
+  </g>
+
+  <!-- Arrows between stages -->
+  <g stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M256 188h27M276 181l7 7-7 7"/>
+    <path d="M516 188h27M536 181l7 7-7 7"/>
+  </g>
+
+  <!-- Result panel -->
+  <rect x="32" y="280" width="736" height="104" rx="16" fill="#0F172A"/>
+  <line x1="400" y1="298" x2="400" y2="366" stroke="#475569" stroke-width="1.5"/>
+  <text x="56" y="308" font-size="14" font-weight="700" fill="#DBEAFE">A 2 GB file (2,000 MB) on 240 Mbps Wi-Fi</text>
+  <text x="56" y="344" font-size="30" font-weight="700" fill="#FFFFFF">About 67 seconds</text>
+  <text x="56" y="368" font-size="15" fill="#DBEAFE">2,000 MB ÷ 30 MB/s</text>
+  <text x="424" y="308" font-size="14" font-weight="700" fill="#DBEAFE">Same file on 800 Mbps Wi-Fi (100 MB/s)</text>
+  <text x="424" y="344" font-size="30" font-weight="700" fill="#FFFFFF">20 seconds</text>
+  <text x="424" y="368" font-size="15" fill="#DBEAFE">2,000 MB ÷ 100 MB/s</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Hypothetical numbers, not measurements</text>
+</svg>

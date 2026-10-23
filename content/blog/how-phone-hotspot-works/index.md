@@ -37,7 +37,7 @@ Suppose your laptop joins the hotspot and you open a web page. Here is the seque
 6. **Transmit.** The packet goes from the operating system to the baseband and out over the radio to the tower.
 7. **Return.** The reply arrives at the baseband, the operating system finds the matching table entry, swaps the address back and sends the packet over Wi-Fi to the laptop.
 
-All of this adds a few milliseconds of processing, plus the time for the Wi-Fi hop. Most of the delay still comes from the cellular link and the internet itself.
+The phone's processing and the extra Wi-Fi hop add some delay, but most of it still comes from the cellular link and the internet itself.
 
 ### What the translation table looks like
 
@@ -51,11 +51,14 @@ The NAT table is the heart of the arrangement. Here is an illustration with made
 
 Two different devices share one outside address, and the port numbers keep their conversations separate. This is the mechanism described in RFC 3022 ([Traditional IP Network Address Translator](https://www.rfc-editor.org/rfc/rfc3022)). The same arrangement runs inside every home router.
 
+![A packet travels from the laptop over Wi-Fi to the phone, which swaps the laptop's private address for its own cellular address before sending it over the cellular radio toward the cell tower and the internet.](./images/figure.svg)
+*The destination stays the same and only the sender's address changes; the phone records the swap so replies find their way back.*
+
 ## The addresses a hotspot hands out
 
 A hotspot uses *private* address ranges, which are reserved for local networks and are not routed on the public internet. The reserved blocks are defined in RFC 1918 ([Address Allocation for Private Internets](https://www.rfc-editor.org/rfc/rfc1918)): 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16. [Private IP addresses and local networks](/blog/private-ip-addresses-and-local-networks/) goes into more depth.
 
-Which range your phone uses is not fixed, and it varies by maker and software version. As commonly reported, an iPhone Personal Hotspot hands out addresses in the 172.20.10.x block with a small subnet, while Android phones have used ranges such as 192.168.x.x, with the exact block differing across versions and manufacturers. If you need the real value, check the connected device's network details instead of assuming. Apple does not document the address pool or promise that it stays the same.
+Which range your phone uses is not fixed, and it varies by maker and software version. As commonly reported, the iPhone's Personal Hotspot uses the 172.20.10.x block with a very small subnet, while Android phones have used ranges such as 192.168.x.x, with the exact block differing across versions and manufacturers. If you need the real value, check the connected device's network details instead of assuming. Apple does not document the address pool or promise that it stays the same.
 
 Two points follow from this:
 
@@ -66,11 +69,11 @@ Two points follow from this:
 
 Most people use the phone's Wi-Fi as a client at home and then turn on the hotspot elsewhere, but some phones can do both at once. Android added concurrent station and access point operation in version 9. The [Android documentation](https://source.android.com/docs/core/connect/wifi-sta-ap-concurrency) notes that on phones with dual-band simultaneous support the hotspot can run without disconnecting the phone's own Wi-Fi connection. It also warns that when the two share a band but use different channels, some chips time-share one radio, which can cause a severe drop in performance.
 
-That has a practical meaning: if a phone is connected to Wi-Fi and also serving a hotspot on a different channel, the single radio switches between the two and every device sees lower speed and extra delay. Phones avoid this by moving the hotspot to the same channel or to a different band. See [Wi-Fi channels and channel width](/blog/wifi-channels-and-channel-width/) for why a shared radio costs airtime. Whether any of this is available depends on the phone, and in most cases the hotspot simply uses the cellular modem as its source.
+That has a practical meaning: if a phone is connected to Wi-Fi and also serving a hotspot on a different channel, the single radio switches between the two and every device sees lower speed and extra delay. Some phones can avoid this by moving the hotspot to the same channel or to a different band. See [Wi-Fi channels and channel width](/blog/wifi-channels-and-channel-width/) for why a shared radio costs airtime. Whether any of this is available depends on the phone, and in most cases the hotspot's internet source is the cellular modem.
 
 ## Which band does the hotspot use?
 
-The access point can use the 2.4 GHz band or 5 GHz, and on newer phones sometimes 6 GHz. As in any Wi-Fi network, 2.4 GHz reaches farther and works with older devices, while 5 GHz is faster in the same room. Many phones let you pick a preferred band, and some choose automatically. The names of those settings vary by manufacturer and version, so look in the hotspot settings for something about band, frequency or compatibility. The trade-off is explained in [Wi-Fi bands compared](/blog/wifi-bands-2-4-5-6-ghz/).
+The access point can use the 2.4 GHz band or 5 GHz, and on newer phones sometimes 6 GHz. As in any Wi-Fi network, 2.4 GHz carries farther and supports older devices, while 5 GHz gives more speed at short range. Many phones let you pick a preferred band, and some choose automatically. The names of those settings vary by manufacturer and version, so look in the hotspot settings for something about band, frequency or compatibility. The trade-off is explained in [Wi-Fi bands compared](/blog/wifi-bands-2-4-5-6-ghz/).
 
 ## Battery and heat
 
@@ -88,11 +91,11 @@ From the laptop's point of view, the phone looks like any other router:
 
 The carrier sees one subscriber using data, and many carriers treat tethered data separately in their plans. The websites you visit see the carrier's outward-facing address, not your laptop's. Because many carriers add their own address translation behind the phone, there can be two layers of NAT, which is one reason incoming connections to a laptop on a hotspot generally do not work. That matters for peer-to-peer tools, covered in [STUN, TURN and ICE](/blog/stun-turn-ice-explained/).
 
-## What this means for sending files between your own devices
+## Can two devices on the same hotspot reach each other?
 
 A hotspot creates a small local network, even though its purpose is internet sharing. Two devices that join the same hotspot are on the same private subnet, so they can in principle exchange files directly with each other over Wi-Fi without that traffic ever touching the cellular link or using mobile data. A direct transfer between two devices on the hotspot passes through the phone's access point only as a Wi-Fi relay, so it is limited by Wi-Fi speed and not by your mobile connection.
 
-There are two caveats. First, phone makers do not promise that clients can see one another; an Apple engineer wrote on the [Apple Developer Forums](https://developer.apple.com/forums/thread/79141) that Personal Hotspot was designed solely as a way to connect client devices to the internet and does not guarantee other kinds of connectivity. Some devices also block client-to-client traffic, a feature explained in [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/). Second, the phone you are using as the hotspot is a poor place to run the transfer app, because it is busy doing translation. The follow-up post, [transferring files over a hotspot without internet](/blog/transfer-files-over-a-hotspot-without-internet/), covers the offline case.
+There are two caveats. First, a hotspot is built to share an internet connection, so local connectivity on it is a side effect rather than a promise. Apple's developer support has said as much about Personal Hotspot; [the iPhone guide](/blog/iphone-personal-hotspot-explained/) covers what was said and what it does not cover. Some access points also block client-to-client traffic, a feature explained in [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/). Second, the Wi-Fi hop is shared. A transfer between two clients crosses the phone's radio twice, once in and once out, while a transfer to or from the hotspot phone itself crosses it once. The follow-up post, [transferring files over a hotspot without internet](/blog/transfer-files-over-a-hotspot-without-internet/), covers the offline case and the numbers.
 
 ## Common questions
 
@@ -102,7 +105,7 @@ It uses mobile data for the internet side and the Wi-Fi chip for the local side.
 
 ### Can I use a hotspot while my phone is connected to Wi-Fi?
 
-It depends on the phone. Some Android phones support running the hotspot and a Wi-Fi connection at the same time, and the shared radio can slow both. On many phones, turning the hotspot on disconnects the phone from other Wi-Fi networks. Check the hotspot settings on your model.
+It depends on the phone. Some Android phones support running the hotspot and a Wi-Fi connection at the same time, and the shared radio can slow both. On phones without that support, turning the hotspot on may disconnect the phone from other Wi-Fi networks. Check the hotspot settings on your model.
 
 ### Is a phone hotspot secure?
 
@@ -123,7 +126,7 @@ On the internet side, yes: the websites see the phone's cellular address, and NA
 - Hotspots hand out private addresses; the exact range depends on the maker and version.
 - Running a hotspot while using Wi-Fi at the same time can be slow when one radio is shared.
 - Battery drain and heat are normal because the modem, Wi-Fi radio and processor all work at once.
-- Devices on the same hotspot form a local network, but the phone is not guaranteed to let them reach one another.
+- Devices on the same hotspot form a local network, but a hotspot is built for internet sharing, so it is not guaranteed that the devices can reach one another.
 
 ## Sources
 

@@ -41,29 +41,29 @@ Find the sharing PC's name with `hostname` in a Command Prompt window, or its IP
 
 where `OFFICE-PC` is the computer name and `Share` is the share name. The address form `\\192.168.1.42\Share` works too, which helps when name lookup fails. Windows will ask for a username and password of an account on the sharing PC.
 
-The `net view` command lists computers it can see, and `net view \\OFFICE-PC` lists the shares on one of them. On modern Windows, the list is often empty even when sharing works, because it depends on discovery services. If it shows nothing, typing the path directly is the more reliable test.
+The `net view` command lists computers it can see, and `net view \\OFFICE-PC` lists the shares on one of them. On current Windows, the plain list is often empty even when sharing works. It has traditionally depended on the legacy Computer Browser service, which relies on SMBv1, and [Microsoft says](https://learn.microsoft.com/en-us/windows-server/storage/file-server/troubleshoot/smbv1-not-installed-by-default-in-windows) SMBv1 has not been installed by default since Windows 10 version 1709. If the list shows nothing, typing the path directly is the more reliable test.
 
 ### Why the Private profile matters
 
-Windows keeps a *network profile* for each network and gives each profile its own firewall rules. A Public profile is meant for places like cafes, so it hides the PC and blocks inbound connections such as file sharing. A Private profile assumes a trusted network and allows discovery and sharing. Microsoft's guide says that if you are on a Wi-Fi network, you should set it to Private, and that network discovery and file sharing require the Private profile.
+Windows keeps a *network profile* for each network and gives each profile its own firewall rules. A Public profile is meant for places like cafes, so it hides the PC and blocks inbound connections such as file sharing. A Private profile assumes a trusted network and allows discovery and sharing. Microsoft's file sharing guide advises setting a Wi-Fi network to Private for sharing, and its nearby sharing page states that the feature works only on a Private network.
 
 The setting lives in Settings under Network & internet, on the page for the Wi-Fi or Ethernet connection. Do this only for networks you trust, such as your own home network, since it lowers the PC's guard. If a PC that can reach the internet fine cannot be reached by another PC on the same router, the profile is the first thing to check.
 
 ## Method 2: nearby sharing
 
-Windows has a built-in nearby sharing feature for sending files to PCs close by. [Microsoft's troubleshooting page](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/fix-problems-with-nearby-sharing-in-windows) lists its requirements: both PCs need Bluetooth 4.0 or higher with Low Energy support, and Wi-Fi turned on. For Wi-Fi transfers, both devices should be on the same network, and the network profile must be Private. The setting itself is under System in Settings, where you choose between "Everyone nearby" and "My devices only"; on Windows 10 (version 1803) it was under "Shared experiences" instead.
+Windows has a built-in nearby sharing feature for sending files to PCs close by. [Microsoft's troubleshooting page](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/fix-problems-with-nearby-sharing-in-windows) lists its requirements: both PCs need Bluetooth 4.0 or higher with Low Energy support, and both need Bluetooth and Wi-Fi turned on. For Wi-Fi transfers, both devices should be on the same network, and the network profile must be Private. The setting itself is under System in Settings, where you choose between "Everyone nearby" and "My devices only"; on Windows 10 (version 1803) it was under "Shared experiences" instead. The page adds that "My devices only" needs both PCs signed in to the same Microsoft account.
 
-Think of it as a quick way to move a few files, not as a replacement for a share. It sends what you select from File Explorer or the Share menu, and you do not set up folders or accounts. But it depends on Bluetooth discovery working on both PCs, and the exact behavior depends on the Windows version, so check the Microsoft page for what applies today.
+Think of it as a quick way to move a few files, not as a replacement for a share. You send what you select from the Share menu, and you do not set up folders or share permissions. But it depends on Bluetooth discovery working on both PCs, and the exact behavior depends on the Windows version, so check the Microsoft page for what applies today.
 
 ## Method 3: a direct Ethernet cable
 
 If two PCs sit side by side and you have no router, or the router is slow, you can connect them with a single Ethernet cable. This is a *direct link*.
 
-**Do I need a special crossover cable?** Almost certainly not. Modern network ports use a feature called auto-MDI/MDI-X, which lets the port work out the wiring on its own, so an ordinary patch cable works. Very old or unusual hardware may lack it, but that is rare today.
+**Do I need a special crossover cable?** Almost certainly not. Gigabit and faster Ethernet ports, and most newer 10/100 ports, use a feature called auto-MDI/MDI-X, which lets the port work out the wiring on its own, so an ordinary patch cable works. Old 10/100 hardware, or a port forced to a fixed speed, may lack it.
 
 **How do the PCs get addresses?** With no router, nothing hands out addresses with DHCP (the service explained in [how a router works](/blog/how-a-router-works-nat-dhcp-dns/)). Two choices:
 
-- **Wait for link-local addresses.** [RFC 3927](https://www.rfc-editor.org/rfc/rfc3927) defines a fallback in which each PC picks an address from 169.254.0.0/16, checks with a broadcast that nobody else is using it, and then keeps it. This can take a short while after the cable is plugged in. Traffic using these addresses stays on the cable; routers must not forward it.
+- **Wait for link-local addresses.** [RFC 3927](https://www.rfc-editor.org/rfc/rfc3927) defines a fallback in which each PC picks an address from 169.254.0.0/16, checks with a broadcast that nobody else is using it, and then keeps it. This can take a little while after the cable is plugged in, because the PC first tries DHCP and waits for it to fail. Traffic using these addresses stays on the cable; routers must not forward it.
 - **Set addresses by hand.** Give one PC 192.168.50.1 and the other 192.168.50.2, both with subnet mask 255.255.255.0, no gateway. These are ordinary private addresses ([private IP addresses](/blog/private-ip-addresses-and-local-networks/)).
 
 Then share a folder as in Method 1 and use the other PC's address in the path, e.g. `\\169.254.12.34\Share`. Windows may classify a cable with no router as an unidentified network and label it Public; set it to Private if you trust the other PC.
@@ -72,15 +72,15 @@ Then share a folder as in Method 1 and use the other PC's address in the path, e
 
 A wired link has a fixed raw rate, and you can work out the ceiling. Take a gigabit Ethernet port, which carries 1,000 megabits per second.
 
-- Each standard frame holds up to 1,500 bytes of payload, plus 38 bytes of Ethernet overhead (preamble, header, checksum and the required gap between frames).
-- Inside the payload, IPv4 and TCP headers take about 40 bytes, leaving 1,460 bytes for data.
-- Efficiency is 1,460 ÷ 1,538 ≈ 0.949, so the best case is about 949 Mbps, or roughly 119 megabytes per second (949 ÷ 8 ≈ 118.7).
+- Each standard frame holds up to 1,500 bytes of payload, plus 38 bytes of Ethernet overhead (preamble, header, checksum and the required gap between frames), so each frame takes up the equivalent of 1,538 bytes on the wire.
+- Inside the payload, the IPv4 and TCP headers take 40 bytes, leaving 1,460 bytes for data. Many systems also add a 12-byte TCP timestamp option, which leaves 1,448.
+- Efficiency is 1,460 ÷ 1,538 ≈ 0.949, so the best case is about 949 Mbps, or roughly 118.7 megabytes per second (949 ÷ 8). With the timestamp option it is 1,448 ÷ 1,538 ≈ 0.941, about 941 Mbps or 117.7 megabytes per second.
 
-On paper, a 1 GB (one billion byte) file would then take about 8.4 seconds. The actual time is usually longer, since the disks at both ends, SMB's own overhead and other work on the PCs also count. A slow mechanical hard drive can be the bottleneck rather than the cable. This is a calculation from the standard, not a measurement, and [wired versus wireless transfer](/blog/wifi-vs-ethernet-for-local-transfers/) explains why a cable usually has the edge over Wi-Fi.
+On paper, a 1 GB (one billion byte) file would then take about 8.5 seconds (1,000 MB ÷ 117.7 MB/s). The actual time is usually longer, since the disks at both ends, SMB's own overhead and other work on the PCs also count. A slow mechanical hard drive can be the bottleneck rather than the cable. This is a calculation from the standard, not a measurement, and [wired versus wireless transfer](/blog/wifi-vs-ethernet-for-local-transfers/) explains why a cable usually has the edge over Wi-Fi.
 
 ## File Explorer or robocopy?
 
-Dragging files in File Explorer is simple and fine for a handful of files. Robocopy is a command-line tool built into Windows that suits large or interrupted copies. [Microsoft documents it](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy) with this form:
+Dragging files in File Explorer is simple and fine for a handful of files. Robocopy is a command-line tool built into Windows that suits large or interrupted copies. It is not a separate connection: it copies between folders, and either folder can be a shared one reached by its network path. [Microsoft documents it](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy) with this form:
 
 ```
 robocopy <source> <destination> [options]
@@ -97,14 +97,17 @@ What the options do:
 - `/E` copies subfolders, including empty ones.
 - `/R:2 /W:5` retries a failed file twice, waiting 5 seconds between tries. Without them, the default is one million retries with a 30-second wait, which can look like the copy has frozen when a file is locked or the link drops.
 - `/Z` copies in restartable mode, so an interrupted large file resumes rather than starting over.
-- `/MT:n` copies with several threads; the default is 8 if you give `/MT` without a number. Microsoft notes you should redirect output to a log with this option.
+- `/MT:n` copies with several threads (n from 1 to 128); the default is 8 if you give `/MT` without a number. Microsoft recommends redirecting the output with `/LOG` for better performance.
 - `/LOG:file` writes results to a file you can check afterward.
 
 Two cautions. Robocopy's exit codes are not the usual "0 means success": codes below 8 mean no failure, with 1 meaning files were copied, while 8 or higher means at least one failure. And `/MIR` (mirror) deletes files in the destination that are not in the source, which is dangerous if you swap source and destination by mistake. Run with `/L` first, which only lists what would happen.
 
-## What this means for sending files between your own devices
+## Choosing a method for two PCs you own
 
 For two PCs you own, the choice mostly depends on how often you do it. If it is a one-off, use nearby sharing or a browser-based method. If it is regular, set up a share once and put a shortcut to `\\PC-NAME\Share` where you can reach it. If the PCs are next to each other and the data is big, a cable beats any wireless route on speed and stability, since Wi-Fi shares its airtime ([how Wi-Fi works](/blog/how-wifi-works/)).
+
+![Decision guide matching a situation to a method: a one-off file suits nearby sharing or a browser tool, regular or large jobs a shared folder, interruptible copies robocopy, PCs side by side an Ethernet cable, and phones need a different approach.](./images/figure.svg)
+*The choice mostly depends on how often you do it and whether the PCs sit side by side.*
 
 If the PCs are on different kinds of networks, or if one of them is a phone, none of the Windows-only methods apply. For that, see [transferring files between a PC and a phone](/blog/transfer-files-between-pc-and-phone-over-wifi/). AnyAirDrop.com is our own tool, and since it runs in the browser with no install or account, it is one option that does not need either PC to be configured for sharing; the receiver has to tap Accept.
 
@@ -143,4 +146,5 @@ On a home network you trust, with sharing limited to specific folders and accoun
 - Microsoft Support: [File sharing over a network in Windows](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/file-sharing-over-a-network-in-windows)
 - Microsoft Support: [Fix problems with nearby sharing in Windows](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/fix-problems-with-nearby-sharing-in-windows)
 - Microsoft Learn: [robocopy](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy)
+- Microsoft Learn: [SMBv1 not installed by default in Windows Server and Windows](https://learn.microsoft.com/en-us/windows-server/storage/file-server/troubleshoot/smbv1-not-installed-by-default-in-windows)
 - IETF: [RFC 3927, Dynamic Configuration of IPv4 Link-Local Addresses](https://www.rfc-editor.org/rfc/rfc3927)

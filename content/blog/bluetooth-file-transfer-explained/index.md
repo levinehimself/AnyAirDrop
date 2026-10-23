@@ -15,7 +15,7 @@ related:
 
 Bluetooth can send files, but slowly: its radio is built for low power and short messages, not bulk data, and sending 100 MB can take many minutes even when the speed on the spec sheet sounds generous. That is why modern phones use Bluetooth mainly to find each other and agree on a connection, then move the actual file over Wi-Fi.
 
-**Short answer:** Bluetooth comes in two radio systems, Classic and Low Energy. Classic sends files through a stack of protocols (RFCOMM, then OBEX, then a profile such as Object Push) at roughly 1 to 2 megabits per second in practice. Low Energy is even more limited and is used for discovery and small data. Wi-Fi is typically tens of times faster or more, so nearby-sharing features hand the file over to it.
+**Short answer:** Bluetooth comes in two radio systems, Classic and Low Energy. Classic sends files through a stack of protocols (RFCOMM, then OBEX, then a profile such as Object Push) at no more than about 2 megabits per second in practice, and often less. Low Energy is even more limited and is used for discovery and small data. Wi-Fi is typically tens of times faster or more, so nearby-sharing features hand the file over to it.
 
 ## Two radios under one name
 
@@ -41,7 +41,7 @@ A "3 Mb/s" label describes how fast bits are pushed onto the air while the radio
 - Lost packets are retransmitted.
 - Higher protocol layers, such as RFCOMM and OBEX described below, add their own headers.
 
-Commonly cited figures put the best-case usable rate of Classic EDR at about 2.1 Mb/s for the 3 Mb/s mode, and everyday transfers between real phones tend to come in lower than that. Treat 2.1 as a ceiling on paper, not as something to expect. For LE, practical throughput depends on connection settings and the phone, and is generally lower than the raw 1 or 2 Mb/s.
+[Wikipedia's Bluetooth article](https://en.wikipedia.org/wiki/Bluetooth) puts the maximum transfer rate of the 3 Mb/s EDR mode at 2.1 Mb/s after inter-packet time and acknowledgements. The SIG's overview lists the raw 1, 2 and 3 Mb/s rates but no usable-throughput figure, so treat 2.1 as a commonly cited ceiling on paper, not as something to expect from two real phones. For LE, practical throughput depends on connection settings and the phone, and is generally lower than the raw 1 or 2 Mb/s.
 
 ### A worked example: 100 MB at Bluetooth speeds
 
@@ -51,8 +51,8 @@ A 100 MB file contains 100 × 1,000,000 bytes × 8 bits = 800,000,000 bits, or 8
 | --- | --- | --- |
 | 3 Mb/s (raw EDR, not reachable in practice) | 800 ÷ 3 = 266.7 s | about 4 min 27 s |
 | 2.1 Mb/s (best-case usable EDR, on paper) | 800 ÷ 2.1 = 381 s | about 6 min 21 s |
-| 1 Mb/s (a modest real-world rate) | 800 ÷ 1 = 800 s | 13 min 20 s |
-| 0.5 Mb/s (a poor connection) | 800 ÷ 0.5 = 1,600 s | 26 min 40 s |
+| 1 Mb/s (an assumed modest rate) | 800 ÷ 1 = 800 s | 13 min 20 s |
+| 0.5 Mb/s (an assumed poor rate) | 800 ÷ 0.5 = 1,600 s | 26 min 40 s |
 | 100 Mb/s over Wi-Fi (illustrative) | 800 ÷ 100 = 8 s | 8 s |
 
 The Wi-Fi row is illustrative: real Wi-Fi rates vary widely, as [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/) explains. The comparison is the point. The same file takes minutes on Bluetooth and seconds on Wi-Fi.
@@ -68,7 +68,7 @@ When you choose "send via Bluetooth" on an older phone or a laptop, several laye
 1. **Pairing.** The two devices exchange keys so they can recognize each other and encrypt their traffic (explained below).
 2. **A serial link.** Classic Bluetooth provides *RFCOMM*, a protocol that emulates a simple serial cable. It gives programs a plain stream of bytes between the two devices.
 3. **OBEX.** The Object Exchange protocol (OBEX), which originated in infrared transfers and was adopted by Bluetooth, runs on top of RFCOMM. It defines requests such as connect, put and get, and describes an object (a file, a contact, a calendar entry) with a name, type and length.
-4. **A profile.** A *profile* is a Bluetooth specification that fixes how a particular job is done so devices from different makers interoperate. The Bluetooth SIG says its [Object Push Profile](https://www.bluetooth.com/specifications/specs/object-push-profile-1-2-1/) defines the application requirements for devices to support the Object Push usage model: pushing items from one device to another. A related File Transfer Profile (FTP, not to be confused with the internet's file transfer protocol) lets a device browse and pull files too.
+4. **A profile.** A *profile* is a Bluetooth specification that fixes how a particular job is done so devices from different makers interoperate. The Bluetooth SIG says its [Object Push Profile](https://www.bluetooth.com/specifications/specs/object-push-profile-1-2-1/) defines the application requirements for devices to support the Object Push usage model, in which one device pushes an object such as a file or a contact card to another. A related File Transfer Profile (FTP, not to be confused with the internet's file transfer protocol) lets a device browse and pull files too.
 
 When you tap Accept on the receiving device, the sender's OBEX client issues a put request, and the receiver stores the object. The speed limit is that of the underlying Classic link plus the overhead of the layers above it.
 
@@ -86,13 +86,16 @@ Bluetooth then does a second useful thing: it carries the small first messages t
 
 ## Why iPhones do not exchange files with other platforms over Bluetooth
 
-Apple's [list of Bluetooth profiles supported by iOS and iPadOS](https://support.apple.com/en-us/102842) includes profiles for hands-free calling, audio streaming, remote control, phone book and message access, personal area networking and input devices. It does not include the Object Push Profile or the File Transfer Profile, so an iPhone has no standard Bluetooth route for sending or receiving a file with an Android phone or Windows PC. Apple's page does not explain the reason, and it does not say anything about plans, so we can describe the result but not the motive.
+Apple's [list of Bluetooth profiles supported by iOS and iPadOS](https://support.apple.com/en-us/102842), published in October 2023, includes profiles for hands-free calling, audio streaming, remote control, phone book and message access, personal area networking and input devices. It does not include the Object Push Profile or the File Transfer Profile, so an iPhone has no standard Bluetooth route for sending or receiving a file with an Android phone or Windows PC. Apple's page does not explain the reason, and it does not say anything about plans, so we can describe the result but not the motive.
 
 Apple's own sharing feature works between Apple devices, using Bluetooth for discovery and a direct Wi-Fi link for the file. For other combinations, the usual routes are a shared Wi-Fi network, a cable, or cloud storage.
 
-## What this means for sending files between your own devices
+## When Bluetooth is still worth using to move a file
 
 If you just want a file from one of your devices to another, Bluetooth is rarely the right transport. It is useful for small items such as a contact card or a short document, and for devices that have nothing else in common, such as an older phone and a basic laptop. For photos, videos and folders, use a method that moves the data over Wi-Fi: a built-in nearby-sharing feature, or a tool that works through a browser on the same network. AnyAirDrop.com is our own example of the latter: devices on the same Wi-Fi network find each other and send the file directly, with no Bluetooth pairing involved. The practical steps for phone-to-PC transfers are in [transferring files between a PC and a phone over Wi-Fi](/blog/transfer-files-between-pc-and-phone-over-wifi/).
+
+![Decision guide for sending a file: Bluetooth is worth using for a contact card, a short document, or two devices with nothing else in common; use Wi-Fi for photos, videos and folders; an iPhone and Android or Windows have no standard Bluetooth route.](./images/figure.svg)
+*Bluetooth is rarely the right transport for a file, but it is still handy for small items and for devices with nothing else in common.*
 
 ## Common questions
 
@@ -102,7 +105,7 @@ On paper, Classic Bluetooth tops out at 3 Mb/s raw, with roughly 2.1 Mb/s usable
 
 ### Is Bluetooth 5 faster than older versions?
 
-Newer versions added the LE 2M PHY, which doubles the raw LE rate to 2 Mb/s, and other improvements, but Classic EDR still tops out at 3 Mb/s. Newer versions help most with range, power and reliability, not with turning Bluetooth into a file-transfer rival to Wi-Fi.
+Newer versions added the LE 2M PHY, which doubles the raw LE rate to 2 Mb/s, and other improvements, but Classic EDR still tops out at 3 Mb/s. Newer versions help most with range, power and reliability, not with turning Bluetooth into a file-transfer rival to Wi-Fi. Bluetooth 3.0 did define a High Speed option that moved bulk data onto a co-located 802.11 radio, up to 24 Mb/s in theory, and [Wikipedia notes](https://en.wikipedia.org/wiki/Bluetooth) that the Alternate MAC and PHY extension behind it was removed in Bluetooth 5.3. It confirms the idea in this post: when Bluetooth needs speed, it borrows Wi-Fi.
 
 ### Can I send files from an iPhone to an Android phone over Bluetooth?
 
@@ -114,7 +117,7 @@ Bluetooth links are encrypted after pairing, but security depends on how pairing
 
 ### Why does my phone need Bluetooth for AirDrop or Quick Share when it uses Wi-Fi for the file?
 
-Bluetooth does the discovery. It is cheap enough to leave scanning, and it lets the devices announce themselves and negotiate a faster link. Without it, the Wi-Fi link would not start. Google's help page for Quick Share says Bluetooth must be on, and Apple's AirDrop page asks for both Wi-Fi and Bluetooth.
+Bluetooth does the discovery. It is cheap enough to leave scanning, and it lets the devices announce themselves and negotiate a faster link. Without it, the usual flow cannot start. Google's help page for Quick Share says Bluetooth must be on, and Apple's AirDrop page asks for both Wi-Fi and Bluetooth.
 
 ## Key takeaways
 
@@ -131,3 +134,4 @@ Bluetooth does the discovery. It is cheap enough to leave scanning, and it lets 
 - Bluetooth SIG: [Object Push Profile specification](https://www.bluetooth.com/specifications/specs/object-push-profile-1-2-1/)
 - Bluetooth SIG: [Bluetooth security](https://www.bluetooth.com/learn-about-bluetooth/key-attributes/bluetooth-security/)
 - Apple Support: [Bluetooth profiles that iOS and iPadOS support](https://support.apple.com/en-us/102842)
+- Wikipedia: [Bluetooth](https://en.wikipedia.org/wiki/Bluetooth) (used only for the commonly cited 2.1 Mb/s EDR ceiling and the Bluetooth 3.0 High Speed history)

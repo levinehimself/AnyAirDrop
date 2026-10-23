@@ -31,5 +31,5 @@
   <rect x="215" y="262" width="197.8" height="40" rx="6" fill="#2563EB"/>
   <text x="400.8" y="288" text-anchor="end" font-size="16" font-weight="700" fill="#FFFFFF">about 444 Mbps</text>
   <text x="30" y="336" font-size="14" fill="#475569">Arithmetic from the standard's timing values, not a measurement.</text>
-  <text x="30" y="356" font-size="14" fill="#475569">888 Mbps is about 111 MB/s. 444 Mbps is about 55 MB/s.</text>
+  <text x="30" y="356" font-size="14" fill="#475569">888 Mbps is about 111 MB/s. 444 Mbps is about 55.5 MB/s.</text>
 </svg>

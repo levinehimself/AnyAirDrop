@@ -15,7 +15,7 @@ related:
 
 Android can share its mobile data with another device in three ways: as a Wi-Fi hotspot, over a USB cable (USB tethering) or over Bluetooth (Bluetooth tethering). All three give the other device a network connection that exits through the phone's cellular modem. They differ in how fast the link between the phone and the other device can be, how much battery they use and how much setup they need.
 
-**Short answer:** Wi-Fi hotspot is the flexible default and can serve several devices, USB tethering is the steadiest and also charges the phone, and Bluetooth tethering is the slowest but gentlest on power. In most cases the cellular connection is the real limit, so the best choice is the one whose own ceiling is comfortably above your mobile speed and that suits the device you are connecting.
+**Short answer:** Wi-Fi hotspot is the flexible default and can serve several devices, USB tethering is the steadiest and can charge the phone at the same time, and Bluetooth tethering is the slowest but usually the gentlest on power. In most cases the cellular connection is the real limit, so the best choice is the one whose own ceiling is comfortably above your mobile speed and that suits the device you are connecting.
 
 ## What all three have in common
 
@@ -29,7 +29,7 @@ That leaves a chain with three stages: the internet to the tower, the tower to t
 
 **USB tethering.** The phone is connected to the computer with a cable, and the computer treats the phone as a USB network adapter. Depending on the phone and software version, the phone presents itself using one of several USB networking protocols, and most computers recognize it with built-in or readily available drivers. Google's help page states that Macs can't tether with Android by USB, so on that combination you would use Wi-Fi instead. The computer receives its address from the phone over the cable, just as it would over Wi-Fi.
 
-**Bluetooth tethering.** The phone and the other device are first paired. Then the other device sets up a network connection over Bluetooth, and Bluetooth tethering is switched on in the phone's hotspot settings. The Bluetooth specifications call this the Personal Area Networking profile, which carries Ethernet-style traffic over a Bluetooth link. Because it uses Bluetooth Classic, it inherits that radio's limits.
+**Bluetooth tethering.** The phone and the other device are first paired. Then the other device sets up a network connection over Bluetooth, and Bluetooth tethering is switched on in the phone's hotspot settings. The Bluetooth SIG calls this the [Personal Area Networking (PAN) profile](https://www.bluetooth.com/specifications/specs/personal-area-networking-profile-1-0/), which describes how Bluetooth devices form an ad-hoc network or reach another network through an access point. Because it uses Bluetooth Classic, it inherits that radio's limits.
 
 ## The speed ceilings
 
@@ -53,16 +53,19 @@ Suppose your cellular connection delivers 50 Mbps, a figure chosen only for illu
 | --- | --- | --- | --- |
 | Wi-Fi hotspot, 5 GHz | Far above 50 Mbps | 50 Mbps (cellular) | 4,000 / 50 = 80 seconds |
 | USB 2.0 tethering | 480 Mbps | 50 Mbps (cellular) | 80 seconds |
-| Bluetooth, best case | 3 Mbps | 3 Mbps (the link) | 4,000 / 3 = about 1,333 seconds, roughly 22 minutes |
-| Bluetooth, if real throughput is about 1.5 Mbps | 1.5 Mbps | 1.5 Mbps | 4,000 / 1.5 = about 2,667 seconds, roughly 44 minutes |
+| Bluetooth at the 3 Mbps over-the-air rate | 3 Mbps | 3 Mbps (the link) | 4,000 / 3 = about 1,333 seconds, roughly 22 minutes |
+| Bluetooth, if usable throughput were 1.5 Mbps (an assumed figure) | 1.5 Mbps | 1.5 Mbps | 4,000 / 1.5 = about 2,667 seconds, roughly 44 minutes |
 
-The calculation shows the rule: the effective speed is the minimum of the stages. Wi-Fi and USB both have headroom, so cellular decides. Bluetooth does not, so the link decides, even though your phone has plenty of mobile speed to spare. If your mobile connection were a gigabit, the same logic would put Wi-Fi in charge instead.
+The 3 Mbps row is a floor on the time, not a typical result, because the over-the-air rate is never fully available to your data. The calculation shows the rule: the effective speed is the minimum of the stages. Wi-Fi and USB both have headroom, so cellular decides. Bluetooth does not, so the link decides, even though your phone has plenty of mobile speed to spare. If your mobile connection were a gigabit, the same logic would put Wi-Fi in charge instead.
+
+![Horizontal bars show the time to download 500 MB at an assumed 50 Mbps of mobile speed: 80 seconds over Wi-Fi or USB, about 22 minutes over Bluetooth at 3 Mbps and about 44 minutes at 1.5 Mbps.](./images/figure.svg)
+*The cellular link caps Wi-Fi and USB at the same time, while Bluetooth's own low rate becomes the limit.*
 
 ## Battery, heat and power
 
 The cellular modem is the main power cost in all three cases, since it is working hard to move traffic. Beyond that:
 
-- **Wi-Fi hotspot** adds the most. The Wi-Fi radio acts as an access point and must stay awake to hear clients, and the phone also processes the traffic. Expect noticeable battery drain and warmth. Google's help page advises plugging in devices while tethering, turning tethering off when you finish and, if your phone offers it, enabling the setting that switches the hotspot off automatically when nothing is connected.
+- **Wi-Fi hotspot** adds the most. The Wi-Fi radio acts as an access point and must stay awake to hear clients, and the phone also processes the traffic. Expect noticeable battery drain and warmth. Google's help page advises keeping devices plugged in while tethering, turning tethering off when you finish and, if your phone offers it, enabling the setting that switches the hotspot off automatically when nothing is connected.
 - **USB tethering** is easier on the battery because the cable can supply power. A laptop port may supply less than the phone is using, so the phone does not always gain charge, but it drains more slowly than with a wireless hotspot. The exact behavior depends on the port and cable.
 - **Bluetooth tethering** uses the least radio power for the link itself, which is its main advantage. The modem still draws what it draws.
 
@@ -70,7 +73,7 @@ Heat matters beyond comfort. When phones get hot, they reduce performance to pro
 
 ## Latency and stability
 
-Latency is the delay before data starts to flow. A Wi-Fi hop adds some milliseconds and varies more than a cable, since it competes with other nearby networks. A wire has none of that sharing and tends to give the steadiest results. Bluetooth is generally the slowest to respond, because of its low data rate and more complex timing. All three add less delay than the trip across the cellular network and the internet, so for web browsing the difference is small. It matters more for video calls and games, where USB or a clean 5 GHz hotspot is the better bet.
+Latency is the delay before data starts to flow. A Wi-Fi hop adds some milliseconds and varies more than a cable, since it competes with other nearby networks. A wire has none of that sharing and tends to give the steadiest results. Bluetooth is generally the slowest to respond, because of its low data rate. All three add less delay than the trip across the cellular network and the internet, so for web browsing the difference is small. It matters more for video calls and games, where USB or a clean 5 GHz hotspot is the better bet.
 
 Stability follows the same order. A cable does not drop out because someone microwaves lunch, while a Wi-Fi hotspot can slow down or lose clients when the 2.4 GHz band is busy, as described in [Wi-Fi bands compared](/blog/wifi-bands-2-4-5-6-ghz/).
 
@@ -82,7 +85,7 @@ The menu names for these settings differ by manufacturer and Android version, so
 - **USB tethering.** Connect a data-capable cable, then look for a USB tethering toggle in the same hotspot and tethering area. It usually becomes available only once a computer is connected. Not every cable carries data, so a charge-only cable will not work.
 - **Bluetooth tethering.** Pair the phone with the other device, enable Bluetooth tethering on the phone, and then, on the other device, connect to the phone as a network source. The second step is the one people forget.
 
-Carrier policy can also apply to any of them. Google's page notes that some carriers limit tethering or charge extra for it, so it is worth checking your plan.
+Carrier policy can also apply to any of the three. Google's page says some carriers restrict tethering or bill extra for it, so check your plan.
 
 ## Which should you choose?
 
@@ -95,11 +98,11 @@ Carrier policy can also apply to any of them. Google's page notes that some carr
 | A tiny sensor or older device with no Wi-Fi | Bluetooth tethering | Low power, adequate for light traffic |
 | Maximum speed on a fast 5G connection | USB 3 cable or 5 GHz hotspot | Bluetooth would become the bottleneck |
 
-## What this means for sending files between your own devices
+## Which tethering mode helps when you only want to move files
 
 The three methods turn the phone and the other device into a tiny two-node or multi-node network, so each one also gives you a local link, but they are not equally useful for moving files between your own devices.
 
-A Wi-Fi hotspot gives you a local network where a phone and a laptop can exchange files at Wi-Fi speed without using mobile data, as long as the devices can reach each other. That is described in [transferring files over a hotspot without internet](/blog/transfer-files-over-a-hotspot-without-internet/). USB tethering is a separate USB mode from file-transfer mode on most phones, and a phone commonly offers one USB configuration at a time, so when you want to copy files over the cable, you usually switch the mode instead of relying on tethering. Bluetooth tethering is the least useful for file transfer, since 1 to 3 Mbps over the air makes large files slow; see [Bluetooth file transfer explained](/blog/bluetooth-file-transfer-explained/) for why it is built for small items.
+A Wi-Fi hotspot gives you a local network where a phone and a laptop can exchange files at Wi-Fi speed without using mobile data, as long as the devices can reach each other. That is described in [transferring files over a hotspot without internet](/blog/transfer-files-over-a-hotspot-without-internet/). On most phones, USB tethering and file-transfer mode are separate choices in the USB settings, so when you want to copy files over the cable, you usually switch the mode instead of relying on tethering. Bluetooth tethering is the least useful for file transfer, since 1 to 3 Mbps over the air makes large files slow; see [Bluetooth file transfer explained](/blog/bluetooth-file-transfer-explained/) for why it is built for small items.
 
 When the goal is moving files between a phone and a PC and you already share a Wi-Fi network, using that network directly is faster than tethering, because tethering adds the phone as a middleman. [Transferring files between a PC and a phone over Wi-Fi](/blog/transfer-files-between-pc-and-phone-over-wifi/) covers the options.
 
@@ -139,3 +142,4 @@ No. Tethering shares the phone's cellular internet connection, so it needs mobil
 - Google Android Help: [Share a mobile connection by hotspot or tethering on Android](https://support.google.com/android/answer/9059108)
 - Android Open Source Project: [Tethering module](https://source.android.com/docs/core/ota/modular-system/tethering)
 - Bluetooth SIG: [Bluetooth technology overview](https://www.bluetooth.com/learn-about-bluetooth/tech-overview/)
+- Bluetooth SIG: [Personal Area Networking Profile 1.0](https://www.bluetooth.com/specifications/specs/personal-area-networking-profile-1-0/)

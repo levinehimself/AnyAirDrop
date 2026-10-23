@@ -15,13 +15,13 @@ related:
 
 MIMO, MU-MIMO, OFDMA and beamforming are four different tricks that modern Wi-Fi uses to get more out of the same radio spectrum. MIMO sends several data streams at once using multiple antennas. MU-MIMO aims different streams at different devices. OFDMA splits a channel into slices so several devices can share one transmission. Beamforming steers the signal toward a device. Each helps in a different situation.
 
-**Short answer:** MIMO and beamforming make a link between one router and one device faster or longer-reaching. MU-MIMO and OFDMA make a router better at serving many devices at once, mostly by cutting waste on small packets. None of them helps unless both ends support the feature, and a single large file transfer between two devices benefits mainly from MIMO and a clean signal, not from the multi-user features.
+**Short answer:** MIMO and beamforming make a link between one router and one device faster or longer-reaching. MU-MIMO and OFDMA make a router better at serving many devices at once, mostly by cutting waste on small packets. Most of them need support at both ends, and a single large file transfer between two devices benefits mainly from MIMO and a clean signal, not from the multi-user features.
 
 ## Spatial streams and the "2x2" label
 
 A *spatial stream* is an independent flow of data sent over the same frequencies at the same time. Several streams share one channel because they travel along different physical paths between different antennas.
 
-Antenna layouts are written as *transmit × receive*, sometimes with the number of streams after a colon. A "2x2" device has two transmit and two receive antennas and can run two streams; a "4x4:4" router has four of each and four streams. The number of streams on a link is limited by the smaller side. A 4x4 router talking to a 2x2 phone can use two streams with that phone, not four. This is why [headline Wi-Fi speeds](/blog/wifi-standards-explained/) with 8 streams are theoretical for phones: they have two antennas at most, and some have one.
+Antenna layouts are written as *transmit × receive*, sometimes with the number of streams after a colon. A "2x2" device has two transmit and two receive antennas and can run two streams; a "4x4:4" router has four of each and four streams. The number of streams on a link is limited by the smaller side. A 4x4 router talking to a 2x2 phone can use two streams with that phone, not four. This is why [headline Wi-Fi speeds](/blog/wifi-standards-explained/) with 8 streams are theoretical for phones: most have two Wi-Fi antennas at most, and some have one.
 
 ## How MIMO works: using the echoes
 
@@ -56,7 +56,7 @@ Honest limits: it helps only when several devices want data at the same moment, 
 
 ## OFDMA: sharing one transmission
 
-*Orthogonal frequency-division multiple access* (OFDMA) is the Wi-Fi 6 feature that gets mixed up most, partly because of its similarity to OFDM. OFDM is how one device spreads data over many subcarriers. OFDMA lets several devices use different groups of subcarriers *at the same time* in a single transmission.
+*Orthogonal frequency-division multiple access* (OFDMA) is a Wi-Fi 6 feature that is easy to confuse with OFDM, because the names are so close. OFDM is how one device spreads data over many subcarriers. OFDMA lets several devices use different groups of subcarriers *at the same time* in a single transmission.
 
 A fair analogy is a delivery van. Before Wi-Fi 6, every trip served one customer, even if the parcel was a letter, and the van waited for its turn on the road each time. With OFDMA, one van makes a single trip with separate compartments for several customers. The road is the same, and the van drives at the same speed. What changes is that you stop wasting trips on small parcels. The analogy also shows the limit: for one customer with one huge delivery, the compartments change nothing.
 
@@ -64,7 +64,7 @@ The compartments are called *resource units* (RUs). In a Wi-Fi 6 channel they co
 
 ### A worked example: nine devices, tiny packets
 
-Imagine nine devices each have a 100-byte packet to send (a sensor reading, a chat message, an acknowledgement). These numbers are illustrative and rounded, drawn from typical timing in the standard.
+Imagine nine devices each have a 100-byte packet to send (a sensor reading, a chat message, an acknowledgement). These numbers are illustrative and rounded, based on default timing values in the standard (the same 43 µs gap and random backoff used in [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/)). The first case also ignores collisions between the nine devices, which would make it slower still.
 
 **Without OFDMA**, each device contends for the channel on its own, which takes about 110 µs of waiting plus about 40 µs of preamble, then 8 µs of data, then a 16 µs gap and an acknowledgement of about 28 µs. That is roughly 200 µs per device and **about 1.8 ms** for nine.
 
@@ -83,7 +83,7 @@ The router needs to know the path to each device, so it runs *channel sounding*:
 3. The device sends back a compact report describing the channel.
 4. The router calculates the phase and strength to use on each antenna and applies it to later frames.
 
-The gain follows from simple addition. With total transmit power fixed, an access point with N antennas that aligns its waves delivers about N times the power at the device: 10 × log10(N) dB. Two antennas give 10 × log10(2) = 3.0 dB, four give 6.0 dB. A 3 dB gain means double the power at the receiver. Wi-Fi 4 defined several beamforming methods that were not compatible with each other; Wi-Fi 5 settled on one sounding procedure, which is why beamforming became dependable from then on.
+The gain follows from simple addition. With total transmit power fixed, an access point with N antennas that aligns its waves can, at best, deliver about N times the power at the device: 10 × log10(N) dB. Two antennas give 10 × log10(2) = 3.0 dB, four give 6.0 dB. A 3 dB gain means double the power at the receiver. Wi-Fi 4 defined several optional beamforming methods, and two devices that supported different ones could not beamform with each other, so the feature was often unused. Wi-Fi 5 specified a single method, sounding with a null data packet and compressed feedback, so products from different makers could work together.
 
 Limits: the gain matters most at moderate and long range, where a higher modulation rate is within reach. Near the router the link is already at its top rate. Beamforming cannot get through a concrete wall that absorbs the signal, only use the signal more efficiently. It must be re-measured as you move, and sounding takes airtime.
 
@@ -91,11 +91,11 @@ Limits: the gain matters most at moderate and long range, where a higher modulat
 
 A *basic service set* (BSS) is a router and its connected devices. In dense buildings, your devices hear neighbors' transmissions on the same channel. Under the old rules, if a neighbor's frame arrives above about −82 dBm, your device defers and waits, even if the neighbor is far enough away that talking at the same time would not hurt either of you.
 
-*BSS coloring*, added in Wi-Fi 6, puts a 6-bit number (a "color") in the preamble of every frame. A device can tell from the first microseconds whether a frame comes from its own network or from an overlapping one. For an overlapping network's frame that is weaker than a raised threshold (the standard allows setting it between −82 and −62 dBm), the device may ignore it and transmit anyway at reduced power. This is called *spatial reuse*. Its effect depends on the layout and on how a vendor tunes the threshold, and it can increase retries if set too aggressively.
+*BSS coloring*, added in Wi-Fi 6, puts a 6-bit number (a "color") in the preamble of every frame, as [Cisco's Wi-Fi 6 white paper](https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html) describes. A device can tell from the first microseconds whether a frame comes from its own network or from an overlapping one. For an overlapping network's frame that is weaker than a raised threshold (the standard allows setting it between −82 and −62 dBm), the device may ignore it and transmit anyway at reduced power. This is called *spatial reuse*. Its effect depends on the layout and on how a vendor tunes the threshold, and it can increase retries if set too aggressively.
 
 ## Target wake time: sleeping on a schedule
 
-In older power-save modes, a sleeping device wakes up for every beacon, about every 102.4 ms, to check whether the router has data waiting. *Target wake time* (TWT) lets a device and the router agree on a schedule: wake at these moments, for this long. A sensor might wake once every few minutes. Besides saving battery, scheduling devices at different times reduces contention, as researchers describe in this [analysis of TWT scheduling](https://arxiv.org/abs/1804.07717). The gain is real for battery-powered and always-on gadgets and negligible for a laptop that is plugged in.
+In older power-save modes, a sleeping device wakes up on a schedule tied to the router's beacons, which by default arrive about every 102.4 ms, to check whether data is waiting. *Target wake time* (TWT) lets a device and the router agree on a schedule: wake at these moments, for this long. A sensor might wake once every few minutes. Besides saving battery, scheduling devices at different times reduces contention, as researchers describe in this [analysis of TWT scheduling](https://arxiv.org/abs/1804.07717). The gain is real for battery-powered and always-on gadgets and negligible for a laptop that is plugged in.
 
 ## Who needs to support what
 
@@ -108,7 +108,10 @@ In older power-save modes, a sleeping device wakes up for every beacon, about ev
 | BSS coloring | Wi-Fi 6 | Dense apartments | Wi-Fi 6 on the neighbors' side matters too |
 | Target wake time | Wi-Fi 6 | Battery life, contention | Wi-Fi 6 at both ends |
 
-An old device in the mix does not break these features for the others. It simply does not take part, and it keeps competing for airtime the old way.
+An old device in the mix does not break these features for the others. It does not take part, and it keeps competing for airtime the old way.
+
+![Decision guide matching five situations to the Wi-Fi feature that helps: MIMO for one big file, beamforming far from the router, OFDMA and MU-MIMO for many small packets, BSS coloring in apartments, target wake time for battery gadgets](./images/figure.svg)
+*A single big transfer between two devices leans on MIMO and a clean signal, while the multi-user features pay off when many devices share the channel.*
 
 ## What these features do and do not do for a transfer between your own devices
 
@@ -150,4 +153,4 @@ Not directly. An older device still uses the older rules. It may benefit indirec
 
 - Wi-Fi Alliance: [Wi-Fi (MAC/PHY) features](https://www.wi-fi.org/wi-fi-macphy)
 - Nurchis and Bellalta (arXiv): [Target Wake Time: Scheduled access in IEEE 802.11ax WLANs](https://arxiv.org/abs/1804.07717)
-- IEEE 802.11 Working Group: [Project overview](https://www.ieee802.org/11/)
+- Cisco: [IEEE 802.11ax: The Sixth Generation of Wi-Fi White Paper](https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html)

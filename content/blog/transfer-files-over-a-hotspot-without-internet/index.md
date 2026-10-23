@@ -41,7 +41,7 @@ Imagine phone A has Wi-Fi hotspot switched on and no working mobile data. A lapt
 4. The frame goes over the air to the access point, which forwards it to the laptop. No router decision, no NAT and no modem.
 5. The laptop replies the same way, and the transfer app on top (a web page, a file server, an app) carries on as usual.
 
-The third step answers a worry that many people have: phones show "no internet" on a network without internet access, and some operating systems then prefer mobile data for web traffic. But the routing decision for a destination on the same subnet is made from the device's own address and subnet, so local traffic still goes out over Wi-Fi.
+The third step also answers a worry that many people have: phones flag a network without internet access as "no internet", and some then send app traffic over mobile data instead. A device decides whether a destination is local from its own address and subnet, so a system that handles the network normally sends local traffic over Wi-Fi. Android is the case to watch. A 2016 [Android Developers Blog post](https://android-developers.googleblog.com/2016/07/connecting-your-app-to-wi-fi-device.html) explains that on Android 5.0 and later, requests are not routed to a Wi-Fi network that lacks internet connectivity unless the app binds itself to that network. If a client phone has mobile data on and a local address will not open, turning mobile data off for the transfer is a common first test.
 
 ### What it does to speed
 
@@ -49,15 +49,15 @@ Both devices use the same Wi-Fi channel, and the frame crosses it twice, once fr
 
 ## What can stop it
 
-**The hotspot refuses to start.** Rules differ. Apple says Personal Hotspot requires a carrier that supports it, and that if the option is dimmed you should check that Cellular Data is on. Google's help page says some carriers limit tethering or charge extra for it. Some Android phones will start a hotspot without a SIM or data and others will not. Android also has a "local-only hotspot" feature for apps, which, in the words of the [Android developer documentation](https://developer.android.com/develop/connectivity/wifi/localonlyhotspot), lets connected devices communicate with each other but provides no internet access, although it is meant for apps to use rather than for people to switch on by hand.
+**The hotspot refuses to start.** Rules differ. On an iPhone, Apple's page ties Personal Hotspot to carrier support, and if the option is dimmed it says to check that Cellular Data is on. Google's help page warns that some carriers limit tethering or charge extra for it. Some Android phones will start a hotspot without a SIM or data and others will not. Android also has a "local-only hotspot" feature for apps. According to the [Android developer documentation](https://developer.android.com/develop/connectivity/wifi/localonlyhotspot), it lets applications on the connected devices communicate with each other, and the network it creates has no internet access. It is an interface for apps rather than a switch people flip by hand.
 
-**Devices cannot see each other.** An access point can be set to block client-to-client traffic, a feature called client isolation, covered in [client isolation, guest networks and device visibility](/blog/client-isolation-guest-networks-and-device-visibility/). Phone makers do not always promise that hotspot clients can reach each other. An Apple engineer wrote on the [Apple Developer Forums](https://developer.apple.com/forums/thread/79141) that Personal Hotspot was designed solely as a way to connect client devices to the internet and does not guarantee other kinds of connectivity. If devices on your hotspot cannot find each other, this is a likely cause, and the fix is to use a method that does not rely on the hotspot, such as Wi-Fi Direct.
+**Devices cannot see each other.** An access point can be set to block client-to-client traffic, a feature called client isolation, covered in [client isolation, guest networks and device visibility](/blog/client-isolation-guest-networks-and-device-visibility/). A hotspot is also built to share internet access, so reaching other devices on it is not something every phone promises; the iPhone's case is covered in [iPhone Personal Hotspot explained](/blog/iphone-personal-hotspot-explained/). If devices on your hotspot cannot find each other, one of these is a likely cause, and the fix is to use a method that does not rely on the hotspot, such as Wi-Fi Direct.
 
 **Automatic discovery fails.** Many apps find nearby devices using multicast announcements, such as mDNS (multicast DNS, the technology behind Bonjour), described in [mDNS and Bonjour device discovery](/blog/mdns-bonjour-device-discovery/). Some access points handle multicast poorly. When discovery fails, typing the other device's IP address directly often works if the transfer method supports it.
 
-**The hotspot switches itself off.** Android's hotspot settings include an automatic shutdown timeout. Google's help page mentions a setting that turns the hotspot off when no devices are connected. Apple says third-party devices disconnect after 90 seconds without network traffic. A quiet moment while you pick a file can end the session.
+**The hotspot switches itself off.** Android's hotspot settings include an automatic shutdown timeout. Google's help page mentions a setting that turns the hotspot off when no devices are connected. Apple's [platform support guide](https://support.apple.com/guide/platform-support/troubleshoot-personal-hotspot-connections-sup025284ac0/web) says third-party devices disconnect from an iPhone hotspot after 90 seconds without network traffic. A quiet moment while you pick a file can end the session.
 
-**Device limits.** Google's help page says a Wi-Fi hotspot can share with up to 10 devices, Apple says the count depends on carrier and iPhone model, and the Android platform documentation says the maximum is the lower of the hardware limit and the carrier limit.
+**Device limits.** Google's help page says a Wi-Fi hotspot can share with up to 10 other devices, Apple says the count depends on carrier and iPhone model, and the [Android platform documentation](https://source.android.com/docs/core/connect/wifi-softap) says the maximum is the lower of the hardware limit and the carrier limit.
 
 **A VPN or firewall on a client.** A VPN that sends all traffic through a tunnel can block access to local addresses, and a computer's firewall may treat the hotspot as a public network and block incoming connections. Turning off the VPN for the transfer, or marking the network as private, is the usual remedy, though the setting names differ by system.
 
@@ -78,11 +78,14 @@ None of the methods below needs an internet connection once the devices share a 
 
 Wi-Fi Direct deserves its own mention, because it removes the hotspot altogether. Android's [Wi-Fi Direct guide](https://developer.android.com/develop/connectivity/wifi/wifip2p) describes how nearby devices connect directly over Wi-Fi without an access point and then exchange data over ordinary sockets. We explain the family in [Wi-Fi Direct, Wi-Fi Aware and AWDL](/blog/wifi-direct-wifi-aware-awdl-explained/).
 
+![A two-part cheat sheet: six methods that work on a hotspot with no internet, from a local web server to Bluetooth, and five things that can still stop a transfer, such as client isolation or tools needing an internet server.](./images/figure.svg)
+*A tool that needs an internet server to introduce the devices is the one kind that fails on a fully offline hotspot.*
+
 ## A practical plan for moving files on an offline hotspot
 
 Because the failure points are predictable, a short routine saves time:
 
-1. **Make one of the endpoints the hotspot phone if you can.** One hop is faster than two, and the hotspot phone is the one device guaranteed to be reachable at the gateway address.
+1. **Make one of the endpoints the hotspot phone if you can.** One hop is faster than two, and the hotspot phone sits at the gateway address, which is easy to find. On an iPhone, Apple does not promise that apps on the hotspot network can reach apps on the phone itself, so test it before relying on it.
 2. **Join both devices and wait for an address.** If a device says it is connected but has no address, DHCP did not finish; toggle its Wi-Fi.
 3. **Find the receiving device's address** in its network details. Menu names vary by device and version, so look for the connected network's details or "IP address".
 4. **Turn off VPNs** on both ends for the transfer.
@@ -103,7 +106,7 @@ A transfer between two devices on the same hotspot stays on the Wi-Fi network an
 
 ### Why does my phone say "no internet" on a hotspot with no data?
 
-Phones test whether a network can reach the internet and flag it when it cannot. The warning is about the internet route only. Local traffic to other devices on the same network is unaffected, though some phones may switch to mobile data for web traffic when it is available.
+Phones test whether a network can reach the internet and flag it when it cannot. The warning is about the internet route only, and local traffic to other devices on the same network can still flow. Some phones, Android in particular, may send app traffic over mobile data instead of the "no internet" Wi-Fi network when mobile data is on, which can stop a local connection from opening until mobile data is switched off.
 
 ### Why can't my laptop see my other phone on the hotspot?
 
@@ -125,7 +128,8 @@ Not necessarily. A hotspot is better when several devices must join and you want
 ## Sources
 
 - Apple Support: [Personal Hotspot on iPhone and iPad](https://support.apple.com/en-us/111785)
+- Apple Support: [Troubleshoot Personal Hotspot connections on iPhone and iPad](https://support.apple.com/guide/platform-support/troubleshoot-personal-hotspot-connections-sup025284ac0/web)
 - Google Android Help: [Share a mobile connection by hotspot or tethering on Android](https://support.google.com/android/answer/9059108)
-- Android Developers: [Use a local-only Wi-Fi hotspot](https://developer.android.com/develop/connectivity/wifi/localonlyhotspot)
-- Android Developers: [Wi-Fi Direct (peer-to-peer) overview](https://developer.android.com/develop/connectivity/wifi/wifip2p)
+- Android Open Source Project: [Wi-Fi hotspot (Soft AP)](https://source.android.com/docs/core/connect/wifi-softap)
+- Android Developers Blog: [Connecting your app to a Wi-Fi device](https://android-developers.googleblog.com/2016/07/connecting-your-app-to-wi-fi-device.html)
 - Wi-Fi Alliance: [Wi-Fi Direct](https://www.wi-fi.org/discover-wi-fi/wi-fi-direct)

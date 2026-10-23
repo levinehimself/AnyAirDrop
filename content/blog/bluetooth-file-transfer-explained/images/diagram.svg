@@ -9,7 +9,7 @@
 
   <!-- Row 1 -->
   <text x="24" y="82" font-size="16" font-weight="700" fill="#0F172A">Bluetooth, 1 Mb/s</text>
-  <text x="24" y="100" font-size="13" fill="#475569">modest real-world rate</text>
+  <text x="24" y="100" font-size="13" fill="#475569">assumed modest rate</text>
   <rect x="240" y="70" width="400" height="34" rx="4" fill="#475569"/>
   <text x="650" y="92" font-size="16" font-weight="700" fill="#0F172A">13 min 20 s</text>
 

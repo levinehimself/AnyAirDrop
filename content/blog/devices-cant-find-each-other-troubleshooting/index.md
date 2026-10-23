@@ -13,11 +13,11 @@ related:
   - "transfer-files-between-pc-and-phone-over-wifi"
 ---
 
-When two devices on the same Wi-Fi do not see each other, the cause is almost always one of a short list: they are not actually on the same network, a permission or setting is off, something is redirecting or filtering their traffic, or a second router splits them into separate networks. Checking them in a sensible order finds the fault faster than restarting everything.
+When two devices on the same Wi-Fi do not see each other, the cause is almost always one of a short list: they are not on the same network, a permission or setting is off, something is redirecting or filtering their traffic, or a second router splits them into separate networks. Checking them in a sensible order finds the fault faster than restarting everything.
 
 **Short answer:** a local transfer needs two things: the devices must be able to discover each other, and they must be able to connect. Discovery relies on small broadcast or multicast messages that only travel inside one local network, so anything that puts the devices on different networks, blocks those messages, or stops the app from using the network will hide them. Start with the network, then permissions, then VPNs, isolation and firewalls.
 
-## What "finding each other" actually requires
+## What "finding each other" requires
 
 Discovery usually works in one of two ways. In the first, each device announces itself to the local network with a multicast message, and others listen. The standard for this is Multicast DNS (mDNS), defined in [RFC 6762](https://www.rfc-editor.org/rfc/rfc6762): queries are sent to the multicast address 224.0.0.251 (or FF02::FB for IPv6) on UDP port 5353. Names under `.local` are, as the RFC puts it, meaningful only on the link where they originate, and mDNS traffic is not forwarded by routers. [Our mDNS guide](/blog/mdns-bonjour-device-discovery/) goes deeper.
 
@@ -50,8 +50,8 @@ Battery-saving modes can limit background network activity, and a phone that is 
 
 Modern phones ask the user for permission before an app can look for nearby devices.
 
-- **Android.** Android 12 added a "Nearby devices" permission group, and Android 13 added the `NEARBY_WIFI_DEVICES` permission, which [Android's developer documentation](https://developer.android.com/develop/connectivity/wifi/wifi-permissions) describes for apps that discover or connect to nearby Wi-Fi devices. Permissions in this group are managed together. Before Android 13, some of the same functions required location permission, which is why a nearby-sharing app may ask for location. The exact wording differs between phone makers, so look in the app's permission screen for entries about nearby devices or location.
-- **iPhone.** Since iOS 14, an app must ask permission to find and connect to devices on your local network. [Apple's support page](https://support.apple.com/en-us/102229) says you can allow or revoke this for each app under Settings, in Privacy & Security, then Local Network. If you tapped Don't Allow once, the app will see nothing, and the fix is in that list, not in the app.
+- **Android.** Android 12 added a "Nearby devices" permission group, and Android 13 added the `NEARBY_WIFI_DEVICES` permission to it, which [Android's developer documentation](https://developer.android.com/develop/connectivity/wifi/wifi-permissions) describes for apps that manage Wi-Fi connections to nearby devices. The system asks for the group's permissions in a single dialog. On versions before Android 13, those apps needed location permission instead, which is why a nearby-sharing app may still ask for location. The exact wording differs between phone makers, so look in the app's permission screen for entries about nearby devices or location.
+- **iPhone.** Since iOS 14, an app must ask permission to find and connect to devices on your local network. [Apple's support page](https://support.apple.com/en-us/102229) says you can allow or revoke this for each app under Settings, in Privacy & Security, then Local Network. If you tapped Don't Allow once, the app cannot browse your local network, and the fix is in that list, not in the app.
 
 ## Check 3: is a VPN running?
 
@@ -59,15 +59,15 @@ A VPN (virtual private network) sends your traffic through an encrypted tunnel t
 
 ## Check 4: is client isolation on?
 
-Client isolation (also called AP isolation) is a router setting that stops devices on the same Wi-Fi from talking to each other, while still letting each reach the internet. It is a protection, normally on by default for guest networks and public hotspots. If your devices are on the right network and still invisible, this is the likely cause. Fix it by turning the option off for your private network, or by joining the non-isolated network. Do not turn it off on a shared or public network, where the protection is the point.
+Client isolation (also called AP isolation) is a router setting that stops devices on the same Wi-Fi from talking to each other, while still letting each reach the internet. It is a protection, often on by default for guest networks and public hotspots. If your devices are on the right network and still invisible, this is the likely cause. Fix it by turning the option off for your private network, or by joining the non-isolated network. Do not turn it off on a shared or public network, where the protection is the point.
 
 ## Check 5: does the firewall allow it?
 
-A firewall decides which incoming connections a device accepts. On Windows, the rules depend on the network profile. A Public profile hides the PC and blocks most incoming connections, while a Private profile permits sharing and discovery. [Microsoft's guide](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/file-sharing-over-a-network-in-windows) says that if you are on Wi-Fi, you should set it to Private, and that network discovery and file sharing require it. If Windows asked whether to allow an app through the firewall and you declined, the app can be re-allowed in the firewall settings. Do this only for networks you trust.
+A firewall decides which incoming connections a device accepts. On Windows, the rules depend on the network profile. A Public profile hides the PC and blocks most incoming connections, while a Private profile permits sharing and discovery. [Microsoft's file sharing guide](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/file-sharing-over-a-network-in-windows) advises setting a Wi-Fi network to Private for sharing, and Microsoft's [nearby sharing page](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/fix-problems-with-nearby-sharing-in-windows) states that nearby sharing works only on a Private network. If Windows asked whether to allow an app through the firewall and you declined, the app can be re-allowed in the firewall settings. Do this only for networks you trust.
 
 ## Check 6: is multicast being filtered?
 
-Some routers and access points handle multicast poorly. They may treat it as unwanted traffic, drop it on Wi-Fi to save airtime, or only deliver it to devices that asked for it. In that case, devices on the same network and subnet can still fail to discover each other by mDNS, although a direct connection by address would work. The setting names vary by brand and are often found under wireless or multicast options. If you suspect this, a good test is to connect both devices to a phone hotspot or a different router and see whether they appear. If they do, the first router is filtering something.
+Some routers and access points handle multicast poorly. They may treat it as unwanted traffic, drop it on Wi-Fi to save airtime, or only deliver it to devices that asked for it. In that case, devices on the same network and subnet can still fail to discover each other by mDNS, although a direct connection by address would work. The same filtering can hurt browser-based tools: a browser may hide its local address behind a `.local` name, which the other device can resolve only if mDNS gets through ([STUN, TURN and ICE explained](/blog/stun-turn-ice-explained/) covers this). The setting names vary by brand and are often found under wireless or multicast options. If you suspect this, a good test is to connect both devices to a phone hotspot or a different router and see whether they appear. If they do, the first router is filtering something.
 
 ## Check 7: two routers and double NAT
 
@@ -80,13 +80,16 @@ Here is how to tell. Look at each device's IPv4 address in its Wi-Fi details. Wi
 
 The mask keeps only the part of each address that identifies the network, here the first three numbers. The results differ (the third number is 1 on one device and 0 on the other), so these are two networks, and broadcast and multicast discovery between them fails. The usual cure is to put one router into access point or bridge mode, or to connect all devices to the same one. [Modem vs router vs access point](/blog/modem-vs-router-vs-access-point/) explains the roles, and [how a router works](/blog/how-a-router-works-nat-dhcp-dns/) covers NAT.
 
+![Two address cards compared: a phone at 192.168.1.23 sits on network 192.168.1.0 and a laptop at 192.168.0.14 on network 192.168.0.0. The third number differs, so they are two networks and discovery between them fails.](./images/figure.svg)
+*Devices behind two routers in a row end up on different networks, and discovery messages never leave the network they start on.*
+
 ## Check 8: IPv6 and captive portals
 
 **IPv6.** Devices usually have both an IPv4 and an IPv6 address on the same network. IPv6 local discovery uses its own multicast address (FF02::FB for mDNS). If a network filters IPv6 multicast, or an app only supports one of the two, discovery may work for some devices and not others. This is uncommon on home networks, but it can explain why one pair of devices works and another does not.
 
-**Captive portals.** Hotel, airport and cafe Wi-Fi often shows a sign-in page before granting access. [RFC 8910](https://www.rfc-editor.org/rfc/rfc8910) describes how captive portals restrict what you can do on a temporary network until you meet their conditions. Until you sign in, devices may be limited to the portal, and public networks of this kind frequently isolate clients as well. A personal hotspot or a travel router is often easier than fighting a captive network.
+**Captive portals.** Hotel, airport and cafe Wi-Fi often shows a sign-in page before granting access. [RFC 8910](https://www.rfc-editor.org/rfc/rfc8910) explains that a captive portal highly restricts what you can do on the network until you satisfy its conditions. Until you sign in, devices may be limited to the portal, and public networks of this kind frequently isolate clients as well. A personal hotspot or a travel router is often easier than fighting a captive network.
 
-## What this means for sending files between your own devices
+## Ways around discovery when the checks do not fix it
 
 If you work through the checks and still cannot connect, you have options that skip discovery. A pairing code or QR code tells the other device exactly which session to join, so nothing depends on broadcast messages. Typing the other device's IP address directly (where a tool allows it) skips multicast too. A phone's hotspot gives both devices one clean network without isolation. And a USB cable needs no network at all ([PC and phone methods compared](/blog/transfer-files-between-pc-and-phone-over-wifi/)).
 
@@ -129,4 +132,5 @@ It is safer not to. Instead, set your network profile to Private if you trust th
 - Apple Support: [If an app would like to connect to devices on your local network](https://support.apple.com/en-us/102229)
 - Android Developers: [Wi-Fi permissions](https://developer.android.com/develop/connectivity/wifi/wifi-permissions)
 - Microsoft Support: [File sharing over a network in Windows](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/file-sharing-over-a-network-in-windows)
+- Microsoft Support: [Fix problems with nearby sharing in Windows](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/fix-problems-with-nearby-sharing-in-windows)
 - Google: [Share files between Android and Windows with Quick Share](https://support.google.com/android/answer/13801258?hl=en)

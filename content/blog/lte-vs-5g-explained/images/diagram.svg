@@ -37,5 +37,5 @@
   <text x="685" y="294" text-anchor="middle" font-size="15" font-weight="700" fill="#2563EB">x 0.86 = 584 Mbps</text>
   <text x="685" y="316" text-anchor="middle" font-size="13" fill="#475569">after 14% overhead</text>
 
-  <text x="30" y="372" font-size="14" fill="#475569">Two layers: about 1,168 Mbps. A ceiling on paper, not a typical speed.</text>
+  <text x="30" y="372" font-size="14" fill="#475569">Two layers: about 1,169 Mbps. A ceiling on paper, not a typical speed.</text>
 </svg>

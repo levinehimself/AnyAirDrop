@@ -15,11 +15,11 @@ related:
 
 Sending a file to a device in the same room is generally a low-risk activity, but it is not a risk-free one, and the risks are not the ones people usually imagine. A stranger reading your photo out of the air is unlikely when the transfer is encrypted. The more realistic problems are sending to the wrong device, receiving something you did not ask for, opening a bad file, and sharing more information than you meant to.
 
-**Short answer:** transport encryption (TLS or DTLS) keeps other people on the network from reading or changing a file while it travels. It does not tell you who is on the other end, whether the file is harmless, or what is hidden inside a photo. Those parts depend on a confirmation step you actually check, and a few habits.
+**Short answer:** transport encryption (TLS or DTLS) keeps other people on the network from reading or changing a file while it travels. It does not tell you who is on the other end, whether the file is harmless, or what is hidden inside a photo. Those parts depend on a confirmation step you check, and a few habits.
 
 ## Start with a threat model
 
-A threat model is just a list of "what could go wrong, and who could make it happen". For local transfers, the realistic list is short:
+A threat model is a list of what could go wrong and who could make it happen. For local transfers, the realistic list is short:
 
 | Risk | What it means | What addresses it |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ A threat model is just a list of "what could go wrong, and who could make it hap
 | Hidden information | A photo carries location or device data | Removing metadata before sharing |
 | Rogue network | You joined a network an attacker set up | Joining only networks you trust |
 
-The first two are what encryption is for. The next two depend on you. The last three are outside what any transfer technology can promise. The diagram above shows the first six and groups them the same way.
+The first two are what encryption is for. The next two depend on you. The last three are outside what any transfer technology can promise. The diagram above shows the first six of these risks.
 
 ## What transport encryption does
 
@@ -49,7 +49,7 @@ The keys are created fresh for each session by a handshake between the two devic
 
 Your Wi-Fi network has its own encryption, WPA2 or WPA3, between each device and the router ([WPA2 and WPA3 explained](/blog/wifi-security-wpa2-wpa3-explained/)). That protects the radio link. It is a different layer from transfer encryption, and the two complement each other.
 
-One difference matters here. On a network that uses a shared password, everyone who knows that password is inside the same trust circle at the Wi-Fi level. With WPA2 and a shared passphrase, someone who has the passphrase and captures a device's connection handshake can derive that device's session keys and read its traffic, and WPA3 was designed to remove that weakness. Encryption on top of the Wi-Fi, in the transfer itself, means the file stays private even if the Wi-Fi layer is shared with people you do not fully trust, such as guests or a building's common network.
+One difference matters here. On a network that uses a shared password, everyone who knows that password is inside the same trust circle at the Wi-Fi level. With WPA2 and a shared passphrase, someone who has the passphrase and captures a device's connection handshake can derive that device's session keys and read its traffic, and WPA3 was designed to remove that weakness (the mechanism is explained in the guide linked above). Encryption on top of the Wi-Fi, in the transfer itself, means the file stays private even if the Wi-Fi layer is shared with people you do not fully trust, such as guests or a building's common network.
 
 ## What encryption does not do
 
@@ -64,7 +64,7 @@ Encryption answers the question "can anyone else read this on the way?" It does 
 
 Most nearby-sharing systems make the receiver tap Accept before a file lands. This is a real protection, because it stops files being pushed onto your device silently. But it only works if the prompt gives you something to decide with.
 
-Unwanted files are a real issue in crowded places. Apple, for example, changed AirDrop so that the "Everyone" receive setting switches itself back after 10 minutes. [Apple Support](https://support.apple.com/en-us/119857) says that on iOS 16.2 and later, "Everyone for 10 Minutes" reverts to Contacts Only if you are signed in to an Apple Account, and to Receiving Off if you are not. Other systems have comparable visibility options, though the names and defaults vary by device and software version, so check what yours offers.
+Unwanted files are a real issue in crowded places. Apple, for example, limits how long AirDrop stays open to strangers. [Apple Support](https://support.apple.com/en-us/119857) says that on iOS 16.2 and later, the "Everyone for 10 Minutes" setting changes after 10 minutes: to Contacts Only if you are signed in to an Apple Account, and to Receiving Off if you are not. Other systems have comparable visibility options, though the names and defaults vary by device and software version, so check what yours offers.
 
 Good habits around the prompt:
 
@@ -76,7 +76,7 @@ Good habits around the prompt:
 
 When you send a file, the most common error is also the simplest: choosing the wrong recipient from a list. In a place with many devices, two can have nearly the same name. And when a tool lets you pair with a code or a QR code, the code is the verification. A short code or a scanned QR shows that both people are looking at the same pairing session at the same moment, which is much harder to fake than a name.
 
-Why does this protect you? The connection setup (see [WebRTC data channels explained](/blog/webrtc-data-channels-explained/)) is the point where a third party would try to insert itself, by passing along its own connection details in place of the real ones. A code that you compare in person, or that was never sent through the same channel as the setup messages, is out of band: an impostor who controls the setup channel still cannot see it. This is a general principle in security, not a feature of a particular product. In practice it means: if a tool offers a code, a QR code or a confirmation of the device name, use it, and do it with the person in front of you.
+Why does this protect you? The connection setup (see [WebRTC data channels explained](/blog/webrtc-data-channels-explained/)) is the point where a third party would try to insert itself, by passing along its own connection details in place of the real ones. A code that you compare in person, or that was never sent through the same channel as the setup messages, is out of band: an impostor who controls the setup channel still cannot see it. This is a general principle in security, not a feature of a particular product. One caution: a code reliably stops you from sending to the wrong nearby device, but it defends against an impostor on the setup channel only if the tool ties the code to the encrypted connection, and that is a design detail you usually cannot see. In practice it means: if a tool offers a code, a QR code or a confirmation of the device name, use it, and do it with the person in front of you.
 
 AnyAirDrop.com is our own tool. The receiving person must tap Accept before anything arrives, files go directly between the two devices rather than to the site's server, and you can pair devices with a 6-digit code or a QR code instead of relying on a name alone.
 
@@ -88,7 +88,7 @@ Treat a file from a transfer as you would a download or an email attachment. Exe
 
 ### Metadata inside photos
 
-Photos and videos usually contain extra data inside the file, called metadata. A common kind is EXIF, which can include the camera model and the time. If location is allowed for the Camera app, the coordinates of where a photo was taken are embedded too. [Apple's personal safety guide](https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web) describes this and explains that on iPhone you can open the share sheet for a photo, tap Options and turn off Location, which shares a copy without it. Android phones and desktop programs have their own settings, with different names, so look in the share options or the Camera's location setting.
+Photos and videos usually contain extra data inside the file, called metadata. A common kind is EXIF, which can include the camera model and the time. If location is allowed for the Camera app, the coordinates of where a photo was taken are embedded too. [Apple's personal safety guide](https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web) describes this and explains that on iPhone you can open the share sheet for a photo, tap Options and turn off Location, which shares the photo without its location. Android phones and desktop programs have their own settings, with different names, so look in the share options or the Camera's location setting.
 
 This matters less when sending a photo to your own laptop, and more when forwarding it to other people. A file transfer tool moves the file as is. It does not remove metadata unless it says it does.
 
@@ -96,11 +96,14 @@ This matters less when sending a photo to your own laptop, and more when forward
 
 A file transfer cannot make a hostile network friendly. An attacker can set up a Wi-Fi network with the same name as a real one, sometimes called an "evil twin". The NSA's guidance on [securing wireless devices in public settings](https://media.defense.gov/2021/Jul/29/2002815141/-1/-1/0/CSI_SECURING_WIRELESS_DEVICES_IN_PUBLIC.PDF), which CISA [points readers to](https://www.cisa.gov/news-events/alerts/2021/07/30/nsa-releases-guidance-securing-wireless-devices-while-public), notes that attackers can mimic legitimate networks. End-to-end encrypted transfers still protect file contents on such a network, but a hostile network can block connections, watch which devices talk, or send you to fake sign-in pages for other services. If a network name appears unexpectedly or a login page asks for something odd, leave it.
 
-## What this means for sending files between your own devices
+## Home network or shared network: how the risk changes
 
 At home, between your own phone and laptop on your own router, the practical risk is low. The people on the network are you and your household, the transfer is encrypted, and you are sitting next to both devices. The habit worth keeping is the same small check every time: confirm that the name on the receiving screen is your own device before you tap Accept.
 
 The picture changes in shared places such as offices, cafes, hotels and apartment-building networks. There, you are not the only one on the network. Prefer a method that encrypts end to end, use the pairing code or QR step if there is one, and keep your receive visibility narrow. If the network blocks devices from seeing each other (client isolation, covered in [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/)), that is not a defect in the transfer tool but a deliberate protection, and a personal hotspot is a safer alternative than weakening it.
+
+![Two cards compare home Wi-Fi, marked low risk, with shared Wi-Fi, marked more care. Home needs one habit: check the receiving device name. Shared networks add end-to-end encryption, the pairing code or QR step, narrow visibility and a hotspot if devices are blocked.](./images/figure.svg)
+*Encryption protects the file in both places. What changes is how much you can assume about everyone else on the network.*
 
 ## A checklist of habits
 

@@ -15,7 +15,7 @@ related:
 
 NFC (Near Field Communication) lets two devices exchange data when they are almost touching. A coil in your phone creates a magnetic field at 13.56 MHz, a second coil in a card, tag or phone picks it up, and the field itself carries the message. Because it works over only a few centimeters at modest speeds, NFC is used to start things, such as a payment, a pairing or a file transfer, rather than to move large files.
 
-**Short answer:** NFC is a very short-range radio link based on magnetic induction, with raw rates of 106 to 424 kilobits per second. That is fast enough for a link, a contact card or a Bluetooth pairing message, and far too slow for photos and videos. Phones therefore use a tap to introduce two devices and then switch to Bluetooth or Wi-Fi for the actual data.
+**Short answer:** NFC is a very short-range radio link based on magnetic induction, with peer-to-peer rates of 106 to 424 kilobits per second. That is fast enough for a link, a contact card or a Bluetooth pairing message, and far too slow for photos and videos. Phones therefore use a tap to introduce two devices and then switch to Bluetooth or Wi-Fi for the actual data.
 
 ## Magnetic coupling, not radio waves in the usual sense
 
@@ -31,7 +31,7 @@ A card or sticker does not need a battery. In *passive* mode the reader supplies
 
 ## Standards and speeds
 
-NFC is built on older contactless standards. The NFC Forum lists compatibility with ISO/IEC 14443 Type A and B (the family used by many contactless cards and payment cards), ISO/IEC 15693, ISO/IEC 18092 and Japan's JIS X 6319-4 (FeliCa). The raw data rates specified for NFC peer communication are 106, 212 and 424 kilobits per second (kbit/s). The NFC Forum's own overview quotes a wider range of about 46 kbit/s to 1.7 Mbit/s across variants. Even the top of that range is a small fraction of what Wi-Fi provides.
+NFC is built on older contactless standards. The NFC Forum lists compatibility with ISO/IEC 14443 Type A and B (the family used by many contactless cards and payment cards), ISO/IEC 15693, ISO/IEC 18092 and Japan's JIS X 6319-4 (the standard behind FeliCa). According to [Wikipedia's NFC article](https://en.wikipedia.org/wiki/Near-field_communication), ISO/IEC 18092, which covers peer-to-peer communication, supports data rates of 106, 212 or 424 kilobits per second (kbit/s). The same article's introduction gives a range of 106 to 848 kbit/s, and the NFC Forum's overview page quotes a data rate from 46 kbit/s up to 1.7 Mbit/s without saying which variants those figures belong to. Even the top of that range is a small fraction of what Wi-Fi provides, so this post uses the 106 to 424 kbit/s peer-to-peer rates for its arithmetic.
 
 ### A worked example: why not just send the photo by NFC?
 
@@ -58,7 +58,7 @@ Tags use the same idea in one direction. A sticker can hold Wi-Fi credentials or
 
 ## Android Beam: the tap-to-send feature that went away
 
-Android Beam is the clearest example of this design. It was introduced with Android 4.0 in 2011. Two phones were held back to back, you tapped the screen to send, and from Android 4.1 NFC was used to switch on Bluetooth on both phones and pair them for the larger transfer, as Wikipedia's [article on Android Beam](https://en.wikipedia.org/wiki/Android_Beam) summarizes. Google deprecated it starting with Android 10, and according to the same article it was removed completely in Android 14. Google's later nearby-sharing feature, which became Quick Share (see [how Quick Share works](/blog/how-quick-share-works/)), uses Bluetooth Low Energy for discovery instead of a tap. Newer phones therefore may have NFC for payments and tags but no Beam feature.
+Android Beam is the clearest example of this design. It was introduced with Android 4.0 in 2011. Two phones were held back to back, you tapped the screen to send, and from Android 4.1 NFC was used to switch on Bluetooth on both phones and pair them for the larger transfer, as Wikipedia's [article on Android Beam](https://en.wikipedia.org/wiki/Android_Beam) summarizes. Google deprecated the Beam interfaces in Android 10 (API level 29), and the [`NfcAdapter` reference](https://developer.android.com/reference/android/nfc/NfcAdapter) now describes the feature as removed and suggests Bluetooth for file sharing. The Wikipedia article places the complete removal in Android 14. Google's later nearby-sharing feature, which became Quick Share (see [how Quick Share works](/blog/how-quick-share-works/)), uses Bluetooth Low Energy for discovery instead of a tap. Newer phones therefore may have NFC for payments and tags but no Beam feature.
 
 ## What iPhones can and cannot do with NFC
 
@@ -67,17 +67,20 @@ Apple's [Core NFC documentation](https://developer.apple.com/documentation/coren
 - Read NFC tags of types 1 through 5 that hold NDEF data, and write data to writable tags.
 - Work with protocol-specific tags such as ISO 7816, ISO 15693, FeliCa and MIFARE.
 - Use a background tag reading feature so that scanning a tag does not require opening an app first.
-- Apple also lists a card session class for ISO 7816 card emulation, and its [NFC and SE Platform](https://developer.apple.com/support/nfc-se-platform/) lets authorized apps present contactless cards (payments, car keys, transit, hotel keys and more). Both depend on an entitlement from Apple, and the platform's availability varies by region and iOS version.
+- Apple also lists a card session class for ISO 7816 card emulation, and its [NFC and SE Platform](https://developer.apple.com/support/nfc-se-platform/) lets approved apps run secure contactless transactions such as in-store payments, car keys, transit, hotel keys and event tickets. The platform requires an agreement and an entitlement from Apple, and its availability varies by region and iOS version.
 
 The documented session types in Core NFC are all about tags, cards and readers. The documentation does not describe a peer-to-peer mode or a file-push session, so an iPhone has no NFC equivalent of Android Beam that apps can use. Apple's own tap-based sharing features are described by Apple separately, and what they use under the hood is not covered here. Availability of specific features differs by iPhone model and iOS version, so check Apple's current documentation for your device.
+
+![Three rows list the NFC modes: reader/writer for tags, card emulation for payments, transit gates and door readers, and peer-to-peer, whose Android Beam feature is removed. iPhone supports the first two but not peer-to-peer, and none moves big files.](./images/figure.svg)
+*Tags and payments carry on, while the tap-to-send mode that Android Beam offered is gone.*
 
 ## Contactless payments, briefly
 
 A contactless payment is NFC in card-emulation mode. The terminal acts as the reader, powers the field and sends a command; the phone or card answers with a transaction-specific code, using the ISO/IEC 14443 family of protocols at its lowest layers. The whole exchange is small data and takes a fraction of a second, which is why the short range is a feature: it is hard to tap by accident, and an attacker needs to be very close. Plain NFC without added cryptography is not protected against eavesdropping or tampering by itself, so payment and access systems add their own cryptographic protocols on top.
 
-## What this means for sending files between your own devices
+## NFC as a start gesture, and what stands in for it between a phone and a laptop
 
-NFC is useful as a "start here" gesture, not as a pipe. If your phone and laptop both have NFC readers and support handover, a tap can pair a Bluetooth link, but you would still use Bluetooth or Wi-Fi to move the file, and as the arithmetic in [Bluetooth file transfer explained](/blog/bluetooth-file-transfer-explained/) shows, Bluetooth is itself slow for anything large. Most laptops have no NFC reader at all, and iPhones cannot push files over NFC, so a tap-to-send workflow rarely crosses platforms.
+NFC is useful as a "start here" gesture, not as a pipe. If your phone and laptop both have NFC readers and support handover, a tap can pair a Bluetooth link, but you would still use Bluetooth or Wi-Fi to move the file, and as the arithmetic in [Bluetooth file transfer explained](/blog/bluetooth-file-transfer-explained/) shows, Bluetooth is itself slow for anything large. Many laptops have no NFC reader at all, and Apple's Core NFC documents no way for an app to push files over NFC, so a tap-to-send workflow rarely crosses platforms.
 
 In practice, the common cross-device approach is to avoid pairing altogether: join the same Wi-Fi network and use a method that discovers devices there. AnyAirDrop.com is our own tool that works that way, with a QR code or six-digit code as the "touch" step, but the principle is the same as NFC handover: a tiny exchange to introduce the devices, then a fast link for the data. For the security side of local transfers, see [is local file transfer safe?](/blog/is-local-file-transfer-safe-encryption-explained/).
 
@@ -108,7 +111,7 @@ Its very short range limits casual eavesdropping, but range alone is not securit
 - NFC works by magnetic induction at 13.56 MHz, a wavelength of about 22 meters, so devices interact as the two coils of a transformer at a few centimeters.
 - Specified peer rates are 106, 212 and 424 kbit/s, so a 3 MB photo would take roughly one to four minutes at best, if it were attempted.
 - NFC is used for tags, contactless payments and handover, where a tiny message starts a Bluetooth or Wi-Fi connection.
-- Android Beam, which used NFC to set up Bluetooth transfers, was deprecated in Android 10 and later removed.
+- Android Beam, which used NFC to set up Bluetooth transfers, was deprecated in Android 10 (API level 29) and is now documented as removed.
 - iPhones can read and write tags and take part in payments, but the documented Core NFC sessions have no peer-to-peer file mode.
 
 ## Sources
@@ -117,5 +120,6 @@ Its very short range limits casual eavesdropping, but range alone is not securit
 - Android Developers: [Near field communication (NFC) overview](https://developer.android.com/develop/connectivity/nfc)
 - Apple Developer: [Core NFC](https://developer.apple.com/documentation/corenfc)
 - Apple Developer: [NFC & SE Platform](https://developer.apple.com/support/nfc-se-platform/)
+- Android Developers: [NfcAdapter reference](https://developer.android.com/reference/android/nfc/NfcAdapter)
 - Wikipedia: [Android Beam](https://en.wikipedia.org/wiki/Android_Beam)
 - Wikipedia: [Near-field communication](https://en.wikipedia.org/wiki/Near-field_communication)

@@ -38,7 +38,7 @@ Each of the four jobs can be done by a dedicated box, and each can be folded int
 
 - **Cable:** the line is coaxial, the same kind of cable used for TV. The standard is DOCSIS (Data Over Cable Service Interface Specification), maintained by [CableLabs](https://www.cablelabs.com/). Your cable modem talks to equipment at your provider's facility that is usually called a CMTS (cable modem termination system), and many homes on the same neighborhood line share that line's capacity.
 - **DSL:** the line is the copper telephone wire. ADSL and VDSL2 are the common flavors, and the modem talks to equipment at the telephone exchange or a street cabinet. Speed falls as the copper gets longer.
-- **Fiber:** a glass fiber carries light into your home and ends at a box called an ONT (optical network terminal). Strictly speaking, an ONT is not a modem because it handles light rather than the analog signals the word was coined for, but it plays the identical role, and many people call it a fiber modem. Common systems follow ITU-T standards such as [G.984 for GPON](https://www.itu.int/rec/T-REC-G.984.1).
+- **Fiber:** a glass fiber carries light into your home and ends at a box called an ONT (optical network terminal). The box is usually called an ONT rather than a modem because it works with light instead of an electrical signal, but it does the same job, and many people call it a fiber modem. Common systems follow ITU-T standards such as [G.984 for GPON](https://www.itu.int/rec/T-REC-G.984.1) (gigabit-capable passive optical networks).
 - **Fixed wireless and cellular home internet:** a radio unit receives the signal from a nearby tower and again presents Ethernet to the router.
 
 The key point is that the modem is specific to the provider's technology. A cable modem cannot be plugged into a phone line, and a DSL modem cannot be plugged into a coax cable. Providers also tend to keep lists of modems they support, and some require the device to be registered with them before it works. The exact rules differ by provider, so check theirs before buying anything.
@@ -49,11 +49,11 @@ A router has two sides. On the WAN side it gets an address from your provider. O
 
 Our walkthrough of [how a router works with NAT, DHCP and DNS](/blog/how-a-router-works-nat-dhcp-dns/) traces each of these steps in detail. For now, the useful fact is that the router is the device that makes "my home network" a separate thing from "the internet". It also usually acts as a basic firewall, because translated connections only let replies in, not strangers.
 
-Everything on the LAN side of a router can reach everything else without leaving the building. That matters later for file transfers.
+Devices on the LAN side of a router can normally reach one another without the traffic leaving the building. That matters later for file transfers.
 
 ## The switch and the access point
 
-A **switch** is a box of Ethernet sockets. When a frame arrives on one port, the switch learns which device is behind it (by its hardware address, see [MAC addresses](/blog/mac-address-and-private-wifi-addresses/)) and forwards later frames only to that port. A switch does not hand out addresses or connect to your provider. It just extends the wired network. The "4 LAN ports" on a router are a small switch built in.
+A **switch** is a box of Ethernet sockets. When a frame arrives on one port, the switch learns which device is behind it (by its hardware address, see [MAC addresses](/blog/mac-address-and-private-wifi-addresses/)) and forwards later frames only to that port. A switch does not hand out addresses or connect to your provider. It only extends the wired network. The "4 LAN ports" on a router are a small switch built in.
 
 An **access point** (AP) does the same job for radio. It receives Wi-Fi frames from a phone, removes the radio wrapper and forwards the contents onto the wired network, then does the reverse for traffic coming back. [How Wi-Fi works](/blog/how-wifi-works/) describes the radio side. The important distinction is that a standalone access point does not run DHCP or NAT. It plugs into a LAN port of the router and joins its devices to the router's network. Everyone on the AP is on the same network as everyone on the router.
 
@@ -82,9 +82,9 @@ Browsing works fine. The cost shows up elsewhere:
 - **Port forwarding must be set up twice**, once on each box, or inbound connections never arrive.
 - **Games and video calls** may report a "strict" or "moderate" NAT type, because the outside world cannot reach you.
 - **Two networks exist.** A phone on the gateway's Wi-Fi (192.168.1.x) and a laptop on your router's Wi-Fi (192.168.0.x) are on different networks and typically cannot find each other.
-- **If both boxes use the same address range**, such as 192.168.1.x on both sides, the routing breaks entirely. Many routers detect this and change their own range.
+- **If both boxes use the same address range**, such as 192.168.1.x on both sides, the routing breaks entirely. Some routers detect this and change their own range.
 
-There are three ways out. Put the gateway into *bridge mode* (some makers call it IP passthrough, modem mode or transparent mode), which switches off its router functions so your own router receives the public address directly. Or turn off Wi-Fi on the gateway and use only your router. Or set your second box to *access point mode* so it stops routing and simply extends the network. The names and menu locations vary by manufacturer and software version, so look for these words in the router's documentation rather than expecting an exact label.
+There are two ways to remove double NAT. Put the gateway into *bridge mode* (some makers call it IP passthrough, modem mode or transparent mode), which switches off its router functions so your own router receives the public address directly. Or set your second box to *access point mode*, so it stops routing and extends the gateway's network instead. Turning off the gateway's Wi-Fi and using only your router's is a partial fix: it removes the second Wi-Fi name, but the translation still happens twice. The names and menu locations vary by manufacturer and software version, so look for these words in the router's documentation rather than expecting an exact label.
 
 ## Which box to replace or add
 
@@ -99,9 +99,12 @@ Matching the symptom to the right device saves money and frustration.
 | Local devices work, but there is no internet | Modem or provider | Check the modem lights and the provider status |
 | Two Wi-Fi networks, and devices on one cannot see the other | Double NAT | Bridge mode or access point mode |
 
-Notice that two of those fixes do not involve a new router at all. A large share of "I need a better router" problems are really "I need an access point where I actually sit".
+Notice that two of those fixes do not involve a new router at all. Many "I need a better router" problems are really "I need an access point where I sit".
 
-## What this means for sending files between your own devices
+![Decision guide matching six symptoms to the most likely box: weak far-room Wi-Fi points to an access point, slow cabled speeds to the modem or provider, and two networks that cannot see each other to double NAT.](./images/figure.svg)
+*Read each row left to right: the symptom you see, then the box or setting to check first.*
+
+## Why the modem plays no part in a phone-to-laptop transfer
 
 A file moving between two phones, or a phone and a laptop, on the same Wi-Fi network never reaches the modem. The packets travel from one device to the access point and on to the other device, all on the LAN side. That has three practical consequences.
 
@@ -121,15 +124,15 @@ You can, but only for a local network. Without a modem or ONT there is no way to
 
 ### Is a fiber ONT a modem?
 
-In strict terms it is not, because it converts between light and Ethernet rather than between radio-frequency signals on a wire. In practice it does the modem's job in a fiber home, and many people and providers call it a modem. You still need a router after it.
+It does a modem's job, but it is normally called an ONT, because it converts between light and Ethernet rather than between electrical signals on a wire and Ethernet. Many people and providers call it a fiber modem anyway. You still need a router after it.
 
 ### Is an access point the same as a range extender?
 
-No. An access point connects to the router by cable and creates a full-speed Wi-Fi cell. A range extender connects to the router over Wi-Fi itself, which uses airtime twice and usually halves the speed it can deliver. See the comparison in [mesh Wi-Fi vs extenders vs powerline](/blog/mesh-wifi-vs-extenders-vs-powerline/).
+No. An access point connects to the router by cable and creates a full-speed Wi-Fi cell. A range extender connects to the router over Wi-Fi itself, which uses airtime twice and, if it has only one radio, can roughly halve the speed it delivers. See the comparison in [mesh Wi-Fi vs extenders vs powerline](/blog/mesh-wifi-vs-extenders-vs-powerline/).
 
 ### What is bridge mode?
 
-Bridge mode turns off a device's routing and address translation so it simply passes traffic through. A gateway in bridge mode hands the public address to your own router, which avoids double NAT. After switching, check that your own router reaches the internet, because some providers' gateways handle login or management features differently in this mode.
+Bridge mode turns off a device's routing and address translation so it passes traffic through unchanged. A gateway in bridge mode hands the public address to your own router, which avoids double NAT. After switching, check that your own router reaches the internet, because some providers' gateways handle login or management features differently in this mode.
 
 ## Key takeaways
 

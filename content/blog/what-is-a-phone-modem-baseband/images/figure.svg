@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Five steps the baseband runs before the first bar appears</title>
+  <defs>
+  <symbol id="i-search" viewBox="0 0 48 48"><circle cx="21" cy="21" r="13" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l12 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-tower" viewBox="0 0 48 48"><path d="M24 15L15 43M24 15l9 28M18.5 31h11M16.5 37h15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="24" cy="11" r="3" fill="currentColor"/><path d="M15 7.5a12 12 0 0 0 0 7M33 7.5a12 12 0 0 1 0 7M10.5 4.5a18 18 0 0 0 0 13M37.5 4.5a18 18 0 0 1 0 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 48 48"><path d="M16 21v-5a8 8 0 0 1 16 0v5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><rect x="10" y="21" width="28" height="21" rx="4" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="30.5" r="2.6" fill="currentColor"/><path d="M24 32v4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M6 24h36M24 6c-9 9-9 27 0 36M24 6c9 9 9 27 0 36" stroke="currentColor" stroke-width="2.5" fill="none"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">PHONES AS MODEMS · STEP BY STEP</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Five steps before your first bar appears</text>
+
+  <!-- rail -->
+  <line x1="56" y1="134" x2="56" y2="358" stroke="#CBD5E1" stroke-width="2"/>
+
+  <!-- 1 -->
+  <circle cx="56" cy="134" r="14" fill="#2563EB"/>
+  <text x="56" y="139.5" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">1</text>
+  <rect x="88" y="110" width="680" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="123" cy="134" r="18" fill="#DBEAFE"/>
+  <use href="#i-search" x="111" y="122" width="24" height="24" color="#2563EB"/>
+  <text x="156" y="131" font-size="17" font-weight="700" fill="#0F172A">Cell search</text>
+  <text x="156" y="149" font-size="15" fill="#475569">Scans for the synchronization signals that cells broadcast.</text>
+
+  <!-- 2 -->
+  <circle cx="56" cy="190" r="14" fill="#2563EB"/>
+  <text x="56" y="195.5" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">2</text>
+  <rect x="88" y="166" width="680" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="123" cy="190" r="18" fill="#DBEAFE"/>
+  <use href="#i-tower" x="111" y="178" width="24" height="24" color="#2563EB"/>
+  <text x="156" y="187" font-size="17" font-weight="700" fill="#0F172A">Read the broadcast information</text>
+  <text x="156" y="205" font-size="15" fill="#475569">Decodes which carrier owns the cell and how a phone asks to join.</text>
+
+  <!-- 3 -->
+  <circle cx="56" cy="246" r="14" fill="#2563EB"/>
+  <text x="56" y="251.5" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">3</text>
+  <rect x="88" y="222" width="680" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="123" cy="246" r="18" fill="#DBEAFE"/>
+  <use href="#i-arrows" x="111" y="234" width="24" height="24" color="#2563EB"/>
+  <text x="156" y="243" font-size="17" font-weight="700" fill="#0F172A">Random access</text>
+  <text x="156" y="261" font-size="15" fill="#475569">A short request on a shared channel; the tower assigns temporary resources.</text>
+
+  <!-- 4 -->
+  <circle cx="56" cy="302" r="14" fill="#2563EB"/>
+  <text x="56" y="307.5" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">4</text>
+  <rect x="88" y="278" width="680" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="123" cy="302" r="18" fill="#DBEAFE"/>
+  <use href="#i-lock" x="111" y="290" width="24" height="24" color="#2563EB"/>
+  <text x="156" y="299" font-size="17" font-weight="700" fill="#0F172A">Connection setup and authentication</text>
+  <text x="156" y="317" font-size="15" fill="#475569">The SIM answers the network's challenge; radio encryption keys are derived.</text>
+
+  <!-- 5 -->
+  <circle cx="56" cy="358" r="14" fill="#2563EB"/>
+  <text x="56" y="363.5" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">5</text>
+  <rect x="88" y="334" width="680" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="123" cy="358" r="18" fill="#DBEAFE"/>
+  <use href="#i-globe" x="111" y="346" width="24" height="24" color="#2563EB"/>
+  <text x="156" y="355" font-size="17" font-weight="700" fill="#0F172A">Data session</text>
+  <text x="156" y="373" font-size="15" fill="#475569">An IP address and a route to the internet, usually under an APN.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Simplified sequence, all run by the baseband</text>
+</svg>

@@ -1,6 +1,6 @@
 ---
 title: "LTE vs 5G Explained: Bands, Channel Width and Real Speed"
-description: "What LTE and 5G NR actually change, why the 5G icon does not promise speed, and how channel width and modulation set a peak rate, with the arithmetic shown."
+description: "What LTE and 5G NR change, why the 5G icon does not promise speed, and how channel width and modulation set a peak rate, with the arithmetic shown."
 topic: "phones-as-modems"
 order: 2
 publishDate: 2026-10-23
@@ -13,23 +13,23 @@ related:
   - "wifi-channels-and-channel-width"
 ---
 
-LTE (Long-Term Evolution) is the fourth-generation cellular standard, and 5G NR (New Radio) is the fifth. Both do the same basic job: they move data between your phone and a cell tower using licensed radio spectrum. 5G adds wider channels, new frequency ranges, a more flexible timing structure and a new core network, but the speed you see on a given day still comes down to the same few physical limits.
+LTE (Long-Term Evolution) is the cellular standard marketed as fourth generation (4G), and 5G NR (New Radio) is the fifth generation. Both do the same basic job: they move data between your phone and a cell tower using licensed radio spectrum. 5G adds wider channels, new frequency ranges, a more flexible timing structure and a new core network, but the speed you see on a given day still comes down to the same few physical limits.
 
 **Short answer:** the "5G" icon on your status bar only tells you which radio technology your phone is attached to. Your speed is set by which frequency band the tower uses, how wide a slice of it you are given, how clean your signal is, how many other people share that tower, and how many antennas and data streams your phone and the tower can use together. A narrow low-band 5G channel can be slower than a well-aggregated LTE connection.
 
 ## What LTE and 5G NR have in common
 
-Both standards are written by 3GPP (the 3rd Generation Partnership Project), and both use OFDM (orthogonal frequency-division multiplexing), the same idea that [Wi-Fi uses](/blog/how-wifi-works/): the channel is split into many narrow subcarriers, and each carries a slice of the data. The tower, called a base station, schedules who gets which subcarriers and when, in small time slots. Unlike Wi-Fi, where devices listen and take turns on their own, a cellular tower is in charge. Your phone does not decide when to transmit; it asks, and the tower grants.
+Both standards are written by 3GPP (the 3rd Generation Partnership Project), and both build their downlink on OFDM (orthogonal frequency-division multiplexing), the same idea that [Wi-Fi uses](/blog/how-wifi-works/): the channel is split into many narrow subcarriers, and each carries a slice of the data. (LTE's uplink uses a close variant called SC-FDMA.) The tower, called a base station, schedules who gets which subcarriers and when, in small time slots. Unlike Wi-Fi, where devices listen and take turns on their own, a cellular tower is in charge. Your phone does not decide when to transmit; it asks, and the tower grants.
 
 The work of talking to the tower happens in the phone's modem, which we describe in [what a phone modem (baseband) is](/blog/what-is-a-phone-modem-baseband/). Everything in this article ultimately limits what that modem can deliver to the rest of the phone.
 
-## What 5G NR actually adds
+## What 5G NR adds
 
 **More spectrum and wider channels.** An LTE carrier tops out at 20 MHz wide. According to the [3GPP 5G overview](https://www.3gpp.org/technologies/5g-system-overview), NR carriers can be up to 100 MHz wide in the ranges below 6 GHz and up to 400 MHz wide above 6 GHz. Wider channels carry more subcarriers, so more data per second.
 
-**Flexible timing.** LTE has one subcarrier spacing, 15 kHz, which gives a time slot of 1 millisecond. NR allows 15, 30, 60 and 120 kHz spacings. Wider spacing means shorter symbols and shorter slots: 0.5 ms at 30 kHz and 0.125 ms at 120 kHz. Shorter slots let the tower schedule data sooner, which is one source of NR's lower latency.
+**Flexible timing.** LTE uses a 15 kHz subcarrier spacing and schedules data in 1 millisecond subframes. NR allows spacings from 15 kHz up to 120 kHz for data. A slot always holds 14 symbols, so wider spacing means shorter symbols and shorter slots: 1 ms at 15 kHz, 0.5 ms at 30 kHz and 0.125 ms at 120 kHz. Shorter slots let the tower schedule data sooner, which is one source of NR's lower latency.
 
-**New frequency ranges.** NR works in two broad ranges that the specifications name FR1 and FR2 (frequency range 1 and 2). FR1 covers the traditional cellular bands up to roughly 7 GHz. FR2 covers millimeter wave, roughly 24 to 52 GHz.
+**New frequency ranges.** NR works in two broad ranges that the specifications name FR1 and FR2 (frequency range 1 and 2). FR1 covers the traditional cellular bands up to roughly 7 GHz. FR2 covers millimeter wave, starting at roughly 24 GHz.
 
 **A new core network.** Behind the towers, 5G can use a new core network built for it. That matters for features such as network slicing and lower latency, and it is where standalone 5G comes in, discussed below.
 
@@ -43,9 +43,12 @@ Radio behaves differently at different frequencies, and cellular networks use al
 | Mid band | About 1 to 6 GHz | A balance of reach and capacity. Wider channels (up to 100 MHz for NR) make this the main source of fast 5G in many countries. |
 | High band (mmWave) | Roughly 24 GHz and above | Very wide channels and very high peak rates, but short range and easily blocked by walls, foliage, windows and even a hand. |
 
-The same pattern appears in [Wi-Fi bands](/blog/wifi-bands-2-4-5-6-ghz/): the higher the frequency, the more room there is for wide channels, and the less well the signal passes through obstacles. Cellular networks simply apply it over kilometers instead of rooms.
+The same pattern appears in [Wi-Fi bands](/blog/wifi-bands-2-4-5-6-ghz/): the higher the frequency, the more room there is for wide channels, and the less well the signal passes through obstacles. Cellular networks apply the same rule over kilometers instead of rooms.
 
 The "5G" on your screen can therefore mean very different things. It may be a low-band NR carrier sharing the same narrow spectrum as the LTE network it replaced, a mid-band carrier 100 MHz wide, or a mmWave link that works only on one street. Many carriers use different status-bar icons for these cases, and the icon wording is a carrier choice, not a technical standard.
+
+![Three cards compare low band, mid band and high band millimeter wave 5G by frequency, reach and peak speed: low band reaches far but is modest, mid band balances both, and high band is fastest but short range.](./images/figure.svg)
+*Low, mid and high band can all show a 5G icon, but they trade reach against speed very differently.*
 
 ## Carrier aggregation: bonding channels together
 
@@ -64,26 +67,26 @@ For a phone user, the practical difference is mostly invisible except in two way
 
 ## A worked example: how channel width and modulation set a peak rate
 
-The 3GPP capability specification, [TS 38.306](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3193), gives an approximate formula for the peak data rate of a phone. We can follow it step by step with one set of values: a single NR carrier in FR1, 100 MHz wide, with 30 kHz subcarrier spacing.
+Clause 4.1.2 of the 3GPP capability specification, [TS 38.306](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3193), gives an approximate formula for the maximum data rate a phone's capabilities imply. We can follow it step by step with one set of values: a single NR carrier in FR1, 100 MHz wide, with 30 kHz subcarrier spacing, one layer, 256-QAM and the formula's scaling factor left at 1 (the specification allows lower values for some phones).
 
-1. **Resource blocks.** For 100 MHz at 30 kHz spacing, the 3GPP tables allow 273 *resource blocks*, each 12 subcarriers wide. That is 273 x 12 = 3,276 subcarriers.
+1. **Resource blocks.** For 100 MHz at 30 kHz spacing, the table of maximum transmission bandwidths in [TS 38.101-1](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3283) (Table 5.3.2-1) lists 273 *resource blocks*, each 12 subcarriers wide. That is 273 x 12 = 3,276 subcarriers.
 2. **Symbols per second.** A slot holds 14 OFDM symbols. At 30 kHz spacing there are 2 slots per millisecond, so 2,000 slots per second. That gives 14 x 2,000 = 28,000 symbols per second on every subcarrier.
 3. **Resource elements per second.** 3,276 x 28,000 = 91,728,000. Each subcarrier-symbol pair, called a resource element, can carry one modulation symbol.
 4. **Bits per symbol.** With 256-QAM (quadrature amplitude modulation with 256 symbols, the same idea [Wi-Fi uses](/blog/how-wifi-works/)), each symbol carries 8 bits. 91,728,000 x 8 = 733.8 million bits per second before error correction.
-5. **Coding rate.** Some bits are error-correction overhead. The specification caps the code rate at 948/1024, about 0.926. 733.8 x 0.926 = about 679.4 Mbps.
-6. **Control and reference overhead.** The specification uses a 14% overhead for downlink in FR1 for signals that carry no user data. 679.4 x 0.86 = about 584 Mbps.
+5. **Coding rate.** Some bits are error-correction overhead. The specification caps the code rate at 948/1024, about 0.926. 733.8 x 948/1024 = about 679.4 Mbps.
+6. **Control and reference overhead.** The specification sets an overhead of 0.14 (14%) for downlink in FR1, a deduction for signals that carry no user data. 679.4 x 0.86 = about 584 Mbps.
 
-That is the peak for **one spatial layer**, meaning one independent stream. With MIMO (multiple antennas), a phone with four layers could in theory reach 4 x 584 = about 2,337 Mbps, and with two layers about 1,168 Mbps.
+That is the ceiling for **one spatial layer**, meaning one independent stream. With MIMO (multiple antennas), a phone with four layers could in theory reach 4 x 584.25 = about 2,337 Mbps, and with two layers 2 x 584.25 = about 1,169 Mbps.
 
-Now change one thing. A 20 MHz carrier at 15 kHz spacing has 106 resource blocks and 14,000 symbols per second. The same arithmetic gives 106 x 12 x 14,000 = 17.8 million resource elements per second, which comes to about 113 Mbps per layer. A fifth of the bandwidth gives about a fifth of the rate, because the number of subcarriers is what scales.
+Now change one thing. A 20 MHz carrier at 15 kHz spacing has 106 resource blocks (also from Table 5.3.2-1) and 14,000 symbols per second, because a 15 kHz slot lasts 1 ms. The same arithmetic gives 106 x 12 x 14,000 = 17.8 million resource elements per second, which comes to about 113 Mbps per layer. A fifth of the bandwidth gives about a fifth of the rate. The rate follows the occupied spectrum, meaning the number of subcarriers times their spacing, not the subcarrier count alone: the 20 MHz carrier has 1,272 subcarriers against 3,276, and each sends half as many symbols per second.
 
 Three caveats keep this honest:
 
-- It is a ceiling on paper, assuming a perfect signal and the whole channel dedicated to one phone for downlink.
+- It is a ceiling on paper, assuming a perfect signal and the whole channel dedicated to one phone. The specification uses it to define what a phone must be able to handle, not to promise what a network delivers.
 - Mid-band 5G often uses *TDD* (time-division duplexing), where the same channel alternates between downlink and uplink. The formula does not capture the share of time reserved for uplink, so average downlink is lower.
 - Real conditions rarely allow the top modulation. When your signal is weaker, the tower lowers the modulation and code rate automatically, and the rate falls.
 
-## What really decides the speed you see
+## What decides the speed you see
 
 The peak is rarely the experience. In practice these factors combine:
 
@@ -102,7 +105,7 @@ Android exposes some of these measurements to apps; for example, the [CellSignal
 
 Latency (the delay before data starts to arrive) depends on more than the radio generation. Short slots, scheduling and, on SA networks, a simpler path through the core can help NR beat LTE. But a request still travels from the tower to the carrier's core and then across the internet to a server, so the number you see is often dominated by the route, not the radio.
 
-## What this means for sending files between your own devices
+## Where cellular speed matters for file transfers, and where it does not
 
 Cellular speed matters least when you transfer files between devices you own. If both devices are on the same Wi-Fi network, the data never touches the cell tower, so your 5G or LTE speed is irrelevant. That is why moving a large video between two phones in the same room over local Wi-Fi is usually faster than uploading it over cellular and downloading it again.
 
@@ -126,7 +129,7 @@ Different phones support different bands and carrier aggregation combinations, a
 
 ### Does millimeter wave work indoors?
 
-Usually not well. mmWave signals are easily blocked by walls, windows and foliage, so it generally works only in line of sight with a nearby small cell. Many 5G phones sold outside certain countries do not have mmWave hardware at all.
+Usually not well. mmWave signals are easily blocked by walls, windows and foliage, so it generally works only in line of sight with a nearby small cell. Many 5G phones, including some regional versions of popular models, are sold without mmWave hardware at all.
 
 ### Is LTE going away?
 
@@ -145,5 +148,6 @@ Not soon. Many networks still rely on LTE for coverage and for the NSA anchor, a
 
 - 3GPP: [5G System Overview](https://www.3gpp.org/technologies/5g-system-overview)
 - 3GPP: [TS 38.306, NR User Equipment radio access capabilities](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3193)
+- 3GPP: [TS 38.101-1, NR User Equipment radio transmission and reception, Range 1 Standalone](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3283)
 - Rohde & Schwarz: [LTE-Advanced carrier aggregation](https://www.rohde-schwarz.com/us/solutions/wireless-communications-testing/wireless-standards/lte-lte-a-lte-a-pro/lte-advanced-carrier-aggregation/lte_advanced_carrier_aggregation_73018.html)
 - Android Developers: [CellSignalStrengthLte](https://developer.android.com/reference/android/telephony/CellSignalStrengthLte)

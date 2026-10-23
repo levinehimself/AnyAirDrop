@@ -15,7 +15,7 @@ related:
 
 A Wi-Fi band is a block of radio frequencies, and the frequency you use trades range for capacity. 2.4 GHz reaches farthest and through the most walls but is crowded and slow. 5 GHz has more room and more speed with shorter reach. 6 GHz has the most room and the cleanest air, but it reaches least far and only works with newer devices.
 
-**Short answer:** higher frequencies lose more signal per meter and get absorbed more by walls, so range falls from 2.4 GHz to 5 GHz to 6 GHz. The same physics that shortens range also lets higher bands hold wider channels and fewer neighbors. Which band is best depends on distance, obstacles and what your devices support.
+**Short answer:** higher frequencies lose more signal over the same distance and are blocked more by walls, so range falls from 2.4 GHz to 5 GHz to 6 GHz. The higher bands also contain more spectrum, which leaves room for wider channels and fewer neighbors. Which band is best depends on distance, obstacles and what your devices support.
 
 ## The three bands at a glance
 
@@ -24,10 +24,10 @@ A Wi-Fi band is a block of radio frequencies, and the frequency you use trades r
 | Frequency range | 2.400 to 2.4835 GHz | roughly 5.15 to 5.85 GHz | 5.925 to 7.125 GHz where permitted |
 | Wavelength | about 12.5 cm | about 6 cm | about 5 cm |
 | Width of the band | about 83 MHz | several hundred MHz in pieces | up to 1,200 MHz (US) |
-| Non-overlapping 20 MHz channels | 3 in the US | roughly two dozen, varies by country | 59 in the US |
+| Non-overlapping 20 MHz channels | 3 in the US | roughly two dozen, varies by country | 59 in the US (low-power indoor devices) |
 | Needs | any Wi-Fi device | Wi-Fi 4 and newer, plus 802.11a | Wi-Fi 6E or Wi-Fi 7 |
 
-Exact channel counts depend on the country. Rules differ: the United States opened the whole 1,200 MHz of 6 GHz, while some other regions opened only part of it. The [Wi-Fi Alliance's 6E announcement](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program) notes that several countries have taken different decisions. How channels are laid out inside each band is the subject of [Wi-Fi channels and channel width](/blog/wifi-channels-and-channel-width/).
+Exact channel counts depend on the country, and in 6 GHz also on the power mode described below. Rules differ: the United States opened the whole 1,200 MHz of 6 GHz, while some other regions opened only part of it. The [Wi-Fi Alliance's 6E announcement](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program) lists countries that had made 6 GHz available to Wi-Fi in January 2021 and others that were still moving toward it. How channels are laid out inside each band is the subject of [Wi-Fi channels and channel width](/blog/wifi-channels-and-channel-width/).
 
 ## Why a higher frequency means less range
 
@@ -57,14 +57,14 @@ You can turn the 6.4 dB into distance. Free-space loss grows by 20 dB for every 
 
 Indoors, free-space loss is only the start. Every wall adds its own loss by absorbing, reflecting and scattering the signal, and that added loss is generally larger at higher frequencies. Short waves also bend around corners (*diffraction*) less than long ones, so shadow zones behind obstacles are deeper at 5 and 6 GHz.
 
-Materials matter more than the band. Drywall and wood cost little. Brick, concrete, metal foil insulation, mirrors and water (a fish tank, a bathroom full of pipes, a crowd) cost much more. Microsoft's [Wi-Fi and your home layout](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/wi-fi-and-your-home-layout) page says the same in plain terms: 2.4 GHz goes through obstacles better, 5 GHz reaches less far but is less congested. Published measurements of loss per wall vary widely with construction, so any single "dB per wall" figure should be treated skeptically.
+Materials matter more than the band. Drywall and wood cost little. Brick, concrete, metal foil insulation, mirrors and water (a fish tank, a bathroom full of pipes, a crowd) cost much more. Microsoft's [Wi-Fi and your home layout](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/wi-fi-and-your-home-layout) page says the same in plain terms: 2.4 GHz goes through obstacles better, 5 GHz reaches less far but is less congested, and 6 GHz has the shortest range and the least congestion. Published measurements of loss per wall vary widely with construction, so any single "dB per wall" figure should be treated skeptically.
 
 ## Interference: who else is on your band
 
 Signal strength is half the story. The other half is noise from anything else transmitting on the same frequencies.
 
 - **2.4 GHz** is license-free for far more than Wi-Fi. Microwave ovens operate near 2.45 GHz, and the leakage from a running oven can degrade nearby Wi-Fi. Bluetooth uses the same band. Classic Bluetooth hops across 79 channels of 1 MHz each and is designed to avoid busy ones, but a busy Bluetooth environment still adds noise. Cordless phones, baby monitors and some smart-home radios also use it. With only three non-overlapping channels in the US, neighboring Wi-Fi networks collide often.
-- **5 GHz** has no microwave or Bluetooth interference, and many more channels, but part of it is shared with radar (see below).
+- **5 GHz** is not affected by microwave ovens or Bluetooth, and has many more channels, but part of it is shared with radar (see below).
 - **6 GHz** is, for now, the quietest band, because only newer devices use it. As adoption grows, it will fill up, though there is much more room.
 
 ## 5 GHz and radar: what DFS does
@@ -81,11 +81,14 @@ Those figures are the US ones; other regions, such as Europe, have different tim
 
 6 GHz is not a drop-in speed-up. Using it requires several things:
 
-- **Devices that support it.** Only Wi-Fi 6E and Wi-Fi 7 devices can use the band. Phones, laptops and routers from before that cannot see a 6 GHz network at all. If your device does not list 6 GHz, it simply will not connect there. [Wi-Fi standards explained](/blog/wifi-standards-explained/) shows which generations qualify.
-- **Modern security.** Under Wi-Fi Alliance certification, 6 GHz networks use WPA3 (or the Enhanced Open mode for open networks). Older WPA2-only devices cannot join even if the radio could. [WPA2 and WPA3 explained](/blog/wifi-security-wpa2-wpa3-explained/) covers why.
-- **Compliance with power-mode rules.** Regulators protect existing licensed users of the band, such as fixed microwave links. In the US there are three modes, described here at a high level. *Low-power indoor* devices may use the whole band but only inside buildings and at reduced power. *Standard-power* devices may use only parts of it and must ask an *automated frequency coordination* (AFC) service, a database that tells them which channels and power levels are safe at their location. *Very-low-power* devices can be used anywhere at even lower power. Most home routers run in low-power indoor mode. Other countries have their own rules and sometimes open less spectrum.
+- **Devices that support it.** Only Wi-Fi 6E and Wi-Fi 7 devices can use the band. Phones, laptops and routers from before that cannot see a 6 GHz network at all. If your device does not list 6 GHz, it will not connect there. [Wi-Fi standards explained](/blog/wifi-standards-explained/) shows which generations qualify.
+- **Modern security.** Under Wi-Fi Alliance certification, 6 GHz networks must use WPA3, or Enhanced Open for open networks; vendor documentation such as [Cisco Meraki's WPA3 guide](https://documentation.meraki.com/MR/Encryption_and_Authentication/WPA3_Encryption_and_Configuration_Guide) states that WPA2 is not permitted in 6 GHz. Older WPA2-only devices cannot join even if the radio could. [WPA2 and WPA3 explained](/blog/wifi-security-wpa2-wpa3-explained/) covers why.
+- **Compliance with power-mode rules.** Regulators protect existing licensed users of the band, such as fixed microwave links. In the US there are three device classes, described here at a high level. *Low-power indoor* devices may use the whole band but only inside buildings and at reduced power. *Standard-power* devices may use only parts of the band (5.925 to 6.425 GHz and 6.525 to 6.875 GHz) and must ask an *automated frequency coordination* (AFC) service, a database that tells them which channels and power levels are safe at their location. Both classes are described in the FCC's [2020 rulemaking notice](https://www.govinfo.gov/content/pkg/FR-2020-05-28/pdf/2020-11320.pdf). *Very-low-power* devices, which the FCC [added in 2023](https://www.benton.org/headlines/fcc-permits-very-low-power-device-operations-6-ghz-band), run at much lower power and may be used indoors or outdoors without AFC. Most home routers run in low-power indoor mode. Other countries have their own rules and sometimes open less spectrum.
 
-Because of these limits, 6 GHz delivers its best results across one room or two, not through several concrete walls.
+Because 6 GHz has the shortest range of the three bands, it works best when you are close to the router; Microsoft's page says the same.
+
+![Decision guide listing for 2.4, 5 and 6 GHz when each band is the best choice and what to watch for: crowding on 2.4, radar rules on 5, short reach and WPA3 on 6](./images/figure.svg)
+*Choose by distance, walls and device support first, because a strong, clean signal beats a higher band with a weak one.*
 
 ## Band steering, and one SSID or two
 
@@ -103,11 +106,11 @@ There is a trade-off in naming:
 
 A practical split many people use is one name for 5 and 6 GHz capable devices and a separate 2.4 GHz name for old smart-home gadgets that only speak 2.4 GHz. Whatever you choose, all bands normally join the same local network.
 
-## What this means when you send files between your own devices
+## Phone on 2.4 GHz, laptop on 5 GHz: which band sets the pace
 
 Your phone and your laptop can be on different bands of the same router and still be on the same local network. The router bridges between them, so a transfer works, but the pair is only as fast as the weaker connection. If your phone has attached itself to 2.4 GHz at the far end of the house while your laptop is on 5 GHz, the phone's link sets the pace. Moving closer to the router, or forcing the phone onto 5 GHz by choosing a separate network name, often changes the result more than any other tweak.
 
-6 GHz adds a wrinkle. A device on a 6 GHz-only name and a device that cannot use 6 GHz may end up on different networks if the router puts 6 GHz on its own SSID. If two devices on the "same Wi-Fi" cannot see each other, check that they are on the same network name and not a guest network; [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/) explains why guest networks block device-to-device traffic, and [what to do when devices cannot find each other](/blog/devices-cant-find-each-other-troubleshooting/) gives a checklist. To see how band and signal strength turn into real transfer speeds, read [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/).
+6 GHz adds a wrinkle. A router may give 6 GHz its own network name, and a device that cannot use 6 GHz will never see that name, so it has to join a different one. Devices on different names of the same router are normally still on one local network, but a guest network is the exception. If two devices on the "same Wi-Fi" cannot see each other, check that neither is on a guest network; [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/) explains why guest networks block device-to-device traffic, and [what to do when devices cannot find each other](/blog/devices-cant-find-each-other-troubleshooting/) gives a checklist. To see how band and signal strength turn into real transfer speeds, read [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/).
 
 ## Common questions
 
@@ -144,4 +147,6 @@ They can. Ovens operate near 2.45 GHz, and a running one can leak noise into nea
 - Wi-Fi Alliance: [Wi-Fi Alliance delivers Wi-Fi 6E certification program](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program)
 - Microsoft Support: [Wi-Fi and your home layout](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/wi-fi-and-your-home-layout)
 - US Federal Register: [Unlicensed National Information Infrastructure (U-NII) Devices in the 5 GHz Band; Correcting Amendments](https://www.govinfo.gov/content/pkg/FR-2014-09-24/html/2014-22677.htm)
-- Wi-Fi Alliance: [Wi-Fi (MAC/PHY) features](https://www.wi-fi.org/wi-fi-macphy)
+- US Federal Register: [Unlicensed Use of the 6 GHz Band, further notice of proposed rulemaking (FCC 20-51)](https://www.govinfo.gov/content/pkg/FR-2020-05-28/pdf/2020-11320.pdf)
+- Cisco Meraki: [WPA3 Encryption and Configuration Guide](https://documentation.meraki.com/MR/Encryption_and_Authentication/WPA3_Encryption_and_Configuration_Guide)
+- Benton Institute: [FCC Permits Very Low Power Device Operations in 6 GHz Band](https://www.benton.org/headlines/fcc-permits-very-low-power-device-operations-6-ghz-band)

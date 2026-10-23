@@ -38,7 +38,7 @@ Because there is no central registry, two devices might choose the same name. RF
 3. **Announce.** The device sends at least two unsolicited responses, one second apart, telling the network the name now exists so that caches are updated.
 4. **Conflict.** If another device does answer, the newcomer picks a different name, which is why you sometimes see "printer-2.local".
 
-Claiming a name therefore takes roughly three quarters of a second: three probes at 250 ms spacing is 3 × 250 ms = 750 ms.
+Claiming a name therefore takes roughly three quarters of a second: RFC 6762 has the second probe 250 ms after the first, the third 250 ms after that, and a final 250 ms wait for conflicts, which is 3 × 250 ms = 750 ms. The device also waits a random 0 to 250 ms before the first probe, so that machines powered on together do not all probe at once.
 
 ## Layer two: DNS-SD describes services
 
@@ -71,6 +71,9 @@ office-printer.local.             A    192.168.1.42
 
 Reading it from the top: the service type has one instance, called Office Printer; that instance is reachable at the host `office-printer.local` on port 631 (a port used for IPP); some extra details follow; and the host's IPv4 address is 192.168.1.42. The first two numbers on the SRV line are priority and weight, both zero when there is only one choice. The laptop can now open a TCP connection to 192.168.1.42 port 631 with no manual setup.
 
+![A dark panel lists the four records in a printer's reply: PTR gives Office Printer, SRV gives office-printer.local on port 631, TXT gives extra details, and A gives 192.168.1.42. Arrows pair each with the question it answers.](./images/figure.svg)
+*Read from the top, the reply says who offers the service, where to connect, what else to know and which address to use.*
+
 Several details keep the multicast chatter manageable. A querier can include records it already knows so responders do not repeat them (known-answer suppression). RFC 6762 gives host-name records a default lifetime of 120 seconds and most other records 75 minutes (4,500 seconds), so devices re-ask only occasionally. A device that is leaving can announce that its records are expiring, so lists update when something is switched off.
 
 ## Bonjour, Avahi and Android's service discovery
@@ -85,7 +88,7 @@ Because they follow the same standards, a Mac, a Linux box and an Android app ca
 
 ## Why it stops at the edge of the network
 
-The multicast addresses used by mDNS are link-local: the address range 224.0.0.0/24 is reserved for traffic that is meant to stay on one network segment, and routers do not forward it. RFC 6762 adds a second safeguard, since responses are supposed to be sent with an IP TTL of 255, and some queriers discard packets with any other TTL. A router that did forward a packet would reduce its TTL, so it would fail that check.
+The multicast addresses used by mDNS are link-local. [RFC 5771](https://www.rfc-editor.org/rfc/rfc5771) describes the block 224.0.0.0/24, which contains 224.0.0.251, as used for protocol control traffic that is not forwarded off the link. RFC 6762 adds a second safeguard: responses should be sent with an IP TTL of 255, because some older queriers check the TTL to confirm that a packet originated on the local link, and a packet that crossed a router would arrive with a lower TTL. The RFC also says a host that sends a query to a link-local address must accept only responses that originate from the local link.
 
 That behavior is deliberate, but it causes familiar problems:
 
@@ -111,9 +114,9 @@ SSDP (Simple Service Discovery Protocol) is defined in the UPnP Device Architect
 
 ## Where file-transfer tools use it
 
-Nearby-sharing systems use these building blocks. The USENIX Security 2019 study of Apple's AirDrop found that the sender uses mDNS and DNS-SD over the direct Wi-Fi link to look for AirDrop service instances; [how Apple's AirDrop works](/blog/how-airdrop-works/) follows the whole sequence. One community reverse-engineering effort documents Quick Share advertising an mDNS service when two Android devices are on the same Wi-Fi network, as covered in [how Quick Share works](/blog/how-quick-share-works/).
+Nearby-sharing systems use these building blocks. The USENIX Security 2019 study of Apple's AirDrop found that the sender uses mDNS and DNS-SD over the direct Wi-Fi link to look for AirDrop service instances; [how Apple's AirDrop works](/blog/how-airdrop-works/) follows the whole sequence. One community reverse-engineering effort, the NearDrop notes, documents Quick Share advertising an mDNS service when two devices are on the same Wi-Fi network, as covered in [how Quick Share works](/blog/how-quick-share-works/).
 
-## What this means for sending files between your own devices
+## Why discovery fails on guest networks, and what replaces it
 
 Discovery is the first half of every transfer: before bytes can move, one device has to learn the other's address and port. On a single home Wi-Fi network without isolation, mDNS makes that effortless. On a guest network, a hotel network or a work network with separated segments, it quietly fails, and "I can't see my other device" is the usual symptom.
 
@@ -154,6 +157,7 @@ The base protocol has no authentication, so on an untrusted network anyone on th
 
 - IETF: [RFC 6762, Multicast DNS](https://www.rfc-editor.org/rfc/rfc6762)
 - IETF: [RFC 6763, DNS-Based Service Discovery](https://www.rfc-editor.org/rfc/rfc6763)
+- IETF: [RFC 5771, IANA Guidelines for IPv4 Multicast Address Assignments](https://www.rfc-editor.org/rfc/rfc5771)
 - IETF: [RFC 4795, Link-Local Multicast Name Resolution (LLMNR)](https://www.rfc-editor.org/rfc/rfc4795)
 - Open Connectivity Foundation: [UPnP Device Architecture 2.0](https://openconnectivity.org/upnp-specs/UPnP-arch-DeviceArchitecture-v2.0-20200417.pdf)
 - Apple Developer: [Bonjour](https://developer.apple.com/bonjour/)

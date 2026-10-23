@@ -19,7 +19,7 @@ A Wi-Fi channel is a slice of a band with a center frequency and a width, and yo
 
 ## What a channel is
 
-A band such as 2.4 GHz is a continuous stretch of spectrum. A *channel* is a defined piece of it, identified by a number that maps to a *center frequency*, and a *width* that says how much spectrum around that center it occupies. The main widths are 20, 40, 80, 160 and, in Wi-Fi 7, 320 MHz. Everything on a channel is shared airtime, as [how Wi-Fi works](/blog/how-wifi-works/) describes: if two nearby networks use the same channel, their devices take turns.
+A band such as 2.4 GHz is a continuous stretch of spectrum. A *channel* is a defined piece of it, identified by a number that maps to a *center frequency*, and a *width* that says how much spectrum around that center it occupies. The main widths are 20, 40, 80, 160 and, in Wi-Fi 7, [320 MHz](https://www.wi-fi.org/wi-fi-macphy). Everything on a channel is shared airtime, as [how Wi-Fi works](/blog/how-wifi-works/) describes: if two nearby networks use the same channel, their devices take turns.
 
 The channel number is just a shorthand. It is the center frequency minus a band-specific base, divided by 5 MHz.
 
@@ -47,7 +47,7 @@ Adjacent channel numbers are 5 MHz apart, yet each channel needs about 20 MHz (2
 
 There is a 5 MHz gap between each pair. In regions with channel 13 you could squeeze in four channels (1, 5, 9, 13) if you accept channels touching edge to edge, but the 1, 6, 11 pattern is the accepted default because it leaves a margin.
 
-The practical consequence is surprising. If neighbors are on 1 and 11 and you pick channel 3 or 8 because it looks empty, you now overlap one or both of them partially. As the next sections explain, that is usually worse than sharing a channel with one of them directly.
+The practical consequence is surprising. If neighbors are on 1 and 11 and you pick channel 3 or 8 because it looks empty, you now overlap one or both of them partially. As the section on co-channel and adjacent-channel interference below explains, that is usually worse than sharing a channel with one of them directly.
 
 ## 5 GHz: 20 MHz steps, and channels bonded in blocks
 
@@ -62,19 +62,19 @@ In the United States, the 20 MHz channels fall in four groups:
 | Upper-middle | 100 to 144 | Radar rules (DFS) apply |
 | Upper | 149 to 165 | No radar rules |
 
-That is up to 25 channels at 20 MHz, fewer in other countries. [Wi-Fi bands compared](/blog/wifi-bands-2-4-5-6-ghz/) explains the radar rules: a router that uses *dynamic frequency selection* (DFS) must check for and yield to radar.
+That is up to 25 channels at 20 MHz, fewer in other countries. The count leaves out the newer 5.850 to 5.895 GHz range (channels 169 to 177), which not all equipment supports. [Wi-Fi bands compared](/blog/wifi-bands-2-4-5-6-ghz/) explains the radar rules: a router that uses *dynamic frequency selection* (DFS) must check for and yield to radar.
 
-Wider channels are made by *bonding* neighboring 20 MHz channels into aligned blocks. Channels 36, 40, 44 and 48 together form one 80 MHz channel. Channels 36 to 64 form a 160 MHz channel. The US layout has roughly twelve 40 MHz, six 80 MHz and two 160 MHz channels. Notice what that means: if your router wants 160 MHz on 5 GHz, there are only two places it can go, and one of them needs DFS.
+Wider channels are made by *bonding* neighboring 20 MHz channels into aligned blocks. Channels 36, 40, 44 and 48 together form one 80 MHz channel. Channels 36 to 64 form a 160 MHz channel. Counting the layout above, the US has twelve 40 MHz, six 80 MHz and two 160 MHz channels. Notice what that means: if your router wants 160 MHz on 5 GHz, there are only two places it can go (36 to 64 and 100 to 128), and both include radar-regulated DFS channels.
 
 ## 6 GHz: much more room
 
-On 6 GHz, the channel number is (frequency in MHz − 5950) ÷ 5, so channel 1 is 5955 MHz and the 20 MHz channels are numbered 1, 5, 9 and so on up to 233. In the US that is 59 channels at 20 MHz, 29 at 40 MHz, 14 at 80 MHz and 7 at 160 MHz. The [Wi-Fi Alliance's 6E announcement](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program) cites up to seven 160 MHz channels. Wi-Fi 7's 320 MHz width fits three times in the US allocation.
+On 6 GHz, the channel number is (frequency in MHz − 5950) ÷ 5, so channel 1 is 5955 MHz and the 20 MHz channels are numbered 1, 5, 9 and so on up to 233. For low-power indoor devices in the US, which covers most home routers, that is 59 channels at 20 MHz, 29 at 40 MHz, 14 at 80 MHz and 7 at 160 MHz. The [Wi-Fi Alliance's 6E announcement](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program) cites up to seven 160 MHz channels. Wi-Fi 7's 320 MHz width fits three times in the whole US allocation. Standard-power devices, which may use only part of the band, get fewer channels.
 
 This is the real benefit of 6 GHz for crowded buildings: even with wide channels, there are enough of them that neighbors can avoid each other.
 
 ## Why wider channels are faster
 
-Wi-Fi sends data on many narrow subcarriers (the OFDM technique explained in [how Wi-Fi works](/blog/how-wifi-works/)). A wider channel is simply more of them. In Wi-Fi 6 and Wi-Fi 7, each subcarrier is 78.125 kHz wide, and the number that carry data grows with width:
+Wi-Fi sends data on many narrow subcarriers (the OFDM technique explained in [how Wi-Fi works](/blog/how-wifi-works/)). A wider channel is more of them. In Wi-Fi 6 and Wi-Fi 7, each subcarrier is 78.125 kHz wide, and the number that carry data grows with width (Cisco's [Wi-Fi 6 white paper](https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html) gives the 980 data subcarriers of an 80 MHz channel):
 
 | Width | Data subcarriers | Wi-Fi 6 rate per stream (1024-QAM, rate 5/6) |
 | --- | --- | --- |
@@ -103,13 +103,16 @@ For 20 MHz, 10 × log10(20,000,000) = 73.0, so the noise floor is −174 + 73.0 
 | 160 MHz | −92 dBm |
 | 320 MHz | −89 dBm |
 
-These are ideal values; real receivers add their own noise. The point is the slope. The transmitter's total power limit does not rise with width, so the same signal is spread over more spectrum while the noise grows. The *signal-to-noise ratio* (SNR), the gap in dB between your signal and the noise, drops 3 dB per doubling.
+These are ideal values; real receivers add their own noise. The point is the slope. In practice a radio's total transmit power does not rise with width, so the same signal is spread over more spectrum while the noise grows. The *signal-to-noise ratio* (SNR), the gap in dB between your signal and the noise, drops 3 dB per doubling.
 
 A worked example: suppose a link has 30 dB of SNR on a 20 MHz channel. Going to 40 MHz leaves 27 dB, 80 MHz leaves 24 dB, and 160 MHz leaves 21 dB. The densest modulations, such as 1024-QAM, need a high SNR to decode reliably, so at the lower SNR the radio steps down to a less dense one. The exact SNR each modulation needs depends on the hardware, but the direction is fixed: the farther away you are, the less a very wide channel helps and the more it may hurt.
 
+![Four columns for 20, 40, 80 and 160 MHz channels: Wi-Fi 6 rate per stream roughly doubles from about 143 to 1,201 Mbps while an example link's signal-to-noise ratio falls from 30 to 21 dB](./images/figure.svg)
+*Each step up in width about doubles the speed on paper and costs 3 dB of signal-to-noise ratio, so the widest channel only pays off on a strong, clean link.*
+
 ### Fewer channels and more neighbors
 
-A wider channel is also harder to keep clean. At 80 MHz, four 20 MHz channels must be quiet. If a neighbor's network is active on any of them, the router can lose the ability to use the full width during those moments. Newer standards help: the receiver can fall back to a narrower width for a frame, and Wi-Fi 7 can use *preamble puncturing*, which skips a busy 20 MHz slice and uses the rest. Still, in a dense apartment block, a 40 or 80 MHz channel often performs as well as 160 MHz because it collides less.
+A wider channel is also harder to keep clean. At 80 MHz, four 20 MHz channels must be quiet. If a neighbor's network is active on any of them, the router can lose the ability to use the full width during those moments. Newer standards help: a transmission can fall back to a narrower width when part of the channel is busy, and Wi-Fi 7 can use *preamble puncturing*, which skips a busy 20 MHz slice and uses the rest. Still, in a dense apartment block, a 40 or 80 MHz channel often performs as well as 160 MHz because it collides less.
 
 On 2.4 GHz, 40 MHz is almost never wise. It takes roughly half the whole 83.5 MHz band, so it only works where no one else is around.
 
@@ -132,7 +135,7 @@ You can see the competition with a Wi-Fi scanner. The exact tool depends on your
 - On **Android**, scanner apps from the app store show channels, and some Wi-Fi settings screens show your own channel.
 - On **Linux**, `nmcli device wifi list` or `iw dev <interface> scan` print channels and signal.
 
-Read the result like this. Signal strength is shown in dBm (or as a percentage), where −40 is very strong and −80 is weak. Count the networks on each channel that are stronger than about −70 dBm, since those are the ones that make you wait. On 2.4 GHz, choose whichever of 1, 6 and 11 has the fewest strong neighbors. On 5 and 6 GHz, look for a block of channels with little traffic and consider 40 or 80 MHz if the neighborhood is dense. Most routers pick automatically at startup; a manual choice is worth trying when a scan shows one clear winner and your router keeps choosing a crowded one. Where your router's channel settings live varies by brand, so check its manual.
+Read the result like this. Signal strength is shown in dBm (or as a percentage), where −40 is very strong and −80 is weak. Count the networks on each channel. Any network your device hears above roughly −82 dBm can make it wait, and the strongest ones (a common cutoff is −70 dBm) are the main competition. On 2.4 GHz, choose whichever of 1, 6 and 11 has the fewest strong neighbors. On 5 and 6 GHz, look for a block of channels with little traffic and consider 40 or 80 MHz if the neighborhood is dense. Most routers pick automatically at startup; a manual choice is worth trying when a scan shows one clear winner and your router keeps choosing a crowded one. Where your router's channel settings live varies by brand, so check its manual.
 
 ## Channel choices when you move big files between your own devices
 
@@ -176,4 +179,4 @@ The router scans at startup (and on some models periodically) and picks the quie
 - Wi-Fi Alliance: [Wi-Fi Alliance delivers Wi-Fi 6E certification program](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program)
 - Wi-Fi Alliance: [Wi-Fi (MAC/PHY) features](https://www.wi-fi.org/wi-fi-macphy)
 - US Federal Register: [Unlicensed National Information Infrastructure (U-NII) Devices in the 5 GHz Band; Correcting Amendments](https://www.govinfo.gov/content/pkg/FR-2014-09-24/html/2014-22677.htm)
-- IEEE 802.11 Working Group: [Project overview](https://www.ieee802.org/11/)
+- Cisco: [IEEE 802.11ax: The Sixth Generation of Wi-Fi White Paper](https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html)

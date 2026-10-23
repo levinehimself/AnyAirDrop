@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>AWDL repeats a sequence of 16 windows in about 1.05 seconds, and in each window the one radio sits on either the router's channel or an AWDL channel</title>
+  <defs>
+    <symbol id="i-timer" viewBox="0 0 48 48"><circle cx="24" cy="27" r="15" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M19 5h10M24 27v-9M37 13l3 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 48 48"><path d="M24 6L44 40H4z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 18v11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34.5" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="800" cy="-20" r="60"/><circle cx="800" cy="-20" r="115"/><circle cx="800" cy="-20" r="170"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">LOCAL TRANSFER TECH · STEP BY STEP</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">AWDL splits one radio between two channels</text>
+
+  <!-- Timeline card -->
+  <rect x="32" y="108" width="736" height="182" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="60" y="132" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">ONE SEQUENCE</text>
+  <text x="494" y="130" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">16 windows × 64 time units ≈ 1.05 seconds<tspan font-size="14" font-weight="400" fill="#475569">  (1 unit = 1,024 µs)</tspan></text>
+  <path d="M244 148V141H744V148" fill="none" stroke="#CBD5E1" stroke-width="1.5"/>
+
+  <rect x="44" y="152" width="712" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="44" y="214" width="712" height="56" rx="12" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="60" y="176" font-size="15" font-weight="700" fill="#0F172A">Router's channel</text>
+  <text x="60" y="195" font-size="13" fill="#475569">your internet continues</text>
+  <text x="60" y="238" font-size="15" font-weight="700" fill="#2563EB">AWDL social channel</text>
+  <text x="60" y="257" font-size="13" fill="#475569">channel 6, 44 or 149</text>
+
+  <g stroke="#CBD5E1" stroke-width="1.5"><line x1="289.4" y1="196" x2="320.9" y2="226"/><line x1="352.6" y1="226" x2="384.1" y2="196"/><line x1="447.4" y1="196" x2="479.0" y2="226"/><line x1="510.6" y1="226" x2="542.2" y2="196"/><line x1="605.4" y1="196" x2="637.0" y2="226"/><line x1="668.5" y1="226" x2="700.2" y2="196"/></g>
+    <rect x="244.0" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="257.8" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">1</text>
+    <rect x="275.6" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="289.4" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">2</text>
+    <rect x="307.2" y="226" width="27.5" height="32" rx="6" fill="#2563EB"/>
+    <text x="320.9" y="247" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">3</text>
+    <rect x="338.8" y="226" width="27.5" height="32" rx="6" fill="#2563EB"/>
+    <text x="352.6" y="247" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">4</text>
+    <rect x="370.4" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="384.1" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">5</text>
+    <rect x="402.0" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="415.8" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">6</text>
+    <rect x="433.6" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="447.4" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">7</text>
+    <rect x="465.2" y="226" width="27.5" height="32" rx="6" fill="#2563EB"/>
+    <text x="479.0" y="247" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">8</text>
+    <rect x="496.8" y="226" width="27.5" height="32" rx="6" fill="#2563EB"/>
+    <text x="510.6" y="247" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">9</text>
+    <rect x="528.4" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="542.2" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">10</text>
+    <rect x="560.0" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="573.8" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">11</text>
+    <rect x="591.6" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="605.4" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">12</text>
+    <rect x="623.2" y="226" width="27.5" height="32" rx="6" fill="#2563EB"/>
+    <text x="637.0" y="247" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">13</text>
+    <rect x="654.8" y="226" width="27.5" height="32" rx="6" fill="#2563EB"/>
+    <text x="668.5" y="247" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">14</text>
+    <rect x="686.4" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="700.2" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">15</text>
+    <rect x="718.0" y="164" width="27.5" height="32" rx="6" fill="#0F172A"/>
+    <text x="731.8" y="185" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">16</text>
+
+  <!-- Bottom cards -->
+  <rect x="32" y="306" width="360" height="76" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="68" cy="344" r="22" fill="#DBEAFE"/>
+  <use href="#i-timer" x="55" y="331" width="26" height="26" color="#2563EB"/>
+  <text x="104" y="333" font-size="17" font-weight="700" fill="#0F172A">A shared clock</text>
+  <text x="104" y="352" font-size="14" fill="#475569">Each device declares its channel per</text>
+  <text x="104" y="370" font-size="14" fill="#475569">window; an elected master sets the clock.</text>
+
+  <rect x="408" y="306" width="360" height="76" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="444" cy="344" r="22" fill="#FEF3C7"/>
+  <use href="#i-warning" x="431" y="331" width="26" height="26" color="#B45309"/>
+  <text x="480" y="333" font-size="17" font-weight="700" fill="#0F172A">The cost: airtime and gaps</text>
+  <text x="480" y="352" font-size="14" fill="#475569">A transfer cannot use all the airtime,</text>
+  <text x="480" y="370" font-size="14" fill="#475569">and the router connection has gaps.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Pattern illustrative; figures from a 2019 paper, not Apple</text>
+</svg>

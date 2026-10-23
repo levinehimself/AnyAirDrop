@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Match each home network symptom to the box most likely behind it</title>
+  <defs>
+    <symbol id="i-wifi" viewBox="0 0 48 48"><path d="M5 19a28 28 0 0 1 38 0M11 26.5a19 19 0 0 1 26 0M17.5 33.5a10 10 0 0 1 13 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="24" cy="40" r="2.8" fill="currentColor"/></symbol>
+    <symbol id="i-modem" viewBox="0 0 48 48"><rect x="5" y="20" width="38" height="19" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><circle cx="14" cy="29.5" r="1.8" fill="currentColor"/><circle cx="21" cy="29.5" r="1.8" fill="currentColor"/><circle cx="28" cy="29.5" r="1.8" fill="currentColor"/><path d="M36 20v-8a4 4 0 0 1 4-4h2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-router" viewBox="0 0 48 48"><path d="M13 29L9 11M35 29l4-18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><rect x="4" y="29" width="40" height="13" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><circle cx="13" cy="35.5" r="1.8" fill="currentColor"/><circle cx="20" cy="35.5" r="1.8" fill="currentColor"/><path d="M31 35.5h9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-switch" viewBox="0 0 48 48"><rect x="4" y="15" width="40" height="18" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><rect x="10" y="21" width="5" height="7" rx="1.5" fill="currentColor"/><rect x="18" y="21" width="5" height="7" rx="1.5" fill="currentColor"/><rect x="26" y="21" width="5" height="7" rx="1.5" fill="currentColor"/><rect x="34" y="21" width="5" height="7" rx="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">ROUTERS AND NETWORKS · DECISION GUIDE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Match the symptom to the right box</text>
+
+  <!-- one card, six rows -->
+  <rect x="32" y="108" width="736" height="276" rx="16" fill="#FFFFFF"/>
+  <path d="M408 108H752a16 16 0 0 1 16 16V368a16 16 0 0 1-16 16H408Z" fill="#EFF6FF"/>
+  <rect x="32" y="108" width="736" height="276" rx="16" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
+  <path d="M408 108V384" stroke="#DBEAFE" stroke-width="1.5"/>
+
+  <!-- row dividers -->
+  <g stroke-width="1.5">
+    <g stroke="#E2E8F0"><path d="M52 154H388M52 200H388M52 246H388M52 292H388M52 338H388"/></g>
+    <g stroke="#DBEAFE"><path d="M424 154H744M424 200H744M424 246H744M424 292H744M424 338H744"/></g>
+  </g>
+
+  <!-- row 1 -->
+  <text x="52" y="136" font-size="15" fill="#475569">Weak Wi-Fi far away, wired is fast</text>
+  <path d="M370 131h20M383 125l7 6-7 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="434" cy="131" r="15" fill="#DBEAFE"/><use href="#i-wifi" x="423" y="120" width="22" height="22" color="#2563EB"/>
+  <text x="458" y="126" font-size="13" fill="#475569">Radio coverage</text>
+  <text x="458" y="144" font-size="15" font-weight="700" fill="#0F172A">Add an access point, ideally wired</text>
+
+  <!-- row 2 -->
+  <text x="52" y="182" font-size="15" fill="#475569">Slow everywhere, even on a cable</text>
+  <path d="M370 177h20M383 171l7 6-7 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="434" cy="177" r="15" fill="#DBEAFE"/><use href="#i-modem" x="423" y="166" width="22" height="22" color="#2563EB"/>
+  <text x="458" y="172" font-size="13" fill="#475569">Provider line or modem</text>
+  <text x="458" y="190" font-size="15" font-weight="700" fill="#0F172A">Check line, modem and plan</text>
+
+  <!-- row 3 -->
+  <text x="52" y="228" font-size="15" fill="#475569">Slow on Wi-Fi only, several devices</text>
+  <path d="M370 223h20M383 217l7 6-7 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="434" cy="223" r="15" fill="#DBEAFE"/><use href="#i-router" x="423" y="212" width="22" height="22" color="#2563EB"/>
+  <text x="458" y="218" font-size="13" fill="#475569">Router or access point age</text>
+  <text x="458" y="236" font-size="15" font-weight="700" fill="#0F172A">Upgrade the Wi-Fi hardware</text>
+
+  <!-- row 4 -->
+  <text x="52" y="274" font-size="15" fill="#475569">Not enough Ethernet sockets</text>
+  <path d="M370 269h20M383 263l7 6-7 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="434" cy="269" r="15" fill="#DBEAFE"/><use href="#i-switch" x="423" y="258" width="22" height="22" color="#2563EB"/>
+  <text x="458" y="264" font-size="13" fill="#475569">Port count</text>
+  <text x="458" y="282" font-size="15" font-weight="700" fill="#0F172A">Add a switch</text>
+
+  <!-- row 5 -->
+  <text x="52" y="320" font-size="15" fill="#475569">Local devices work, no internet</text>
+  <path d="M370 315h20M383 309l7 6-7 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="434" cy="315" r="15" fill="#DBEAFE"/><use href="#i-modem" x="423" y="304" width="22" height="22" color="#2563EB"/>
+  <text x="458" y="310" font-size="13" fill="#475569">Modem or provider</text>
+  <text x="458" y="328" font-size="15" font-weight="700" fill="#0F172A">Check modem lights and status</text>
+
+  <!-- row 6 -->
+  <text x="52" y="366" font-size="15" fill="#475569">Two Wi-Fis that can&apos;t see each other</text>
+  <path d="M370 361h20M383 355l7 6-7 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="434" cy="361" r="15" fill="#DBEAFE"/><use href="#i-arrows" x="423" y="350" width="22" height="22" color="#2563EB"/>
+  <text x="458" y="356" font-size="13" fill="#475569">Double NAT</text>
+  <text x="458" y="374" font-size="15" font-weight="700" fill="#0F172A">Bridge mode or access point mode</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Most likely area for each symptom</text>
+</svg>

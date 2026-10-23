@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Wider Wi-Fi channels are faster only with a strong signal</title>
+  <defs>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="460" r="80"/><circle cx="790" cy="460" r="140"/><circle cx="790" cy="460" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">HOW WI-FI WORKS · COMPARED</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Wider is faster only with a strong signal</text>
+
+  <rect x="32" y="108" width="736" height="276" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <line x1="216" y1="124" x2="216" y2="368" stroke="#E2E8F0" stroke-width="1.5"/>
+  <line x1="232" y1="269" x2="752" y2="269" stroke="#E2E8F0" stroke-width="1.5"/>
+
+  <text x="52" y="166" font-size="16" font-weight="700" fill="#0F172A">Speed on paper</text>
+  <text x="52" y="187" font-size="14" fill="#475569">Wi-Fi 6, one stream,</text>
+  <text x="52" y="205" font-size="14" fill="#475569">1024-QAM, rate 5/6.</text>
+  <text x="52" y="223" font-size="14" fill="#475569">About double per step.</text>
+
+  <text x="52" y="306" font-size="16" font-weight="700" fill="#0F172A">SNR left</text>
+  <text x="52" y="327" font-size="14" fill="#475569">Signal-to-noise ratio,</text>
+  <text x="52" y="345" font-size="14" fill="#475569">from 30 dB at 20 MHz,</text>
+  <text x="52" y="363" font-size="14" fill="#475569">minus 3 dB per step.</text>
+
+
+  <rect x="258" y="236.1" width="64" height="11.9" rx="5" fill="#2563EB"/>
+  <text x="290" y="228.1" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">about 143 Mbps</text>
+  <rect x="244" y="256" width="92" height="26" rx="13" fill="#DBEAFE"/>
+  <text x="290" y="274" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">20 MHz</text>
+  <rect x="258" y="290" width="64" height="54" rx="5" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+  <text x="290" y="322.5" font-size="16" font-weight="700" text-anchor="middle" fill="#B45309">30 dB</text>
+  <rect x="386" y="224.1" width="64" height="23.9" rx="5" fill="#2563EB"/>
+  <text x="418" y="216.1" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">about 287 Mbps</text>
+  <rect x="372" y="256" width="92" height="26" rx="13" fill="#DBEAFE"/>
+  <text x="418" y="274" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">40 MHz</text>
+  <rect x="386" y="290" width="64" height="48.6" rx="5" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+  <text x="418" y="319.8" font-size="16" font-weight="700" text-anchor="middle" fill="#B45309">27 dB</text>
+  <rect x="514" y="198" width="64" height="50" rx="5" fill="#2563EB"/>
+  <text x="546" y="190" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">about 600 Mbps</text>
+  <rect x="500" y="256" width="92" height="26" rx="13" fill="#DBEAFE"/>
+  <text x="546" y="274" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">80 MHz</text>
+  <rect x="514" y="290" width="64" height="43.2" rx="5" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+  <text x="546" y="317.1" font-size="16" font-weight="700" text-anchor="middle" fill="#B45309">24 dB</text>
+  <rect x="642" y="148" width="64" height="100" rx="5" fill="#2563EB"/>
+  <text x="674" y="140" font-size="15" font-weight="700" text-anchor="middle" fill="#0F172A">about 1,201 Mbps</text>
+  <rect x="628" y="256" width="92" height="26" rx="13" fill="#DBEAFE"/>
+  <text x="674" y="274" font-size="16" font-weight="700" text-anchor="middle" fill="#0F172A">160 MHz</text>
+  <rect x="642" y="290" width="64" height="37.8" rx="5" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+  <text x="674" y="314.4" font-size="16" font-weight="700" text-anchor="middle" fill="#B45309">21 dB</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Paper rates and an example link, not measured</text>
+</svg>

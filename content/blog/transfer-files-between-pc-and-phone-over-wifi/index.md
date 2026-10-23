@@ -39,7 +39,7 @@ Limits: the page itself usually has to load over the internet, and a web page ha
 
 Each platform maker offers its own route, usually between its own products.
 
-- **Phone Link (Microsoft).** For supported Android phones, [Microsoft's support page](https://support.microsoft.com/en-us/windows/apps/phonelink/seamlessly-transfer-content-between-your-devices) describes a file drag-and-drop feature between a phone and a PC on the same Wi-Fi network. As Microsoft documents it, there are limits: up to 100 files at a time, no single file larger than 512 MB, and the feature works only with certain phone models. Check the page, since the list changes.
+- **Phone Link (Microsoft).** For supported Android phones, [Microsoft's support page](https://support.microsoft.com/en-us/windows/apps/phonelink/seamlessly-transfer-content-between-your-devices) describes a file drag-and-drop feature between a phone and a PC on the same Wi-Fi network. As Microsoft documents it, there are limits: up to 100 files at a time, no single file larger than 512 MB, and the feature works only with select models from a short list of manufacturers. Check the page, since the list changes.
 - **Quick Share for Windows (Google).** [Google's help page](https://support.google.com/android/answer/13801258?hl=en) says it needs a 64-bit Windows 10 or later PC and an Android 6.0 or later phone, with Bluetooth on for both, both devices on the same network, and the devices within about 5 meters (16 feet). Our guide to [how Quick Share works](/blog/how-quick-share-works/) explains the discovery step.
 - **Apple Devices app (Apple).** For an iPhone and a Windows PC, [Apple's guide](https://support.apple.com/guide/devices-windows/transfer-files-between-your-devices-mchl4bd77d3a/windows) describes dragging files into apps that support file sharing, over a USB cable or over Wi-Fi once Wi-Fi syncing has been set up. On a Mac, the Finder fills this role.
 
@@ -51,7 +51,7 @@ An app on the phone can turn it into a small file server, using a protocol such 
 
 ### USB cable (MTP)
 
-For an Android phone, [Google's instructions](https://support.google.com/android/answer/9064445) say to unlock the phone, connect the cable, tap the USB notification and choose "File Transfer." The phone then opens as a device in Windows File Explorer. This uses MTP (Media Transfer Protocol), which lets the PC browse the phone's storage. Google also notes that not all cables support file transfer, and some are charge-only.
+For an Android phone, [Google's instructions](https://support.google.com/android/answer/9064445) say to unlock the phone, connect the cable, tap the USB notification and choose "File Transfer." The phone then opens as a device in Windows File Explorer. This uses MTP (Media Transfer Protocol), which lets the PC browse the phone's storage. Google also notes that not all USB cables can transfer files, so a cable that only charges the phone will not work.
 
 A cable needs no network and no accounts, so it works anywhere, even offline. The speed depends on the USB version supported by the phone and the cable, and many phones are limited by their own storage as well. For iPhone, the Apple Devices app is the cable route on Windows.
 
@@ -86,15 +86,18 @@ Here is a worked example with **hypothetical** numbers, chosen only to show the 
 
 The slowest stage is the Wi-Fi at 30 MB/s, so the transfer takes about 2,000 ÷ 30 ≈ 67 seconds. Speeding up the phone's storage or the PC's disk changes nothing, since neither is the bottleneck. If instead the Wi-Fi delivered 800 Mbps (100 MB/s) in some better setup, the phone's 150 MB/s would still not be the limit, and the answer would be 2,000 ÷ 100 = 20 seconds.
 
+![Three stages of a phone-to-PC transfer: phone storage reads at 150 MB/s, the Wi-Fi link carries 30 MB/s and PC storage writes at 400 MB/s. Wi-Fi is the slowest stage, so a 2 GB file takes about 67 seconds.](./images/figure.svg)
+*In this hypothetical example only a faster Wi-Fi link shortens the transfer, because neither storage stage is the bottleneck.*
+
 The same logic applies to a cable: if a phone supports only USB 2.0 data speeds, that is the ceiling regardless of how fast the PC is. Why a Wi-Fi link rate and the real throughput differ is covered in [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/).
 
-## What this means for sending files between your own devices
+## Three questions that pick the route for your phone and PC
 
 A practical way to choose is to ask three questions.
 
 1. **Are both devices in the same place?** If not, cloud storage is the realistic route. If yes, a local route will not touch your internet plan.
 2. **Do you already own a matching ecosystem?** An Android phone with a Windows PC can use Quick Share or Phone Link, and an iPhone with a Mac can use the Finder. If your devices do not match, a browser-based tool or a cable avoids vendor limits.
-3. **How much and how often?** For a few photos, anything works. For tens of gigabytes, a cable or a wired PC on a good Wi-Fi connection is far less fragile than a long wireless transfer that must stay awake the whole time.
+3. **How much and how often?** For a few photos, anything works. For tens of gigabytes, a cable, or a PC wired to the router with the phone on a strong Wi-Fi signal, is less fragile than a long wireless transfer on a weak signal that must stay awake the whole time.
 
 If your devices cannot find each other over Wi-Fi, the cause is usually the network rather than the app. Start with [why devices can't find each other](/blog/devices-cant-find-each-other-troubleshooting/). And if you have no Wi-Fi at all, the phone's own hotspot can create a network for the two devices; see [transferring files over a hotspot without internet](/blog/transfer-files-over-a-hotspot-without-internet/).
 
@@ -102,7 +105,7 @@ If your devices cannot find each other over Wi-Fi, the cause is usually the netw
 
 ### What is the easiest way to transfer files from phone to PC?
 
-The easiest is whichever needs the least setup for your pair of devices. For an Android phone, a USB cable and "File Transfer" mode takes under a minute and needs nothing installed on Windows. For mixed devices or no cable, a browser-based tool is usually the least work.
+The easiest is whichever needs the least setup for your pair of devices. For an Android phone, a USB cable and "File Transfer" mode is quick to set up and needs nothing installed on Windows. For mixed devices or no cable, a browser-based tool is usually the least work.
 
 ### Can I transfer files from an iPhone to a Windows PC?
 
@@ -114,7 +117,7 @@ For the transfer itself, often no: a local route stays on your network. But some
 
 ### Why is my phone not showing up on my PC over USB?
 
-Usually the cable is charge-only or the phone is in a charging mode. Google's support page suggests restarting both devices, updating Android, trying a different cable, and choosing "File Transfer" under the USB notification.
+A common cause is a cable that only charges, or a phone left in its charging mode. Google's support page suggests restarting the computer and the phone, updating Android, trying a different cable, and choosing "File Transfer" under the USB notification.
 
 ### Is a USB cable faster than Wi-Fi?
 

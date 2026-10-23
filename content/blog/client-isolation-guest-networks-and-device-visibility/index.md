@@ -35,14 +35,14 @@ A guest network is a second Wi-Fi name that shares your internet connection but 
 
 The simple way is client isolation on a second SSID (network name), plus a rule that blocks access to the router's management page. The guest network may still use the same address range as your main network.
 
-The stronger way uses a **VLAN**, a virtual LAN. The standard that defines VLAN tagging is IEEE 802.1Q. A switch or access point attaches a small tag with a VLAN number to every frame, and devices in one VLAN cannot exchange frames with devices in another unless a router connects them. The tag has a 12-bit number field, which allows IDs up to 4094 for ordinary use. Each VLAN is normally given its own subnet. For example:
+The stronger way uses a **VLAN**, a virtual LAN. The standard that defines VLAN tagging is IEEE 802.1Q. A switch or access point attaches a small tag with a VLAN number to every frame, and devices in one VLAN cannot exchange frames with devices in another unless a router connects them. The tag has a 12-bit number field, which gives 4,096 values, but IDs 0 and 4095 are reserved, so ordinary VLANs are numbered 1 to 4094. Each VLAN is normally given its own subnet. For example:
 
 | Network | VLAN | Subnet | Can reach |
 | --- | --- | --- | --- |
 | Main | 1 | 192.168.1.0/24 | Everything at home and the internet |
 | Guest | 20 | 192.168.20.0/24 | The internet only |
 
-A phone on the guest network gets an address like 192.168.20.14. A laptop on the main network is 192.168.1.23. These addresses fail the "same network" test, so each device sends traffic for the other to its router, and the router's firewall refuses to forward it. The effect is the same as isolation, but it is enforced at the router instead of at the radio. Meanwhile devices in the *guest* VLAN may or may not be isolated from each other, which depends on whether client isolation is also enabled.
+A phone on the guest network gets an address like 192.168.20.14. A laptop on the main network is 192.168.1.23. These addresses fail the "same network" test, so each device sends traffic for the other to its router, and the router's firewall refuses to forward it. The effect is the same as isolation, but it is enforced at the router instead of at the radio. Devices inside the *guest* VLAN may or may not be isolated from each other, which depends on whether client isolation is also enabled.
 
 Guest networks are a good security practice. If a visitor's phone carries malware, or a smart device of doubtful quality joins the guest SSID, it cannot scan your laptops and file shares. The trade-off is that your own phone, if it ends up on the guest network by accident, also cannot find your printer or computer.
 
@@ -55,18 +55,18 @@ To find nearby devices without asking you to type an address, software sends a m
 - **mDNS (multicast DNS),** defined in [RFC 6762](https://www.rfc-editor.org/rfc/rfc6762), sends name queries to the IPv4 multicast address 224.0.0.251 on UDP port 5353 (the IPv6 equivalent is ff02::fb). The RFC designates names ending in `.local` as meaningful only on the link where they originate. Apple's Bonjour and many printers and media devices use it. The details are in our guide to [mDNS and Bonjour](/blog/mdns-bonjour-device-discovery/).
 - **SSDP (Simple Service Discovery Protocol),** used by UPnP devices such as smart TVs, sends to 239.255.255.250 on UDP port 1900.
 
-Both use *link-local* multicast. By design, routers do not forward it to other networks. A router sitting between the main network and a guest VLAN therefore stops these messages at the boundary. A phone on the guest side asks "who is a printer?" and nobody on the main side ever hears.
+Both rely on multicast that stays on the local network. mDNS uses a link-local multicast address, which routers must not forward. SSDP uses an administratively scoped address that a home router does not carry between subnets unless multicast routing has been set up. A router sitting between the main network and a guest VLAN therefore stops these messages at the boundary. A phone on the guest side asks "who is a printer?" and nobody on the main side ever hears.
 
-Two more things make multicast unreliable on Wi-Fi even within one subnet:
+Two more things make multicast unreliable on Wi-Fi even within one subnet, as [RFC 9119](https://www.rfc-editor.org/rfc/rfc9119) (multicast considerations over IEEE 802 wireless media) describes:
 
-1. **Airtime cost.** Multicast and broadcast frames are typically sent at a low basic data rate so that every device can decode them, and they are not acknowledged. A single multicast frame may therefore take far more airtime than the same payload sent as a normal unicast frame. Many access points and routers filter or convert multicast to protect the network, especially in places with many devices.
-2. **Power saving.** Phones that are asleep do not listen to every frame, so multicast messages may be missed. Access points batch them and announce them at set intervals, which adds delay.
+1. **Airtime cost.** Multicast and broadcast frames are generally sent at a low basic data rate, so that even the most distant device can decode them, and they are not acknowledged. A single multicast frame may therefore take far more airtime than the same payload sent as a normal unicast frame. Many access points and routers filter or convert multicast to unicast to protect the network, especially in places with many devices.
+2. **Power saving.** Phones that are asleep do not listen to every frame, so multicast messages may be missed. Access points hold multicast frames and release them after a periodic beacon called the DTIM (delivery traffic indication message), which adds delay.
 
 The result is a hierarchy of failures: isolation blocks all device-to-device traffic, separate subnets block discovery and direct delivery, and multicast filtering blocks only discovery while leaving direct connections working. In the third case, typing the other device's IP address still works.
 
 ## Where you meet isolation
 
-- **Hotels and holiday rentals.** Isolation is nearly universal, so guests cannot see each other's devices or the room's cast targets. Some hotels deliberately put each room on its own VLAN, so you can see your own devices but not the neighbors'.
+- **Hotels and holiday rentals.** Isolation is nearly universal, so guests cannot see each other's devices or the room's cast targets. Some hotels, particularly those offering in-room casting, put each room on its own VLAN or private network, so you can see your own room's devices but not the neighbors'. The design varies from hotel to hotel.
 - **Cafés, airports and public networks.** Isolation protects customers from each other.
 - **Offices and schools.** Corporate networks separate staff, guests and devices into VLANs with firewall rules, and often disable multicast on Wi-Fi to save airtime.
 - **Universities and dormitories.** Large campus networks may isolate wireless clients or segment them by building or room.
@@ -87,6 +87,9 @@ You can test without special software, using ping, a tool that sends a small ech
 
 The walk-through in [devices can't find each other](/blog/devices-cant-find-each-other-troubleshooting/) takes the same ideas further.
 
+![Decision guide with three tests: compare the two IP addresses, ping the router, then ping the other device. Different subnets, a reply, or no reply each point to a different cause, and a failed ping is only a clue.](./images/figure.svg)
+*Work down the three tests in order and stop at the first result that explains the failure.*
+
 ## What you can do about it
 
 If it is a network you control, look in the router's wireless settings for options with names like AP isolation, client isolation, guest isolation or "allow guests to see each other and the local network". The wording differs by manufacturer. Turn it off for the network your own devices use, and keep it on for the real guest network. Make sure both devices join the same network and band. If your router offers a separate IoT or smart-home network, check whether it needs a rule to be reachable from your phone.
@@ -96,11 +99,11 @@ If it is a network you do not control, you cannot change the rules, and the real
 1. **Use a different network.** Another Wi-Fi name at the same location, such as a staff or room network, if you are authorized, or a personal router or travel router.
 2. **Create a hotspot.** A phone hotspot is a small network that you control. Connect both devices to it and they will usually see each other, though hotspot behavior varies by phone and carrier plan. The mechanics are covered in the phones-as-modems articles, starting with [how a phone hotspot works](/blog/how-phone-hotspot-works/).
 3. **Use a cable.** Two computers can be connected directly or through a switch, and some phones can use a USB Ethernet adapter, depending on the model and software.
-4. **Pair through a rendezvous.** Tools that do not rely on local discovery let you enter a code or scan a QR code to find the other device. This fixes the *discovery* problem only. If isolation blocks the direct connection as well, the data must travel by another path, such as an internet relay, which is slower and needs internet access. [STUN, TURN and ICE](/blog/stun-turn-ice-explained/) explain how that decision is made, and MDN's page on [WebRTC connectivity](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity) describes how browsers try direct candidates first and fall back to a relay.
+4. **Pair through a rendezvous.** Tools that do not rely on local discovery let you enter a code or scan a QR code to find the other device. This fixes the *discovery* problem only. If isolation blocks the direct connection as well, the data must travel by another path, such as an internet relay, which is slower and needs internet access. [STUN, TURN and ICE](/blog/stun-turn-ice-explained/) explain how that decision is made, and MDN's page on [WebRTC protocols](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols) says a relay through a TURN server is used only when there are no other alternatives.
 
-## What this means for sending files between your own devices
+## Why same-Wi-Fi sharing fails on a network you do not own
 
-Isolation is the single most common reason that "same Wi-Fi" nearby sharing fails on a network you do not own. Two points are worth keeping in mind.
+Isolation is a common reason that "same Wi-Fi" nearby sharing fails on a network you do not own. Two points are worth keeping in mind.
 
 First, the failure has two layers, and they need different fixes. If discovery fails but a direct connection would work, a code or QR fixes it. If the network blocks device-to-device traffic, no amount of pairing will let the devices talk directly, and the data has to go around through a relay or another network. The honest diagnosis is a test, not a guess.
 
@@ -134,12 +137,13 @@ Not by itself. A VPN encrypts traffic to a server and does not create a path bet
 
 - Client isolation makes an access point drop frames between wireless devices, while still allowing internet access.
 - Guest networks usually put visitors on a separate subnet or VLAN, and a firewall blocks traffic from them to the main network.
-- Discovery protocols use link-local multicast, which routers do not forward, so they fail across subnets and are often filtered on Wi-Fi.
+- Discovery protocols use multicast that home routers do not forward between subnets, so they fail across subnets and are often filtered on Wi-Fi.
 - Compare the devices' IP addresses, then ping the router and the other device, to separate "different networks" from "isolation" from "discovery only".
 - If you cannot change the network, switch networks, use a hotspot or a cable, or pair by code and accept that the data may take a relay path.
 
 ## Sources
 
 - IETF: [RFC 6762, Multicast DNS](https://www.rfc-editor.org/rfc/rfc6762)
+- IETF: [RFC 9119, Multicast Considerations over IEEE 802 Wireless Media](https://www.rfc-editor.org/rfc/rfc9119)
 - OpenWrt Project: [Wireless configuration, basic options (including the isolate option)](https://openwrt.org/docs/guide-user/network/wifi/basic)
-- MDN Web Docs: [WebRTC connectivity](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity)
+- MDN Web Docs: [WebRTC protocols](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols)

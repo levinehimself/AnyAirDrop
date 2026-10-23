@@ -21,9 +21,9 @@ A web page can send a file to another browser without the file ever visiting a s
 
 WebRTC began as a way to do video calls in a browser without plugins. It is defined by a set of web APIs (the [W3C WebRTC specification](https://www.w3.org/TR/webrtc/)) and a set of network protocols from the IETF. Most of the API centers on one object, `RTCPeerConnection`, which represents the link between your browser and one other browser, called a *peer*.
 
-Audio and video travel over that link as media streams. But the same link can also carry arbitrary data through an `RTCDataChannel`. According to the [MDN documentation for RTCDataChannel](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel), a channel can send strings, `Blob` objects (the browser's type for file-like data), `ArrayBuffer`s and typed arrays. A file picked from your device is a `Blob`, so it fits naturally.
+Audio and video travel over that link as media streams. But the same link can also carry arbitrary data through an [`RTCDataChannel`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel). According to [MDN's page for its `send()` method](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/send), a channel can send strings, `Blob` objects (the browser's type for file-like data), `ArrayBuffer`s, typed arrays and `DataView`s. A file picked from your device is a `Blob`, so it fits naturally.
 
-Data channels are a standard feature of the major desktop and mobile browsers, but how they behave in small details, especially message size, differs between browser versions. A careful implementation reads the limits at run time instead of assuming them, as shown below.
+Data channels are a standard feature of the major desktop and mobile browsers, but small details, especially the maximum message size, differ between browsers and versions. A careful implementation reads the limits at run time instead of assuming them, as shown below.
 
 ## The protocol stack under a data channel
 
@@ -42,7 +42,7 @@ Two browsers cannot find each other out of thin air. Each one knows only its own
 Two kinds of message pass through it:
 
 - **Session descriptions.** The first browser creates an **offer**, a block of text in a format called SDP (Session Description Protocol). It lists what the browser wants to do, including that it wants a data channel, and carries a fingerprint of the browser's certificate for the DTLS handshake. The second browser replies with an **answer** in the same format.
-- **ICE candidates.** Each browser gathers a list of addresses where it might be reachable, and sends them one at a time. The next section explains what happens to them.
+- **ICE candidates.** Each browser gathers a list of addresses where it might be reachable, and sends them one at a time. The sequence below shows where they fit, and [STUN, TURN and ICE explained](/blog/stun-turn-ice-explained/) covers how they are tested.
 
 ### What the signaling server does and does not see
 
@@ -68,26 +68,29 @@ On a home network, step 6 often finishes in a fraction of a second, but nothing 
 
 You cannot hand a 2 GB video to `send()` in one call. Two limits stand in the way.
 
-First, a data channel sends *messages*, and the receiver must have a buffer big enough to hold a whole message before it delivers it. Browsers publish a limit for this: the `maxMessageSize` property of the connection's `sctp` object ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/RTCSctpTransport/maxMessageSize)). SDP can negotiate a maximum with the `max-message-size` attribute, and MDN notes that when it is absent, a default of 64 KiB is assumed. MDN also says most modern browsers support messages of at least 256 KiB.
+First, a data channel sends *messages*, and the receiver must be prepared to hold a whole message before it delivers it. Browsers publish a limit for this: the `maxMessageSize` property of the connection's `sctp` object ([MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/RTCSctpTransport/maxMessageSize)). Each side can declare the largest message it will accept with the `max-message-size` attribute in the SDP ([RFC 8841](https://www.rfc-editor.org/rfc/rfc8841)). According to [MDN's guide to data channels](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Using_data_channels), a default of 64 kilobytes is assumed when the attribute is absent, and most modern browsers can send messages of at least 256 kilobytes.
 
-Second, big messages cause head-of-line blocking. Without a feature called message interleaving, one large message blocks everything else queued behind it on the same SCTP connection. RFC 8831 therefore advises senders without interleaving to keep messages at or below 16 KiB. That is why many file-transfer tools use 16 KiB chunks: it is a size the RFC itself treats as safe across implementations.
+Second, big messages cause head-of-line blocking. MDN explains that, without a feature called message interleaving (defined in RFC 8260), one large message on a channel can delay messages on other channels that share the same SCTP connection. RFC 8831 therefore says that, as long as interleaving is not supported, the sender should limit messages to 16 KB. In code, that is usually written as 16 KiB (16,384 bytes), which is why it is a common chunk size in file-transfer tools: it is a size the RFC itself treats as safe across implementations.
 
 ### A worked example
 
 Take a file of exactly 1 GiB, which is 1,073,741,824 bytes, and a chunk size of 16 KiB, which is 16,384 bytes.
 
 - Number of chunks: 1,073,741,824 ÷ 16,384 = 65,536.
-- Each chunk is then split by SCTP into network packets. The packet payload is typically somewhere around 1,200 bytes, so a 16 KiB chunk becomes roughly 14 packets (16,384 ÷ 1,200 ≈ 13.7). That figure is an approximation and depends on the implementation.
+- Each chunk is then split by SCTP into network packets. RFC 8831 says the path MTU (the largest packet the network will carry) at the IP layer should not start above 1,200 bytes for IPv4. The IP, UDP, DTLS and SCTP headers use part of each packet, so less than 1,200 bytes of your data fit in one. A 16 KiB chunk therefore needs at least 14 packets (16,384 ÷ 1,200 ≈ 13.7, rounded up), and a few more in practice. The exact count depends on the implementation.
 
-The sender also needs to tell the receiver what is coming. A simple design sends a first message describing the file (name, size, type), then the numbered chunks, then a final message saying it is done. Because the channel is ordered by default, the chunks arrive in the order they were sent, and the receiver can simply append them.
+The sender also needs to tell the receiver what is coming. A basic design sends a first message describing the file (name, size, type), then the numbered chunks, then a final message saying it is done. Because the channel is ordered by default, the chunks arrive in the order they were sent, and the receiver can append them one after another.
+
+![A 1 GiB file of 1,073,741,824 bytes divided into 16 KiB chunks of 16,384 bytes gives 65,536 chunks. Each chunk needs at least 14 packets, and a paused sender keeps about 64 chunks queued.](./images/figure.svg)
+*Chunking turns one large file into tens of thousands of small messages, so the sender has to watch its queue instead of sending everything at once.*
 
 ## Backpressure: not sending faster than the link allows
 
-If your code calls `send()` 65,536 times in a loop, the browser does not fail. It queues the data in an internal buffer, and `bufferedAmount` reports how many bytes are waiting. The loop finishes in a moment, but all 1 GiB now sits in memory while the network slowly drains it. On a phone, that can crash the tab.
+If your code calls `send()` 65,536 times in a loop, the calls return almost at once, because the browser queues the data in an internal buffer instead of waiting for the network. The `bufferedAmount` property reports how many bytes are waiting. The loop finishes in a moment, but the data now sits in memory while the network slowly drains it, which can be enough to exhaust a phone's memory. If the buffer has a size limit and it fills, `send()` throws an `OperationError`, according to [MDN's send() page](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/send), and the transfer breaks partway through. The limit is up to the browser, so code cannot rely on it.
 
-The remedy is *backpressure*: the sender pauses when the buffer is full and resumes when it empties. MDN documents the two tools needed. `bufferedAmount` is "the number of bytes of data currently queued to be sent", and the `bufferedamountlow` event fires when the queue falls to the level set by `bufferedAmountLowThreshold` (default 0). If the buffer ever overflows, `send()` can throw an `OperationError`, according to [MDN's send() page](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/send).
+The remedy is *backpressure*: the sender pauses when the buffer is getting full and resumes when it empties. Two features support this. According to [MDN](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel), `bufferedAmount` returns "the number of bytes of data currently queued to be sent", and the `bufferedamountlow` event fires when the queue drains to the level set by `bufferedAmountLowThreshold` (the default is 0). The [W3C specification](https://www.w3.org/TR/webrtc/) is exact about the timing: the event fires when `bufferedAmount` decreases from above the threshold to equal or below it.
 
-Here is a short sketch of a sender. It is simplified and leaves out error handling and a way for the receiver to cancel:
+Here is a short sketch of a sender. It is simplified: it assumes the channel is already open, and it leaves out error handling and a way for the receiver to cancel.
 
 ```js
 const CHUNK = 16 * 1024;          // 16 KiB per message
@@ -110,7 +113,7 @@ async function sendFile(file, channel) {
 }
 ```
 
-With a 1 MiB limit and 16 KiB chunks, at most about 64 chunks, roughly 1 MiB, wait in the buffer at any moment, whether the file is 10 MB or 10 GB. Reading with `file.slice()` also helps: it asks for one small piece of the file at a time instead of loading all of it.
+The pause works because the high-water mark (1 MiB) is above the threshold (256 KiB): once the queue is above 1 MiB, it has to fall through 256 KiB as it drains, and that fires the event. With a 1 MiB high-water mark and 16 KiB chunks, the queue never holds much more than 1 MiB (about 64 chunks), whether the file is 10 MB or 10 GB. Reading with `file.slice()` also helps: it asks for one small piece of the file at a time instead of loading all of it.
 
 ## Reliability, ordering and memory
 
@@ -118,9 +121,9 @@ A data channel can be configured when it is created. The defaults are what a fil
 
 The receiving side has the harder memory problem. The simple approach is to collect every chunk in an array and build one `Blob` at the end, which means the whole file lives in memory until it is saved. That is fine for a photo and risky for a multi-gigabyte video on a phone. Some browsers offer APIs that let a page write incoming chunks straight to a file on disk, but support differs by browser and platform, so well-built tools check what is available and fall back gracefully.
 
-## What this means for sending files between your own devices
+## Why a direct data channel can keep a transfer inside your home
 
-Because the data channel is a direct, encrypted browser-to-browser link, a transfer between two of your own devices on the same Wi-Fi can stay inside your home. The only things that leave are the small signaling messages. The file's speed is then limited by your local network, not by your internet plan's upload speed, a difference we quantify in [local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/).
+Because the data channel is a direct, encrypted browser-to-browser link, a transfer between two of your own devices on the same Wi-Fi can stay inside your home. The file itself never leaves. The traffic that does go out is the small signaling messages, plus any lookups the browsers make to a STUN server. The file's speed is then limited by your local network, not by your internet plan's upload speed, a difference we quantify in [local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/).
 
 Two things still have to work for that to happen. The devices need a way to find each other, whether by being on the same network, by a short code, or by a QR code. And the network must let the packets through; some guest networks and office networks block device-to-device traffic, which we describe in [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/).
 
@@ -138,7 +141,7 @@ Not in the normal case. The file goes directly from one browser to the other. A 
 
 ### What is the file size limit of a data channel?
 
-There is no fixed file size limit in the protocol, because a file is split into many messages. The limits that exist are per message (negotiated, often 256 KiB or more in current browsers, with 16 KiB as the conservative choice) and practical, such as the receiver's memory and the device's storage.
+There is no fixed file size limit in the protocol, because a file is split into many messages. The limits that exist are per message (negotiated, and at least 256 kilobytes in most modern browsers, according to MDN, with 16 KB as the conservative choice) and practical, such as the receiver's memory and the device's storage.
 
 ### Why does my transfer sometimes go through the internet?
 
@@ -152,13 +155,15 @@ They need software that speaks the same signaling and chunking rules. WebRTC def
 
 - A WebRTC data channel carries data directly between two browsers over SCTP, inside DTLS, over UDP, and is always encrypted.
 - A signaling server is still needed to relay the offer, the answer and ICE candidates. It never receives the file.
-- Files are split into chunks, with 16 KiB being the conservative size that RFC 8831 recommends without message interleaving.
+- Files are split into chunks, with 16 KiB being a common size because RFC 8831 advises 16 KB messages when message interleaving is not available.
 - Backpressure, using `bufferedAmount` and the `bufferedamountlow` event, stops the sender from filling memory faster than the network drains.
 - Defaults (ordered, fully reliable) suit file transfer; relaxing them risks corrupt files.
 
 ## Sources
 
 - IETF: [RFC 8831, WebRTC Data Channels](https://www.rfc-editor.org/rfc/rfc8831)
+- IETF: [RFC 8841, SDP-Based Data Channel Negotiation (max-message-size)](https://www.rfc-editor.org/rfc/rfc8841)
+- MDN Web Docs: [Using WebRTC data channels](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Using_data_channels)
 - MDN Web Docs: [RTCDataChannel](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel)
 - MDN Web Docs: [RTCDataChannel.send()](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/send)
 - MDN Web Docs: [RTCSctpTransport.maxMessageSize](https://developer.mozilla.org/en-US/docs/Web/API/RTCSctpTransport/maxMessageSize)

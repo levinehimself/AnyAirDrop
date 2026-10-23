@@ -36,7 +36,7 @@ The numbers below are **assumptions chosen to show the arithmetic**. They are no
 - File size: 1 GB (one gigabyte, 1,000,000,000 bytes).
 - Internet upload speed: 20 Mbps (megabits per second).
 - Internet download speed: 200 Mbps.
-- Real local transfer speed: 300 Mbps. "Real" means what a transfer actually achieves on the local link, which is lower than the link rate printed on a router ([why link speed and real speed differ](/blog/wifi-link-speed-vs-real-speed/)).
+- Real local transfer speed: 300 Mbps. "Real" means what a transfer achieves on the local link, which is lower than the link rate printed on a router ([why link speed and real speed differ](/blog/wifi-link-speed-vs-real-speed/)).
 
 ### Step 1: convert bytes to bits
 
@@ -67,7 +67,7 @@ Try the same arithmetic with different, equally hypothetical inputs:
 | 300 Mbps local, 1,000 up / 1,000 down | 26.7 s | 8 + 8 = 16 s |
 | 50 Mbps local (weak Wi-Fi), 100 up / 200 down | 160 s | 80 + 40 = 120 s |
 
-The third and fourth rows matter. If you have a very fast, symmetric internet connection and a slow local link, the cloud can finish first. The path that wins is the one whose slowest stage is faster. That is why generic advice such as "local is always faster" is incomplete, and why the arithmetic is worth doing. The simplified model also ignores overhead, server processing, congestion and speed limits on the service's side, and both directions of a Wi-Fi transfer sharing airtime ([how Wi-Fi works](/blog/how-wifi-works/)).
+The third and fourth rows matter. If your internet connection is very fast and symmetric, or your local link is slow, the cloud can finish first. The path that wins is the one whose slowest stage is faster. That is why generic advice such as "local is always faster" is incomplete, and why the arithmetic is worth doing. The simplified model also ignores overhead, server processing, congestion and speed limits on the service's side, and both directions of a Wi-Fi transfer sharing airtime ([how Wi-Fi works](/blog/how-wifi-works/)).
 
 ## Privacy and control
 
@@ -103,9 +103,12 @@ The two are not rivals. A sensible split is:
 2. Use **cloud storage** for the copies you want protected or shared with others, uploading from whichever device has the best connection, ideally a wired PC.
 3. For people who are nearby, skip the cloud entirely. For people who are not, upload once and share the link.
 
-## What this means for sending files between your own devices
+## Why local is the sensible default inside one home
 
 For your own phone, tablet and computer in one home, the local route is usually the better default: faster when your upload is slow, free of data allowance, and private. It becomes worse only when the local link is weak, when a device cannot be on the same network, or when you also want an off-site copy. Our guide to [PC and phone transfer methods](/blog/transfer-files-between-pc-and-phone-over-wifi/) lists the options on both sides.
+
+![Two checklists side by side: a local transfer fits when both devices are together, upload is slow, and you want no data allowance used or no copy on another server; the cloud fits distant or offline receivers, backups and links.](./images/figure.svg)
+*Local and cloud routes answer different situations, and many homes use both: local for bulk data, cloud for copies to protect or share.*
 
 AnyAirDrop.com is our own tool for the local route: files go from device to device in the browser and are not uploaded to the site's server, with an encrypted relay used only if a direct connection is impossible, and the page says so.
 
@@ -125,7 +128,7 @@ It can be, depending on the provider and your settings, but a copy of the file i
 
 ### Why is my upload speed so much slower than my download?
 
-Many consumer internet plans are built that way, because most households download far more than they upload. Your plan's advertised numbers show both, and a speed test can show what you actually get. Some connections, such as many fiber plans, offer matching upload and download speeds.
+Many consumer internet plans are built that way, partly because the access technology (cable and DSL, for example) splits its capacity unevenly, and partly because most households download far more than they upload. Your plan's advertised numbers show both, and a speed test can show what you get. Some connections, such as many fiber plans, offer matching upload and download speeds.
 
 ### Can I use both local transfer and the cloud?
 

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Four things that set the Wi-Fi speed you get</title>
+  <defs>
+  <symbol id="i-wifi" viewBox="0 0 48 48"><path d="M5 19a28 28 0 0 1 38 0M11 26.5a19 19 0 0 1 26 0M17.5 33.5a10 10 0 0 1 13 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="24" cy="40" r="2.8" fill="currentColor"/></symbol>
+  <symbol id="i-bars" viewBox="0 0 48 48"><rect x="6" y="30" width="7" height="11" rx="2" fill="currentColor"/><rect x="16" y="22" width="7" height="19" rx="2" fill="currentColor"/><rect x="26" y="14" width="7" height="27" rx="2" fill="currentColor"/><rect x="36" y="6" width="7" height="35" rx="2" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-people" viewBox="0 0 48 48"><circle cx="17" cy="16" r="7" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M4 41c0-8 6-13 13-13s13 5 13 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="34" cy="18" r="5.5" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M36 28c5 1 8 5 8 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">HOW WI-FI WORKS · AT A GLANCE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Four things set the speed you actually get</text>
+
+  <g>
+    <rect x="32" y="112" width="360" height="118" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="78" cy="171" r="27" fill="#DBEAFE"/>
+    <use href="#i-bars" x="63" y="156" width="30" height="30" color="#2563EB"/>
+    <text x="120" y="146" font-size="17" font-weight="700" fill="#0F172A">Distance and walls</text>
+    <text x="120" y="170" font-size="14" fill="#475569">Every 3 dB lost halves the power.</text>
+    <text x="120" y="190" font-size="14" fill="#475569">Concrete, brick and water absorb</text>
+    <text x="120" y="210" font-size="14" fill="#475569">the most.</text>
+  </g>
+
+  <g>
+    <rect x="408" y="112" width="360" height="118" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="454" cy="171" r="27" fill="#DBEAFE"/>
+    <use href="#i-wifi" x="439" y="156" width="30" height="30" color="#2563EB"/>
+    <text x="496" y="146" font-size="17" font-weight="700" fill="#0F172A">Band: 2.4, 5 or 6 GHz</text>
+    <text x="496" y="170" font-size="14" fill="#475569">Lower bands travel farther through</text>
+    <text x="496" y="190" font-size="14" fill="#475569">walls. Higher bands are faster but</text>
+    <text x="496" y="210" font-size="14" fill="#475569">fade sooner.</text>
+  </g>
+
+  <g>
+    <rect x="32" y="244" width="360" height="118" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="78" cy="303" r="27" fill="#DBEAFE"/>
+    <use href="#i-people" x="63" y="288" width="30" height="30" color="#2563EB"/>
+    <text x="120" y="278" font-size="17" font-weight="700" fill="#0F172A">Everyone shares the channel</text>
+    <text x="120" y="302" font-size="14" fill="#475569">Devices take turns, so busy</text>
+    <text x="120" y="322" font-size="14" fill="#475569">neighbors and active devices each</text>
+    <text x="120" y="342" font-size="14" fill="#475569">take a share of the airtime.</text>
+  </g>
+
+  <g>
+    <rect x="408" y="244" width="360" height="118" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="454" cy="303" r="27" fill="#DBEAFE"/>
+    <use href="#i-arrows" x="439" y="288" width="30" height="30" color="#2563EB"/>
+    <text x="496" y="278" font-size="17" font-weight="700" fill="#0F172A">A router in the middle</text>
+    <text x="496" y="302" font-size="14" fill="#475569">Phone to phone via one router</text>
+    <text x="496" y="322" font-size="14" fill="#475569">crosses the air twice, so speed</text>
+    <text x="496" y="342" font-size="14" fill="#475569">can drop to roughly half.</text>
+  </g>
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Rules of thumb, not measurements</text>
+</svg>

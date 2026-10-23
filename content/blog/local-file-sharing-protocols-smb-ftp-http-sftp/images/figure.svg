@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>How a passive-mode FTP reply hides the data port: (195 × 256) + 80 = 50,000</title>
+  <defs>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">LOCAL TRANSFER TECH · BY THE NUMBERS</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Passive FTP hides its data port in a reply</text>
+
+  <!-- The reply -->
+  <rect x="32" y="108" width="736" height="68" rx="16" fill="#0F172A"/>
+  <text x="52" y="128" font-size="13" font-weight="700" letter-spacing="1.4" fill="#DBEAFE">PASSIVE MODE: THE SERVER&apos;S REPLY ON PORT 21</text>
+  <g font-family="ui-monospace, Consolas, &apos;SFMono-Regular&apos;, Menlo, monospace" font-size="18" fill="#FFFFFF">
+    <text x="52" y="159" textLength="267" lengthAdjust="spacing">227 Entering Passive Mode (</text>
+    <rect x="325" y="138" width="46" height="30" rx="8" fill="#DBEAFE"/>
+    <rect x="377" y="138" width="46" height="30" rx="8" fill="#DBEAFE"/>
+    <rect x="429" y="138" width="46" height="30" rx="8" fill="#DBEAFE"/>
+    <rect x="481" y="138" width="46" height="30" rx="8" fill="#DBEAFE"/>
+    <rect x="537" y="138" width="46" height="30" rx="8" fill="#2563EB"/>
+    <rect x="589" y="138" width="46" height="30" rx="8" fill="#2563EB"/>
+    <g text-anchor="middle" font-weight="700">
+      <text x="348" y="159" fill="#0F172A">192</text>
+      <text x="400" y="159" fill="#0F172A">168</text>
+      <text x="452" y="159" fill="#0F172A">1</text>
+      <text x="504" y="159" fill="#0F172A">20</text>
+      <text x="560" y="159">195</text>
+      <text x="612" y="159">80</text>
+    </g>
+    <text x="641" y="159">)</text>
+  </g>
+
+  <!-- Two readings -->
+  <g>
+    <rect x="32" y="190" width="360" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="48" y="200" width="258" height="24" rx="12" fill="#DBEAFE"/>
+    <text x="62" y="217" font-size="13" font-weight="700" letter-spacing="1" fill="#0F172A">FIRST FOUR: THE IP ADDRESS</text>
+    <text x="48" y="258" font-size="26" font-weight="700" fill="#0F172A">192.168.1.20</text>
+    <text x="48" y="280" font-size="14" fill="#475569">The four numbers, joined by dots.</text>
+  </g>
+  <g>
+    <rect x="408" y="190" width="360" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="424" y="200" width="188" height="24" rx="12" fill="#2563EB"/>
+    <text x="438" y="217" font-size="13" font-weight="700" letter-spacing="1" fill="#FFFFFF">LAST TWO: THE PORT</text>
+    <text x="424" y="258" font-size="26" font-weight="700" fill="#2563EB">50,000</text>
+    <text x="424" y="280" font-size="14" fill="#475569">195 × 256 = 49,920, then plus 80.</text>
+  </g>
+
+  <!-- Consequence -->
+  <rect x="32" y="304" width="736" height="76" rx="16" fill="#0F172A"/>
+  <text x="52" y="329" font-size="17" font-weight="700" fill="#FFFFFF">The client opens a second connection to 192.168.1.20, port 50,000</text>
+  <text x="52" y="349" font-size="14" fill="#DBEAFE">The data port is not fixed, and it travels inside the text of the control connection.</text>
+  <text x="52" y="367" font-size="14" fill="#DBEAFE">That is why a NAT router or firewall has to read the FTP commands to cope.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Example trace from the guide</text>
+</svg>

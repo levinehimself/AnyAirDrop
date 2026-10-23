@@ -35,7 +35,7 @@ Two bits of the very first byte have special meanings, and they matter for every
 - **Bit 0, individual or group.** Zero means the frame is for one device (unicast). One means a group (multicast or broadcast). The broadcast address ff:ff:ff:ff:ff:ff has every bit set.
 - **Bit 1, universal or local.** Zero means the address came from the manufacturer's registered block (universally administered). One means it was assigned locally, for example by software. A randomized address always has this bit set.
 
-Take the example `a6:3f:19:4c:2e:7b`. The first byte, a6, is 1010 0110 in binary. Bit 1 is 1, so it is locally administered, and bit 0 is 0, so it is unicast. Now look at the second hex digit of the first byte: that is the low four bits, 0110 here, which is 6. Any byte ending in binary x x 1 0 gives a second digit of 2, 6, a or e. That produces a handy rule of thumb: **if the second digit of a MAC address is 2, 6, A or E, it is almost certainly a randomized or software-assigned address.** Compare `3c:22:7e:51:9a:04` (an illustrative address): 3c is 0011 1100, bit 1 is 0, so it would be a factory-assigned address.
+Take the example `a6:3f:19:4c:2e:7b`. The first byte, a6, is 1010 0110 in binary. Bit 1 is 1, so it is locally administered, and bit 0 is 0, so it is unicast. Now look at the second hex digit of the first byte: that is the low four bits, 0110 here, which is 6. Any byte ending in binary x x 1 0 gives a second digit of 2, 6, a or e. That produces a handy rule of thumb: **if the second digit of a MAC address is 2, 6, A or E, the address is locally administered, and on a phone or laptop that almost always means it is randomized.** (Virtual machines and other software can set the same bit.) Compare `3c:22:7e:51:9a:04` (an illustrative address): 3c is 0011 1100, bit 1 is 0, so it would be a factory-assigned address.
 
 ## What a MAC address is used for
 
@@ -55,15 +55,18 @@ Wi-Fi encrypts the contents of your traffic, but the sender and receiver address
 
 ## Why devices now randomize their MAC
 
-A fixed MAC address is a permanent identifier. A phone that sends its real address to every network it ever probes can be recognized by a shop, an airport or a stranger with a cheap radio receiver, even without joining anything. Microsoft describes exactly this concern for Windows: while scanning for networks, a device sends its address, and places such as shopping malls could use it to follow someone's movements.
+A fixed MAC address is a permanent identifier. A phone that sends its real address to every network it ever probes can be recognized by a shop, an airport or a stranger with a cheap radio receiver, even without joining anything. Microsoft's support page raises exactly this concern for Windows: places such as shopping malls could use a device's unique address to track movement through the area.
 
 The fix is to use a made-up address in place of the real one. All three major platforms do it, with different names and details that change between versions:
 
-- **iPhone, iPad and Mac.** Apple calls the feature Private Wi-Fi Address, and by default a device uses a different address for each network. Apple's [support page on it](https://support.apple.com/en-us/102509) says that in recent versions (iOS 18 and macOS Sequoia 15 and later) you can choose between off, a fixed private address and a rotating one, which changes about every two weeks. New networks with ordinary security default to a fixed address, and forgetting a network clears its address. The setting lives in the Wi-Fi details for each network; the exact wording varies by software version.
-- **Android.** According to the [Android documentation](https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior), randomization has been on by default since Android 10, with the choice available per network in the network details screen. By default the address is *persistent*: it is generated from the network's name and security type, so it stays the same for that network until the phone is factory reset, even if you forget and re-add the network. Android 12 and later can use *non-persistent* addresses on some networks, which change between connections under certain conditions. Phone makers may label things differently.
-- **Windows.** Windows offers a setting called random hardware addresses, which applies to all networks or to a single known network, as [Microsoft's support page](https://support.microsoft.com/en-us/windows/how-to-use-random-hardware-addresses-in-windows-ac58de34-35fc-31ff-c650-823fc48eb1bc) explains. It depends on the Wi-Fi adapter supporting it, so it is not available on every computer.
+- **iPhone, iPad and Mac.** Apple calls the feature Private Wi-Fi Address, and a device uses a different address for each network. Apple's [support page on it](https://support.apple.com/en-us/102509) says that in recent versions (iOS 18 and macOS Sequoia 15 and later) you can choose Off, Fixed or Rotating. A rotating address changes every two weeks. Networks with WPA2 or stronger security default to Fixed, and networks with weak or no security default to Rotating. Forgetting a network normally discards the address used with it. The setting lives in the Wi-Fi details for each network; the exact wording varies by software version.
+- **Android.** According to the [Android documentation](https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior), devices running Android 10 or higher use a randomized address by default. The default is *persistent*: the address is generated from the network's profile (such as its name and security type), so it stays the same for that network until the phone is factory reset, even if you forget and re-add the network. Starting with Android 12, *non-persistent* randomization, which picks a new address for each connection, is used in specific cases, and it can be switched on for all networks through developer options. It is not the default. Phone makers may label things differently.
+- **Windows.** Windows offers a setting called random hardware addresses, which you can turn on for all networks or for a single known network, as [Microsoft's support page](https://support.microsoft.com/en-us/windows/how-to-use-random-hardware-addresses-in-windows-ac58de34-35fc-31ff-c650-823fc48eb1bc) explains. It depends on the Wi-Fi hardware supporting it, so it is not available on every computer.
 
-In all cases, the address is generated per network, not per connection, in the default mode. That keeps home networks working (your router sees the same device every day) while preventing different networks from correlating one phone's visits. Wired Ethernet generally keeps the real address.
+In the default mode on all three platforms, the address is generated per network, not per connection (Apple's Rotating option and Android's non-persistent mode are the exceptions). That keeps home networks working (your router sees the same device every day) while preventing different networks from correlating one phone's visits. Wired Ethernet generally keeps the real address.
+
+![Before and after comparison: a phone with one fixed hardware address shows the same real address to a home, a shop and an airport, while a phone with private addresses shows a different address to each network.](./images/figure.svg)
+*Per-network addresses keep your home network working while stopping different places from matching one phone's visits.*
 
 ## Practical effects of random addresses
 
@@ -83,7 +86,7 @@ The router sees only the address a device chooses to present. Anything built on 
 
 A sensible approach is to leave randomization on for public networks. On your own home network, switch it off, or to a fixed address where the option exists, only if a feature you rely on needs a stable identifier.
 
-## What this means for sending files between your own devices
+## Why a changing MAC address does not stop a local file transfer
 
 Local file transfer between two of your devices does not depend on the real MAC address at all. What counts is that they are on the same network and can find one another, and that happens at the IP layer, usually through multicast messages such as mDNS ([mDNS and Bonjour](/blog/mdns-bonjour-device-discovery/)). Random MAC addresses neither help nor harm that. A phone sending a photo to a laptop uses ARP to find the laptop's current MAC address, whatever it happens to be this week.
 
@@ -109,13 +112,13 @@ On a network you trust, such as your own, the privacy difference is small. On pu
 
 ### Why does my router list the same phone twice?
 
-Most likely because the phone changed its address, for example after a rotation, a reset, or forgetting the network and rejoining. The old entry stays in the list until the router clears it. If one of the entries has a second digit of 2, 6, A or E, it is a randomized address.
+Most likely because the phone changed its address, for example after a rotation, a reset, or forgetting the network and rejoining. The old entry stays in the list until the router clears it. If one of the entries has a second digit of 2, 6, A or E, it is probably a randomized address.
 
 ## Key takeaways
 
 - A MAC address is a 48-bit hardware identifier: the first three bytes identify the manufacturer's block, the last three the individual adapter.
 - ARP lets devices turn a local IP address into a MAC address, and MAC addresses change at each hop while IP addresses stay the same.
-- A randomized MAC sets the locally administered bit, which makes the second hex digit 2, 6, A or E.
+- A randomized MAC sets the locally administered bit, which makes the second hex digit 2, 6, A or E in a normal unicast address.
 - iOS, Android and Windows all offer per-network random addresses, with settings and defaults that differ by version and manufacturer.
 - Anything built on MAC identification, such as reservations, filters, parental controls and new-device alerts, may need to be adjusted when a device randomizes.
 

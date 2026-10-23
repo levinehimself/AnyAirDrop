@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Which method to use for moving files between two Windows PCs, by situation</title>
+  <defs>
+  <symbol id="i-wifi" viewBox="0 0 48 48"><path d="M5 19a28 28 0 0 1 38 0M11 26.5a19 19 0 0 1 26 0M17.5 33.5a10 10 0 0 1 13 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="24" cy="40" r="2.8" fill="currentColor"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 48 48"><path d="M5 12a3 3 0 0 1 3-3h11l4 5h17a3 3 0 0 1 3 3v21a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 48 48"><rect x="11" y="6" width="26" height="22" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M18 6v8M24 6v8M30 6v8M24 28v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">TRANSFER IN PRACTICE · DECISION GUIDE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Match the method to the job</text>
+
+  <text x="52" y="122" font-size="13" font-weight="700" letter-spacing="1.4" fill="#475569">IF</text>
+  <text x="412" y="122" font-size="13" font-weight="700" letter-spacing="1.4" fill="#2563EB">USE</text>
+  <rect x="32" y="130" width="320" height="44" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="158" font-size="16" fill="#0F172A">A one-off file or a few files</text>
+  <path d="M362 152h18M374 146l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="392" y="130" width="376" height="44" rx="12" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <circle cx="428" cy="152" r="16" fill="#DBEAFE"/>
+  <use href="#i-wifi" x="417" y="141" width="22" height="22" color="#2563EB"/>
+  <text x="454" y="158" font-size="16" font-weight="700" fill="#0F172A">Nearby sharing<tspan font-weight="400" fill="#475569"> or a browser tool</tspan></text>
+  <rect x="32" y="181" width="320" height="44" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="209" font-size="16" fill="#0F172A">A regular job, or a lot of data</text>
+  <path d="M362 203h18M374 197l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="392" y="181" width="376" height="44" rx="12" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <circle cx="428" cy="203" r="16" fill="#DBEAFE"/>
+  <use href="#i-folder" x="417" y="192" width="22" height="22" color="#2563EB"/>
+  <text x="454" y="209" font-size="16" font-weight="700" fill="#0F172A">A shared folder<tspan font-weight="400" fill="#475569">, ideally wired</tspan></text>
+  <rect x="32" y="232" width="320" height="44" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="260" font-size="16" fill="#0F172A">Big, interruptible copies</text>
+  <path d="M362 254h18M374 248l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="392" y="232" width="376" height="44" rx="12" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <circle cx="428" cy="254" r="16" fill="#DBEAFE"/>
+  <use href="#i-arrows" x="417" y="243" width="22" height="22" color="#2563EB"/>
+  <text x="454" y="260" font-size="16" font-weight="700" fill="#0F172A">Robocopy<tspan font-weight="400" fill="#475569">, with /Z to resume</tspan></text>
+  <rect x="32" y="283" width="320" height="44" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="311" font-size="16" fill="#0F172A">No router, PCs side by side</text>
+  <path d="M362 305h18M374 299l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="392" y="283" width="376" height="44" rx="12" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <circle cx="428" cy="305" r="16" fill="#DBEAFE"/>
+  <use href="#i-plug" x="417" y="294" width="22" height="22" color="#2563EB"/>
+  <text x="454" y="311" font-size="16" font-weight="700" fill="#0F172A">A single Ethernet cable</text>
+  <rect x="32" y="334" width="320" height="44" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="362" font-size="16" fill="#0F172A">One of the two devices is a phone</text>
+  <path d="M362 356h18M374 350l6 6-6 6" stroke="#B45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="392" y="334" width="376" height="44" rx="12" fill="#FEF3C7"/>
+  <circle cx="428" cy="356" r="16" fill="#FFFFFF"/>
+  <use href="#i-phone" x="417" y="345" width="22" height="22" color="#B45309"/>
+  <text x="454" y="362" font-size="16" font-weight="700" fill="#0F172A">None of these<tspan font-weight="400" fill="#475569">, they are Windows-only</tspan></text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Rules of thumb, not measurements</text>
+</svg>

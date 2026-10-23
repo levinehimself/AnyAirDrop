@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>A 1 GiB file becomes 65,536 chunks, each needing at least 14 packets</title>
+  <defs>
+  <symbol id="i-gauge" viewBox="0 0 48 48"><path d="M7 35a17 17 0 1 1 34 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M24 35l8-11" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="35" r="3" fill="currentColor"/><path d="M11 25l3 2M17 17l2 3M24 13v4M31 17l-2 3M37 25l-3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">TRANSFER IN PRACTICE · BY THE NUMBERS</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">A 1 GiB file becomes 65,536 small messages</text>
+
+  <!-- Row 1: the sum -->
+  <g>
+    <rect x="32" y="108" width="220" height="112" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="52" y="136" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">THE FILE</text>
+    <text x="52" y="176" font-size="32" font-weight="700" fill="#0F172A">1 GiB</text>
+    <text x="52" y="200" font-size="14" fill="#475569">1,073,741,824 bytes</text>
+  </g>
+  <text x="272" y="174" font-size="28" font-weight="700" text-anchor="middle" fill="#475569">÷</text>
+  <g>
+    <rect x="292" y="108" width="200" height="112" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="312" y="136" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">ONE CHUNK</text>
+    <text x="312" y="176" font-size="32" font-weight="700" fill="#0F172A">16 KiB</text>
+    <text x="312" y="200" font-size="14" fill="#475569">16,384 bytes</text>
+  </g>
+  <text x="512" y="174" font-size="28" font-weight="700" text-anchor="middle" fill="#475569">=</text>
+  <g>
+    <rect x="532" y="108" width="236" height="112" rx="16" fill="#0F172A"/>
+    <text x="552" y="136" font-size="13" font-weight="700" letter-spacing="1.2" fill="#DBEAFE">NUMBER OF CHUNKS</text>
+    <text x="552" y="176" font-size="32" font-weight="700" fill="#FFFFFF">65,536</text>
+    <text x="552" y="200" font-size="14" fill="#DBEAFE">1,073,741,824 ÷ 16,384</text>
+  </g>
+
+  <!-- Row 2: what each chunk costs -->
+  <g>
+    <rect x="32" y="236" width="360" height="142" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="68" cy="307" r="24" fill="#DBEAFE"/>
+    <use href="#i-arrows" x="54" y="293" width="28" height="28" color="#2563EB"/>
+    <text x="108" y="272" font-size="18" font-weight="700" fill="#0F172A">At least 14 packets</text>
+    <text x="108" y="296" font-size="14" fill="#475569">for each chunk, since under 1,200</text>
+    <text x="108" y="316" font-size="14" fill="#475569">bytes of data fit in a packet:</text>
+    <text x="108" y="336" font-size="14" fill="#475569">16,384 ÷ 1,200 ≈ 13.7, rounded up.</text>
+    <text x="108" y="356" font-size="14" fill="#475569">A few more in practice.</text>
+  </g>
+  <g>
+    <rect x="408" y="236" width="360" height="142" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="444" cy="307" r="24" fill="#DBEAFE"/>
+    <use href="#i-gauge" x="430" y="293" width="28" height="28" color="#2563EB"/>
+    <text x="484" y="272" font-size="18" font-weight="700" fill="#0F172A">About 64 chunks waiting</text>
+    <text x="484" y="296" font-size="14" fill="#475569">In the sample sender, pausing above</text>
+    <text x="484" y="316" font-size="14" fill="#475569">1 MiB queued keeps it near 64 chunks</text>
+    <text x="484" y="336" font-size="14" fill="#475569">(1 MiB ÷ 16 KiB), whether the file is</text>
+    <text x="484" y="356" font-size="14" fill="#475569">10 MB or 10 GB.</text>
+  </g>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Worked example on paper, not measured</text>
+</svg>

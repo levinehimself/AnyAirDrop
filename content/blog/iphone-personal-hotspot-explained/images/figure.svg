@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Three ways to connect to an iPhone hotspot: Wi-Fi, Bluetooth and USB, each with what it works with and what to watch for</title>
+  <defs>
+    <symbol id="i-wifi" viewBox="0 0 48 48"><path d="M5 19a28 28 0 0 1 38 0M11 26.5a19 19 0 0 1 26 0M17.5 33.5a10 10 0 0 1 13 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="24" cy="40" r="2.8" fill="currentColor"/></symbol>
+    <symbol id="i-bluetooth" viewBox="0 0 48 48"><path d="M13 16l21 17-10 9V6l10 9-21 17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 48 48"><rect x="11" y="6" width="26" height="22" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M18 6v8M24 6v8M30 6v8M24 28v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 48 48"><path d="M24 6L44 40H4z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 18v11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34.5" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-check" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M15 25l7 7 12-14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">PHONES AS MODEMS · COMPARED</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Three ways in, one cellular link out</text>
+
+  <!-- Wi-Fi -->
+  <g>
+    <rect x="32" y="108" width="234" height="276" rx="16" fill="#FFFFFF"/>
+    <path d="M32 168V124a16 16 0 0 1 16-16H250a16 16 0 0 1 16 16V168Z" fill="#EFF6FF"/>
+    <rect x="32" y="108" width="234" height="276" rx="16" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
+    <line x1="32" y1="168" x2="266" y2="168" stroke="#DBEAFE" stroke-width="1.5"/>
+    <circle cx="70" cy="138" r="22" fill="#DBEAFE"/>
+    <use href="#i-wifi" x="56" y="124" width="28" height="28" color="#2563EB"/>
+    <text x="104" y="134" font-size="18" font-weight="700" fill="#0F172A">Wi-Fi</text>
+    <text x="104" y="153" font-size="13" fill="#475569">Most common method</text>
+
+    <use href="#i-check" x="46" y="181" width="20" height="20" color="#15803D"/>
+    <text x="74" y="195" font-size="14" fill="#475569">Works with any device</text>
+    <text x="74" y="213" font-size="14" fill="#475569">that has Wi-Fi</text>
+    <line x1="48" y1="247" x2="250" y2="247" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <circle cx="56" cy="266" r="7.5" fill="#DBEAFE"/>
+    <path d="M54.2 262.5l3.6 3.5-3.6 3.5" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <text x="74" y="270" font-size="14" fill="#475569">Pick the iPhone, then</text>
+    <text x="74" y="288" font-size="14" fill="#475569">enter the password</text>
+    <line x1="48" y1="304" x2="250" y2="304" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <use href="#i-warning" x="46" y="313" width="20" height="20" color="#B45309"/>
+    <text x="74" y="327" font-size="14" fill="#475569">Older 2.4 GHz-only</text>
+    <text x="74" y="345" font-size="14" fill="#475569">devices may need</text>
+    <text x="74" y="363" font-size="14" fill="#475569">Maximize Compatibility</text>
+  </g>
+  <!-- Bluetooth -->
+  <g>
+    <rect x="283" y="108" width="234" height="276" rx="16" fill="#FFFFFF"/>
+    <path d="M283 168V124a16 16 0 0 1 16-16H501a16 16 0 0 1 16 16V168Z" fill="#EFF6FF"/>
+    <rect x="283" y="108" width="234" height="276" rx="16" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
+    <line x1="283" y1="168" x2="517" y2="168" stroke="#DBEAFE" stroke-width="1.5"/>
+    <circle cx="321" cy="138" r="22" fill="#DBEAFE"/>
+    <use href="#i-bluetooth" x="307" y="124" width="28" height="28" color="#2563EB"/>
+    <text x="355" y="134" font-size="18" font-weight="700" fill="#0F172A">Bluetooth</text>
+    <text x="355" y="153" font-size="13" fill="#475569">For light use only</text>
+
+    <use href="#i-check" x="297" y="181" width="20" height="20" color="#15803D"/>
+    <text x="325" y="195" font-size="14" fill="#475569">Works with Macs and</text>
+    <text x="325" y="213" font-size="14" fill="#475569">third-party devices</text>
+    <line x1="299" y1="247" x2="501" y2="247" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <circle cx="307" cy="266" r="7.5" fill="#DBEAFE"/>
+    <path d="M305.2 262.5l3.6 3.5-3.6 3.5" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <text x="325" y="270" font-size="14" fill="#475569">Pair with the iPhone,</text>
+    <text x="325" y="288" font-size="14" fill="#475569">confirm the codes match</text>
+    <line x1="299" y1="304" x2="501" y2="304" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <use href="#i-warning" x="297" y="313" width="20" height="20" color="#B45309"/>
+    <text x="325" y="327" font-size="14" fill="#475569">Bluetooth Classic carries</text>
+    <text x="325" y="345" font-size="14" fill="#475569">only 1 to 3 Mbps over</text>
+    <text x="325" y="363" font-size="14" fill="#475569">the air</text>
+  </g>
+  <!-- USB cable -->
+  <g>
+    <rect x="534" y="108" width="234" height="276" rx="16" fill="#FFFFFF"/>
+    <path d="M534 168V124a16 16 0 0 1 16-16H752a16 16 0 0 1 16 16V168Z" fill="#EFF6FF"/>
+    <rect x="534" y="108" width="234" height="276" rx="16" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
+    <line x1="534" y1="168" x2="768" y2="168" stroke="#DBEAFE" stroke-width="1.5"/>
+    <circle cx="572" cy="138" r="22" fill="#DBEAFE"/>
+    <use href="#i-plug" x="558" y="124" width="28" height="28" color="#2563EB"/>
+    <text x="606" y="134" font-size="18" font-weight="700" fill="#0F172A">USB cable</text>
+    <text x="606" y="153" font-size="13" fill="#475569">Cable to a computer</text>
+
+    <use href="#i-check" x="548" y="181" width="20" height="20" color="#15803D"/>
+    <text x="576" y="195" font-size="14" fill="#475569">Macs, and Windows PCs</text>
+    <text x="576" y="213" font-size="14" fill="#475569">with Apple Devices or</text>
+    <text x="576" y="231" font-size="14" fill="#475569">iTunes for Windows</text>
+    <line x1="550" y1="247" x2="752" y2="247" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <circle cx="558" cy="266" r="7.5" fill="#DBEAFE"/>
+    <path d="M556.2 262.5l3.6 3.5-3.6 3.5" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <text x="576" y="270" font-size="14" fill="#475569">Plug in, then accept</text>
+    <text x="576" y="288" font-size="14" fill="#475569">prompts on both devices</text>
+    <line x1="550" y1="304" x2="752" y2="304" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <use href="#i-warning" x="548" y="313" width="20" height="20" color="#B45309"/>
+    <text x="576" y="327" font-size="14" fill="#475569">Stays on while plugged</text>
+    <text x="576" y="345" font-size="14" fill="#475569">in. Turn off when done</text>
+    <text x="576" y="363" font-size="14" fill="#475569">to avoid data charges</text>
+  </g>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Based on Apple&apos;s support pages</text>
+</svg>

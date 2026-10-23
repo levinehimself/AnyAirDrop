@@ -43,13 +43,13 @@ Wi-Fi Direct is a certification from the Wi-Fi Alliance. According to the [Wi-Fi
 Technically, the trick is that one device in the pair takes on the access point role. The specification calls it the *group owner*. The others are *clients*. When two devices connect:
 
 1. **Discovery.** Each device announces itself and listens for others, using ordinary 802.11 frames that carry extra information elements.
-2. **Negotiation.** The devices run a *group owner negotiation*. Each states how much it wants the job through a numeric "intent" value (0 to 15 in the specification) and the higher value becomes group owner. [Android's documentation](https://developer.android.com/develop/connectivity/wifi/wifi-direct) says the choice is based on each device's power management, user interface and service capabilities, so the device best able to act as a server is selected.
+2. **Negotiation.** The devices run a *group owner negotiation*. Each states how much it wants the job through a numeric "intent" value, and the higher value becomes group owner. Android's [`WifiP2pConfig` reference](https://developer.android.com/reference/android/net/wifi/p2p/WifiP2pConfig) exposes this value, with 0 as the least inclination to be group owner and 15 as the highest, or an automatic setting that lets the system choose. [Android's guide](https://developer.android.com/develop/connectivity/wifi/wifi-direct) says the choice is based on each device's power management, user interface and service capabilities, so the device best able to act as a server is selected.
 3. **Group creation and security.** The group owner starts a small network of its own. Android's documentation says Wi-Fi Direct supports WPA2 encryption, and its example code asks for push-button style setup.
 4. **IP networking.** The group owner hands out IP addresses, much like a router, and the apps use ordinary sockets over it.
 
 The group owner design has a useful side effect: a device without Wi-Fi Direct support can join the group as a *legacy client*, because to it the group owner looks like a regular access point. Android lets an app create a group manually and share the passphrase for that reason, and Windows has a matching `WiFiDirectLegacySettings` option in its [Wi-Fi Direct API](https://learn.microsoft.com/en-us/uwp/api/windows.devices.wifidirect).
 
-On the downside, Wi-Fi Direct is not designed to be invisible. On Android the user is often asked to confirm a connection and a group exists until it is torn down. Many phones can hold a normal Wi-Fi connection and a Wi-Fi Direct group at the same time, but how well they do it depends on the chipset and software.
+On the downside, Wi-Fi Direct is not designed to be invisible. On Android the user is often asked to confirm a connection and a group exists until it is torn down. Whether a phone can hold a normal Wi-Fi connection and a Wi-Fi Direct group at the same time depends on its chipset and software.
 
 ## Wi-Fi Aware: discovery by publish and subscribe
 
@@ -57,7 +57,7 @@ Wi-Fi Aware, also known as NAN (Neighbor Awareness Networking), starts from a di
 
 [Android's developer guide](https://developer.android.com/develop/connectivity/wifi/wifi-aware) explains the model:
 
-- **Clusters.** Devices that support Aware form or join a *cluster* with their neighbors, or start one if they are first. The system manages clustering, and apps cannot control it. Devices in a cluster stay time-synchronized, so they wake briefly at agreed moments to exchange discovery messages instead of keeping the radio on.
+- **Clusters.** Devices that support Aware form or join a *cluster* with their neighbors, or start one if they are first. The system manages clustering, and apps cannot control it. While a session is active, the system keeps the device synchronized with its cluster (Android's guide notes this uses battery). The shared timing is what lets devices agree on brief moments to exchange discovery messages instead of keeping the radio on all the time.
 - **Publish and subscribe.** A publisher advertises a named service. A subscriber listens for that name and is told when a match comes into range. A device can do both.
 - **Messages.** Small messages, limited to about 255 bytes, can be exchanged during discovery.
 - **Data path.** When a subscriber and publisher decide to connect, they request a network. The publisher opens a server socket, and the subscriber connects to the publisher's IPv6 address and port. A passphrase can protect the link.
@@ -68,9 +68,9 @@ Wi-Fi Aware is a standard maintained by the Wi-Fi Alliance, so in principle phon
 
 ## AWDL: Apple's channel-hopping link
 
-AWDL is a proprietary protocol that Apple created for its own devices. Apple's technical note TN3111 calls its version "Apple peer-to-peer Wi-Fi", says it dates back to iOS 7 and works on all of its device platforms, and says it is not documented for third-party use, so it works only between Apple devices. Most of what is publicly known about the protocol comes from reverse engineering. A [USENIX Security 2019 paper](https://www.usenix.org/conference/usenixsecurity19/presentation/stute) describes it as a proprietary ad hoc protocol based on IEEE 802.11.
+AWDL is a proprietary protocol that Apple created for its own devices. Apple's technical note TN3111 uses a different name, "Apple peer-to-peer Wi-Fi", for its device-to-device Wi-Fi. The note says it dates back to iOS 7, works on iOS, iPadOS, macOS, tvOS and visionOS, and is not documented for third-party use, so it works only between Apple devices. Most of what is publicly known about AWDL itself comes from reverse engineering. A [USENIX Security 2019 paper](https://www.usenix.org/conference/usenixsecurity19/presentation/stute) describes it as a proprietary ad hoc protocol based on IEEE 802.11, and notes that the Wi-Fi Alliance adopted AWDL as the basis for Neighbor Awareness Networking, the standard behind Wi-Fi Aware, so the two share some ancestry.
 
-The core of AWDL is channel hopping:
+The core of AWDL is channel hopping. The figures below come from the USENIX paper's reverse engineering, not from Apple:
 
 - Time is divided into *availability windows*. For each one, a device declares whether it is available for direct communication and on which channel.
 - That channel can be the one its router uses, or one of AWDL's *social channels*, which the paper lists as 6, 44 and 149.
@@ -78,6 +78,9 @@ The core of AWDL is channel hopping:
 - Devices elect a master, and use its frames as the clock, so two nearby devices can arrange to be on the same channel at the same time.
 
 This lets one Wi-Fi radio serve two masters. For part of each second it sits on your router's channel, so your internet connection continues, and for another part it sits on an AWDL channel, so a nearby iPhone can reach it. Apple's AirDrop uses it, as described in [how Apple's AirDrop works](/blog/how-airdrop-works/). The cost is that the radio is only on each channel part of the time, so a transfer cannot use all the airtime, and the router connection has gaps.
+
+![Timeline of AWDL's repeating sequence of 16 windows, about 1.05 seconds in all. In each window the one radio sits either on the router's channel, keeping the internet going, or on an AWDL social channel, which leaves gaps on the router side.](./images/figure.svg)
+*Hopping is how one phone can stay online through your router while a nearby Apple device still reaches it.*
 
 ## The three side by side
 
@@ -95,10 +98,10 @@ Support changes as phones and software update, so treat this as a snapshot and c
 
 - **Android** has had Wi-Fi Direct for many years through its `WifiP2pManager` interface. Wi-Fi Aware is available from Android 8.0 (API level 26), though a given phone also needs the hardware and software for it.
 - **Windows 10 and 11** have Wi-Fi Direct APIs, as shown in Microsoft's documentation.
-- **iPhone and iPad:** Apple's TN3111 says support for Wi-Fi Aware was introduced in iOS 26 and is available on iPhone 12 and later, and the note says this opens up communication with non-Apple devices and accessories. Apple's WWDC25 session on the framework says it operates alongside your regular Wi-Fi connection and is described as cross-platform. AWDL remains Apple-only.
+- **iPhone and iPad:** Apple's TN3111 says support for Wi-Fi Aware was introduced in iOS 26 and is available on iPhone 12 and later, and the note says this opens up communication with non-Apple devices and accessories. Apple's [WWDC25 session on the framework](https://developer.apple.com/videos/play/wwdc2025/228/) says it operates alongside your regular Wi-Fi connection and calls it a cross-platform, interoperable standard maintained by the Wi-Fi Alliance. AWDL remains Apple-only.
 - Whether a particular app uses any of these is up to the app developer. A phone with the hardware does not automatically get a feature.
 
-## What this means for sending files between your own devices
+## When a direct link beats your Wi-Fi network, and when it does not
 
 Direct links are the reason phone-to-phone sharing can be fast with no internet and no shared network. They are also why such features often work only inside a platform family: Apple's AirDrop uses AWDL, and Android's Quick Share can choose from several mediums, including Wi-Fi Direct. The addition of Wi-Fi Aware to iOS 26 gives iPhones an industry-standard direct Wi-Fi mechanism that Android also supports, but whether a given app takes advantage of it is a separate matter. Treat claims about cross-platform direct sharing carefully until they are described in primary documentation.
 
@@ -116,7 +119,7 @@ No. Both are direct device-to-device Wi-Fi, but Wi-Fi Aware is built around chea
 
 ### Does AWDL work on Android or Windows?
 
-No. Apple's own documentation says its peer-to-peer Wi-Fi is not documented for third-party use and works only between Apple devices. Apple's route for talking to non-Apple devices is Wi-Fi Aware, which it added in iOS 26.
+No. Apple's own documentation says its peer-to-peer Wi-Fi is not documented for third-party use and works only between Apple devices. Apple's route for talking to non-Apple devices is Wi-Fi Aware, which it added in iOS 26. Google's Quick Share can now exchange files with AirDrop on some phones (see [how Apple's AirDrop works](/blog/how-airdrop-works/)), but Google has not published which radio link it uses, so we cannot say whether AWDL is involved.
 
 ### Are direct Wi-Fi links faster than Bluetooth?
 
@@ -142,5 +145,7 @@ No. None of them require an internet connection or a router. Some apps that use 
 - Android Developers: [Wi-Fi Direct (peer-to-peer) overview](https://developer.android.com/develop/connectivity/wifi/wifi-direct)
 - Android Developers: [Wi-Fi Aware overview](https://developer.android.com/develop/connectivity/wifi/wifi-aware)
 - Apple Developer: [TN3111: iOS Wi-Fi API overview](https://developer.apple.com/documentation/technotes/tn3111-ios-wifi-api-overview)
+- Apple Developer: [WWDC25, Supercharge device connectivity with Wi-Fi Aware](https://developer.apple.com/videos/play/wwdc2025/228/)
+- Android Developers: [WifiP2pConfig reference](https://developer.android.com/reference/android/net/wifi/p2p/WifiP2pConfig)
 - USENIX Security 2019: [A Billion Open Interfaces for Eve and Mallory](https://www.usenix.org/conference/usenixsecurity19/presentation/stute)
 - Microsoft Learn: [Windows.Devices.WiFiDirect namespace](https://learn.microsoft.com/en-us/uwp/api/windows.devices.wifidirect)

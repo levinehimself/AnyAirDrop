@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>How long it takes to try every possible Wi-Fi passphrase, from 8 random digits to 12 random lowercase letters</title>
+  <defs>
+    <symbol id="i-lock" viewBox="0 0 48 48"><path d="M16 21v-5a8 8 0 0 1 16 0v5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><rect x="10" y="21" width="28" height="21" rx="4" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><circle cx="24" cy="30.5" r="2.6" fill="currentColor"/><path d="M24 32v4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="0" cy="450" r="80"/><circle cx="0" cy="450" r="140"/><circle cx="0" cy="450" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">HOW WI-FI WORKS · BY THE NUMBERS</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Length and randomness do the work</text>
+
+  <!-- chart card -->
+  <rect x="32" y="108" width="736" height="218" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="56" y="129" font-size="13" font-weight="700" fill="#475569">Random passphrase</text>
+  <text x="300" y="129" font-size="13" font-weight="700" fill="#475569">Time to try every guess, log scale</text>
+  <rect x="590" y="119" width="10" height="10" rx="3" fill="#B45309"/>
+  <text x="606" y="129" font-size="13" fill="#475569">Days or less</text>
+  <rect x="700" y="119" width="10" height="10" rx="3" fill="#2563EB"/>
+  <text x="716" y="129" font-size="13" fill="#475569">Years</text>
+  <line x1="40" y1="139" x2="760" y2="139" stroke="#E2E8F0" stroke-width="1.5"/>
+  <line x1="300" y1="146" x2="300" y2="318" stroke="#CBD5E1" stroke-width="1.5"/>
+
+  <text x="56" y="165" font-size="15" font-weight="700" fill="#0F172A">8 random digits</text>
+  <rect x="300" y="150" width="52.7" height="20" rx="4" fill="#B45309"/>
+  <text x="363" y="165" font-size="15" font-weight="700" fill="#0F172A">about 100 seconds</text>
+
+  <text x="56" y="201" font-size="15" font-weight="700" fill="#0F172A">8 random lowercase letters</text>
+  <rect x="300" y="186" width="140.2" height="20" rx="4" fill="#B45309"/>
+  <text x="451" y="201" font-size="15" font-weight="700" fill="#0F172A">about 2.4 days</text>
+
+  <text x="56" y="237" font-size="15" font-weight="700" fill="#0F172A">8 random letters and digits</text>
+  <rect x="300" y="222" width="219.8" height="20" rx="4" fill="#2563EB"/>
+  <text x="531" y="237" font-size="15" font-weight="700" fill="#0F172A">about 6.9 years</text>
+
+  <text x="56" y="273" font-size="15" font-weight="700" fill="#0F172A">4 random words*</text>
+  <rect x="300" y="258" width="252.1" height="20" rx="4" fill="#2563EB"/>
+  <text x="564" y="273" font-size="15" font-weight="700" fill="#0F172A">about 116 years</text>
+
+  <text x="56" y="309" font-size="15" font-weight="700" fill="#0F172A">12 random lowercase letters</text>
+  <rect x="300" y="294" width="289.5" height="20" rx="4" fill="#2563EB"/>
+  <text x="601" y="309" font-size="15" font-weight="700" fill="#0F172A">about 3,000 years</text>
+
+  <!-- takeaway strip -->
+  <rect x="32" y="338" width="736" height="46" rx="14" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <circle cx="62" cy="361" r="17" fill="#DBEAFE"/>
+  <use href="#i-lock" x="51" y="350" width="22" height="22" color="#2563EB"/>
+  <text x="92" y="357" font-size="16" font-weight="700" fill="#0F172A">12 random lowercase letters beat 8 random letters and digits</text>
+  <text x="92" y="375" font-size="14" fill="#475569">Log-scale bars at 1 million guesses a second; the ranking holds on faster hardware.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">*From a 7,776-word list. Illustration, not a measurement.</text>
+</svg>

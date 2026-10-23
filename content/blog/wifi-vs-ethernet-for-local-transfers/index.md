@@ -29,7 +29,7 @@ Two other differences matter for how a transfer feels.
 
 **Latency** is the time a small message takes to cross the link and come back. On a wired local network it is typically well under a millisecond and very steady. On Wi-Fi it is typically a few milliseconds and can jump when the channel is busy, because a device must wait for a quiet moment and may have to retransmit. Large file transfers care less about this than video calls or games do, but variable latency still makes throughput wobble.
 
-**Interference.** Wi-Fi shares its bands with neighboring networks, and the 2.4 GHz band with microwave ovens, Bluetooth and many other devices. Walls and distance weaken the signal, and when the signal drops, the link falls back to slower, more error-tolerant modulation (see [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/)). Ethernet cable uses twisted pairs whose design cancels most outside noise, so its speed does not change with the weather, the microwave or the neighbors.
+**Interference.** Wi-Fi shares its bands with neighboring networks, and the 2.4 GHz band with microwave ovens, Bluetooth and many other devices. Walls and distance weaken the signal, and when the signal drops, the link falls back to slower, more error-tolerant modulation (see [Wi-Fi link speed vs real speed](/blog/wifi-link-speed-vs-real-speed/)). Ethernet cable uses twisted pairs whose design cancels most outside noise, so its speed does not change with the microwave or the neighbors.
 
 ## Where the Ethernet ceiling comes from
 
@@ -41,20 +41,20 @@ A gigabit link carries 1,000,000,000 bits per second. Not all of those bits are 
 | Ethernet header (addresses and type) | 14 |
 | IP header | 20 |
 | TCP header | 20 |
-| TCP options (typically timestamps) | 12 |
+| TCP options (here, the timestamps option) | 12 |
 | **Your file data (the payload)** | **1,448** |
 | Frame check sequence (error check) | 4 |
 | Mandatory idle gap before the next frame | 12 |
 | **Total on the wire** | **1,538** |
 
-The standard maximum IP packet is 1,500 bytes (the *MTU*, or maximum transmission unit). Inside it, 20 bytes of IP header, 20 bytes of TCP header and 12 bytes of TCP options leave 1,448 bytes for data. The Ethernet header, error check, preamble and gap then add 38 more bytes outside the packet: 14 + 4 + 8 + 12 = 38. So 1,500 + 38 = 1,538.
+The standard maximum IP packet is 1,500 bytes (the *MTU*, or maximum transmission unit). Inside it, 20 bytes of IP header, 20 bytes of TCP header and 12 bytes of TCP options leave 1,448 bytes for data. The 12 bytes of options are the TCP timestamps option, which takes 10 bytes plus 2 bytes of padding ([RFC 7323](https://www.rfc-editor.org/rfc/rfc7323)). The Ethernet header, error check, preamble and gap then add 38 more bytes outside the packet: 14 + 4 + 8 + 12 = 38. So 1,500 + 38 = 1,538, the same per-frame total that [RFC 6349](https://www.rfc-editor.org/rfc/rfc6349) uses for its TCP throughput calculations.
 
 The efficiency is therefore 1,448 / 1,538 = 0.9415, or 94.15 percent. Applied to the link rate:
 
 - 1,000 Mbps x 0.9415 = about **941 Mbps**
 - 941.5 Mbps / 8 bits per byte = about **117.7 megabytes per second** (some tools that count in mebibytes of 1,048,576 bytes show about 112)
 
-Without the 12-byte timestamp option, the payload would be 1,460 bytes, giving 1,460 / 1,538 = 94.9 percent, or about 949 Mbps and 118.6 MB/s, the figure often quoted for [goodput](https://en.wikipedia.org/wiki/Goodput) on gigabit links. Which number you see depends on whether the connection uses TCP timestamps, which most modern systems do by default. Either way, you cannot beat roughly 940 to 950 Mbps with ordinary frames, and the missing 6 percent is protocol overhead, not a fault.
+Without the 12-byte timestamp option, the payload would be 1,460 bytes, giving 1,460 / 1,538 = 94.9 percent, or about 949 Mbps and 118.6 MB/s. That is the figure RFC 6349 gives for gigabit Ethernet (949.2 Mbps), and the one often quoted for [goodput](https://en.wikipedia.org/wiki/Goodput). Which number you see depends on whether the connection uses TCP timestamps, which varies by operating system and settings. Either way, you cannot beat roughly 940 to 950 Mbps with ordinary frames, and the missing 6 percent is protocol overhead, not a fault.
 
 The same math scales to other speeds, assuming the same frame sizes:
 
@@ -110,9 +110,12 @@ Say you send a 10 GB video, which is 10,000 MB, from a laptop with a fast intern
 
 The slowest link is the stick, so the transfer runs at about 30 MB/s: 10,000 / 30 = 333 seconds, or about 5.6 minutes. Send the same file to an internal SSD at the other end and the cable becomes the limit: 10,000 / 117 = 85 seconds, about 1.4 minutes. Upgrading to a 10 Gbps network would change nothing in the first case. Time at other sustained speeds follows the same division: at 11.8 MB/s (Fast Ethernet) the file takes about 14 minutes, and at 40 MB/s (an assumed Wi-Fi figure) about 4 minutes.
 
+![Chain of three links in a worked example: laptop SSD at 1,500 MB/s, gigabit Ethernet at 117 MB/s and a USB 2.0 stick at 30 MB/s. The stick is slowest, so a 10 GB copy takes 5.6 minutes instead of 1.4.](./images/figure.svg)
+*The same cable and the same file give very different times once the slowest link changes.*
+
 The practical rule is to compare the numbers on both ends before spending money on the network.
 
-## What this means for sending files between your own devices
+## Which end limits a phone-to-PC transfer
 
 For phone-to-phone and phone-to-PC transfers, the realistic picture is this. Phone storage is fast, so the Wi-Fi link is usually the limit. Adding a cable to one end, such as putting your PC on Ethernet, removes one of the two air hops and is often the biggest gain. If both devices must use Wi-Fi, sit close to the same access point, use the 5 GHz or 6 GHz band, and avoid a mesh arrangement where they land on different nodes.
 
@@ -153,6 +156,8 @@ Usually yes on a USB 3 or USB-C port, if the adapter itself is rated for gigabit
 ## Sources
 
 - IEEE 802.3 Working Group: [Ethernet standards](https://www.ieee802.org/3/)
+- IETF: [RFC 6349, Framework for TCP Throughput Testing](https://www.rfc-editor.org/rfc/rfc6349)
+- IETF: [RFC 7323, TCP Extensions for High Performance](https://www.rfc-editor.org/rfc/rfc7323)
 - Wikipedia: [Goodput (gigabit Ethernet overhead example)](https://en.wikipedia.org/wiki/Goodput)
 - Wikipedia: [2.5GBASE-T and 5GBASE-T (IEEE 802.3bz)](https://en.wikipedia.org/wiki/2.5GBASE-T_and_5GBASE-T)
 - Wikipedia: [10 Gigabit Ethernet](https://en.wikipedia.org/wiki/10_Gigabit_Ethernet)

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Cheat sheet: the three private address blocks and three special addresses worth recognizing</title>
+  <defs>
+    <symbol id="i-router" viewBox="0 0 48 48"><path d="M13 29L9 11M35 29l4-18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><rect x="4" y="29" width="40" height="13" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><circle cx="13" cy="35.5" r="1.8" fill="currentColor"/><circle cx="20" cy="35.5" r="1.8" fill="currentColor"/><path d="M31 35.5h9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 48 48"><circle cx="21" cy="21" r="13" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M31 31l12 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">ROUTERS AND NETWORKS · CHEAT SHEET</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">What an address tells you at a glance</text>
+
+  <!-- Left panel: the three private blocks -->
+  <rect x="32" y="108" width="456" height="276" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="62" cy="136" r="16" fill="#DBEAFE"/><use href="#i-router" x="52" y="126" width="20" height="20" color="#2563EB"/>
+  <text x="90" y="135" font-size="17" font-weight="700" fill="#0F172A">Three private blocks</text>
+  <text x="90" y="153" font-size="13" fill="#475569">Never routed on the public internet</text>
+
+  <rect x="48" y="170" width="424" height="64" rx="12" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <text x="66" y="198" font-size="18" font-weight="700" fill="#0F172A">10.0.0.0/8</text>
+  <text x="66" y="219" font-size="14" fill="#475569">Large offices, campuses, some routers</text>
+  <text x="454" y="199" font-size="22" font-weight="700" text-anchor="end" fill="#0F172A">16,777,216</text>
+  <text x="454" y="219" font-size="13" text-anchor="end" fill="#475569">addresses</text>
+
+  <rect x="48" y="240" width="424" height="64" rx="12" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <text x="66" y="268" font-size="18" font-weight="700" fill="#0F172A">172.16.0.0/12</text>
+  <text x="66" y="289" font-size="14" fill="#475569">Mid-sized networks, container tools</text>
+  <text x="454" y="269" font-size="22" font-weight="700" text-anchor="end" fill="#0F172A">1,048,576</text>
+  <text x="454" y="289" font-size="13" text-anchor="end" fill="#475569">addresses</text>
+
+  <rect x="48" y="310" width="424" height="64" rx="12" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+  <text x="66" y="338" font-size="18" font-weight="700" fill="#2563EB">192.168.0.0/16</text>
+  <text x="66" y="359" font-size="14" fill="#475569">Almost every home router</text>
+  <text x="454" y="339" font-size="22" font-weight="700" text-anchor="end" fill="#0F172A">65,536</text>
+  <text x="454" y="359" font-size="13" text-anchor="end" fill="#475569">addresses</text>
+
+  <!-- Right panel: special addresses -->
+  <rect x="504" y="108" width="264" height="276" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="534" cy="136" r="16" fill="#DBEAFE"/><use href="#i-search" x="524" y="126" width="20" height="20" color="#2563EB"/>
+  <text x="562" y="135" font-size="17" font-weight="700" fill="#0F172A">Special addresses</text>
+  <text x="562" y="153" font-size="13" fill="#475569">Each one tells you something</text>
+
+  <rect x="520" y="170" width="232" height="64" rx="12" fill="#FEF3C7"/>
+  <text x="534" y="192" font-size="15" font-weight="700" fill="#B45309">169.254.x.x: DHCP failed</text>
+  <text x="534" y="210" font-size="14" fill="#475569">The router gave no address.</text>
+  <text x="534" y="226" font-size="14" fill="#475569">Neighbors only, no internet.</text>
+
+  <rect x="520" y="240" width="232" height="64" rx="12" fill="#FEF3C7"/>
+  <text x="534" y="262" font-size="15" font-weight="700" fill="#B45309">100.64.0.0/10: CGNAT</text>
+  <text x="534" y="280" font-size="14" fill="#475569">On the router&apos;s WAN side it</text>
+  <text x="534" y="296" font-size="14" fill="#475569">likely means provider NAT.</text>
+
+  <rect x="520" y="310" width="232" height="64" rx="12" fill="#EFF6FF"/>
+  <text x="534" y="332" font-size="15" font-weight="700" fill="#0F172A">127.0.0.1: this device</text>
+  <text x="534" y="350" font-size="14" fill="#475569">Used when programs on one</text>
+  <text x="534" y="366" font-size="14" fill="#475569">machine talk to each other.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Address counts per block, from the guide</text>
+</svg>

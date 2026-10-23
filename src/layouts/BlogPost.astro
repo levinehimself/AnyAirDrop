@@ -377,6 +377,30 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
     white-space: nowrap;
   }
 
+  /* A figure inside the article: a markdown image with an italic caption line under it. */
+  .post-body :global(p:has(> img)) {
+    margin-top: var(--space-5);
+    margin-bottom: 0;
+  }
+
+  .post-body :global(p > img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 16px;
+  }
+
+  .post-body :global(p:has(> img) > em) {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-style: normal;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
   .post-body :global(img) {
     max-width: 100%;
     height: auto;
@@ -495,6 +519,14 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
 
     .hero-hint {
       display: block;
+    }
+
+    .post-body :global(p:has(> img)) {
+      overflow-x: auto;
+    }
+
+    .post-body :global(p > img) {
+      min-width: 640px;
     }
 
     .post-body :global(h2) {

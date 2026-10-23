@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Local or cloud: when each path fits</title>
+  <defs>
+    <symbol id="i-wifi" viewBox="0 0 48 48"><path d="M5 19a28 28 0 0 1 38 0M11 26.5a19 19 0 0 1 26 0M17.5 33.5a10 10 0 0 1 13 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="24" cy="40" r="2.8" fill="currentColor"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 48 48"><path d="M14 37a9 9 0 0 1-1.5-17.9A11.5 11.5 0 0 1 34.6 17 8.5 8.5 0 0 1 35 37z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M15 25l7 7 12-14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">TRANSFER IN PRACTICE · DECISION GUIDE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Local or cloud? Let the situation decide</text>
+
+  <!-- Local card -->
+  <g>
+    <rect x="32" y="108" width="360" height="208" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="72" cy="144" r="24" fill="#DBEAFE"/>
+    <use href="#i-wifi" x="57" y="129" width="30" height="30" color="#2563EB"/>
+    <text x="108" y="140" font-size="18" font-weight="700" fill="#0F172A">Local transfer fits when</text>
+    <text x="108" y="160" font-size="14" fill="#475569">One trip, inside your network</text>
+    <line x1="52" y1="178" x2="372" y2="178" stroke="#E2E8F0" stroke-width="1.5"/>
+    <use href="#i-check" x="52" y="188" width="20" height="20" color="#2563EB"/>
+    <text x="82" y="203" font-size="15" fill="#0F172A">Both devices are in the same place</text>
+    <use href="#i-check" x="52" y="220" width="20" height="20" color="#2563EB"/>
+    <text x="82" y="235" font-size="15" fill="#0F172A">Your internet upload is slow</text>
+    <use href="#i-check" x="52" y="252" width="20" height="20" color="#2563EB"/>
+    <text x="82" y="267" font-size="15" fill="#0F172A">You want no data allowance used</text>
+    <use href="#i-check" x="52" y="284" width="20" height="20" color="#2563EB"/>
+    <text x="82" y="299" font-size="15" fill="#0F172A">You want no copy on another server</text>
+  </g>
+
+  <!-- Cloud card -->
+  <g>
+    <rect x="408" y="108" width="360" height="208" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="448" cy="144" r="24" fill="#DBEAFE"/>
+    <use href="#i-cloud" x="433" y="129" width="30" height="30" color="#2563EB"/>
+    <text x="484" y="140" font-size="18" font-weight="700" fill="#0F172A">The cloud fits when</text>
+    <text x="484" y="160" font-size="14" fill="#475569">Two trips over your internet</text>
+    <line x1="428" y1="178" x2="748" y2="178" stroke="#E2E8F0" stroke-width="1.5"/>
+    <use href="#i-check" x="428" y="188" width="20" height="20" color="#2563EB"/>
+    <text x="458" y="203" font-size="15" fill="#0F172A">The receiver is somewhere else</text>
+    <use href="#i-check" x="428" y="220" width="20" height="20" color="#2563EB"/>
+    <text x="458" y="235" font-size="15" fill="#0F172A">They are not online when you are</text>
+    <use href="#i-check" x="428" y="252" width="20" height="20" color="#2563EB"/>
+    <text x="458" y="267" font-size="15" fill="#0F172A">You want a backup copy</text>
+    <use href="#i-check" x="428" y="284" width="20" height="20" color="#2563EB"/>
+    <text x="458" y="299" font-size="15" fill="#0F172A">You want to share by link</text>
+  </g>
+
+  <!-- Hybrid strip -->
+  <rect x="32" y="328" width="736" height="56" rx="16" fill="#0F172A"/>
+  <use href="#i-arrows" x="54" y="341" width="30" height="30" color="#FFFFFF"/>
+  <text x="102" y="352" font-size="17" font-weight="700" fill="#FFFFFF">Often the best answer is both</text>
+  <text x="102" y="372" font-size="14" fill="#DBEAFE">Local for bulk data between your own devices, cloud for copies to protect or share.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Rules of thumb, not measurements</text>
+</svg>

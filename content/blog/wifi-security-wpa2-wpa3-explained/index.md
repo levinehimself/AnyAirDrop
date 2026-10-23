@@ -45,9 +45,9 @@ The password is never transmitted. The weakness is subtler. Anyone in radio rang
 
 ### What a weak password costs
 
-The table below assumes an attacker who can test one million guesses per second. The real rate depends on hardware, and an attacker can use many graphics cards, so treat it as illustrative. The passwords are random; human-chosen ones, such as a pet's name followed by digits, fall far sooner because attackers try likely words first.
+The table below assumes an attacker who can test one million guesses per second. That is a round, illustrative figure and probably a low one: a [forum-posted hashcat benchmark](https://hashcat.net/forum/post-63595.html) of a single RTX 4090 graphics card, a high-end consumer GPU, shows roughly 2.7 million WPA2 guesses per second, and an attacker can use several cards. Divide the times accordingly; the ranking between passphrases does not change. Each time is for trying every possibility, and on average an attacker succeeds after about half of that. The passwords are random; human-chosen ones, such as a pet's name followed by digits, fall far sooner because attackers try likely words first.
 
-| Passphrase | Possibilities | Time at 1 million guesses/second |
+| Passphrase | Possibilities | Time at 1 million guesses/second (all guesses tried) |
 | --- | --- | --- |
 | 8 random digits | 10^8 = 100 million | about 100 seconds |
 | 8 random lowercase letters | 26^8 ≈ 2.1 × 10^11 | about 2.4 days |
@@ -57,9 +57,12 @@ The table below assumes an attacker who can test one million guesses per second.
 
 Length and randomness do the work. A 12-letter random passphrase beats an 8-character "complex" one. WPA2 allows passphrases of 8 to 63 characters, so there is room to use a long one.
 
+![Bar chart on a log scale of the time to try every possible passphrase at 1 million guesses a second, from 100 seconds for 8 random digits to about 3,000 years for 12 random lowercase letters](./images/figure.svg)
+*At the same guessing speed, a longer random passphrase takes far longer to guess than a shorter one, even a shorter one with mixed characters.*
+
 ## WPA3-Personal and SAE
 
-WPA3-Personal replaces the password step with *Simultaneous Authentication of Equals* (SAE), a form of the Dragonfly key exchange described in [RFC 7664](https://www.rfc-editor.org/rfc/rfc7664). The RFC's abstract states that it is resistant to active attack, passive attack and offline dictionary attack.
+WPA3-Personal replaces the password step with *Simultaneous Authentication of Equals* (SAE), a variant of the Dragonfly key exchange. [RFC 7664](https://www.rfc-editor.org/rfc/rfc7664) describes Dragonfly in general terms (it is an informational RFC and does not mention WPA3), and its abstract says the exchange is resistant to active attack, passive attack and offline dictionary attack. The Wi-Fi Alliance's own summary is more modest: WPA3-Personal gives "increased protections from password guessing attempts."
 
 Roughly, each side converts the password into a point on an elliptic curve, then contributes a fresh random value to a public exchange. Both arrive at the same shared secret only if they hold the same password, and the secret depends on random values that exist only for this session. A recording of the exchange does not let an attacker test guesses at home, because the transcript is not enough to confirm a candidate. Each guess requires a live exchange with the router, which makes the attack *online* and lets the router slow it down.
 

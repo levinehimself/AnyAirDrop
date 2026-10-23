@@ -69,13 +69,16 @@ Addresses in 169.254.0.0/16 are *link-local*, defined in [RFC 3927](https://www.
 
 ### 100.64.0.0/10: carrier-grade NAT
 
-The block 100.64.0.0/10, from 100.64.0.0 to 100.127.255.255, is called *shared address space* ([RFC 6598](https://www.rfc-editor.org/rfc/rfc6598)). Providers use it to number the connections between their own big NAT equipment and customer routers. If your router's WAN address (the outside address, shown on its status page) lies in this range, or is a private address of any kind, your provider is doing a second round of NAT, called *CGNAT* (carrier-grade NAT). Connections to your home from outside will not work without help, and you share a public address with other customers. Your local network is unaffected.
+The block 100.64.0.0/10, from 100.64.0.0 to 100.127.255.255, is called *shared address space* ([RFC 6598](https://www.rfc-editor.org/rfc/rfc6598)). Providers use it to number the connections between their own big NAT equipment and customer routers. If your router's WAN address (the outside address, shown on its status page) lies in this range, your provider is almost certainly doing a second round of NAT, called *CGNAT* (carrier-grade NAT). Connections to your home from outside will not work without help, and you share a public address with other customers. Your local network is unaffected.
 
-This also gives a simple check: compare the WAN address shown on your router's status page with the address that "what is my IP" websites report. If they differ, there is another NAT in between, either your provider's or another router of your own, as in the double-NAT case from [modem vs router vs access point](/blog/modem-vs-router-vs-access-point/).
+A WAN address from one of the three private ranges also means another NAT sits upstream, but then the culprit may be a gateway of your own rather than the provider. A simple check covers both cases: compare the WAN address shown on your router's status page with the address that "what is my IP" websites report. If they differ, there is another NAT in between, as in the double-NAT case from [modem vs router vs access point](/blog/modem-vs-router-vs-access-point/).
 
 ### 127.0.0.1: the device itself
 
 Addresses beginning with 127 loop back to the same device. They are used when a program on a machine talks to another program on the same machine.
+
+![Cheat sheet listing the three private address blocks with their sizes, from 16,777,216 addresses in 10.0.0.0/8 to 65,536 in 192.168.0.0/16, plus what 169.254, 100.64 and 127.0.0.1 addresses mean.](./images/figure.svg)
+*Amber marks the two addresses worth a second look when they show up in your network settings.*
 
 ## Public versus private
 
@@ -99,19 +102,19 @@ When your laptop sends something to 192.168.1.40, the destination test above say
 
 This is why local transfers continue to work when your internet connection is down, and why they are unaffected by your provider's upload speed. [Local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/) puts numbers on that difference.
 
-## What this means for sending files between your own devices
+## Checking that your phone and laptop share a subnet
 
 For two devices to talk directly, three things must hold. They must be on the same subnet (the same network part), nothing in between may block them (see [client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/)), and one must know the other's address.
 
 The first condition is the one people most often miss. A phone on 192.168.1.x and a laptop on 192.168.2.x are on different networks even if both show the same Wi-Fi name, which happens with extenders that run their own network and with guest networks. In that case their packets must go through a router, and discovery that relies on local broadcast does not cross it.
 
-A quick check works on any phone or computer. Open the Wi-Fi details and compare the addresses of the two devices. If the first three numbers match and the mask is 255.255.255.0, they are on the same network. AnyAirDrop.com is our own tool, and when devices share a network like this, its browsers can reach each other directly using these private addresses, with the transfer staying inside your home.
+A quick check works on any phone or computer. Open the Wi-Fi details and compare the addresses of the two devices. If the first three numbers match and the mask is 255.255.255.0, they are on the same network. AnyAirDrop.com is our own tool, and when devices share a network like this, its browsers can usually connect to each other directly over the local network, so the transfer stays inside your home.
 
 ## Common questions
 
 ### Is 192.168.0.1 or 192.168.1.1 my router?
 
-On most home networks, yes, one of them is your router's LAN address, because makers use the first address of the block as the default gateway. Your device's network settings list the actual gateway, which is the reliable answer.
+On many home networks, yes, one of them is your router's LAN address, because makers often use the first address of the block as the default gateway. Others use addresses such as 10.0.0.1 or 192.168.1.254, so your device's network settings, which list the actual gateway, are the reliable answer.
 
 ### Can two devices have the same private IP address?
 
@@ -134,7 +137,7 @@ It means the first 24 bits of the address are the network part. It is the same a
 - Three blocks, 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16, are reserved for private networks and are never routed across the internet.
 - The subnet mask splits an address into network and host parts; a device compares destination and own network parts to decide between direct delivery and the router.
 - A /24 network has 256 addresses, of which 254 are usable by devices.
-- 169.254.x.x means DHCP failed, and 100.64.0.0/10 on your router's WAN side means your provider is using carrier-grade NAT.
+- 169.254.x.x means DHCP failed, and an address in 100.64.0.0/10 on your router's WAN side means your provider is using carrier-grade NAT.
 - Devices on the same private network exchange data without the traffic touching the internet, provided they share a subnet and nothing blocks them.
 
 ## Sources

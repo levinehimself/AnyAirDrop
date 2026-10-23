@@ -13,7 +13,7 @@ related:
   - "wifi-vs-ethernet-for-local-transfers"
 ---
 
-The link speed your device reports is the rate at which the radio sends the bits inside each transmission, not the rate at which a file arrives. Between the two sit waiting, headers, acknowledgements, retries, other devices and the fact that Wi-Fi can only talk one way at a time. Even in ideal conditions, a link rate of 1,201 Mbps works out to roughly three quarters of that in useful data.
+The link speed your device reports is the rate at which the radio sends the bits inside each transmission, not the rate at which a file arrives. Between the two sit waiting, headers, acknowledgements, retries, other devices and the fact that Wi-Fi can only talk one way at a time. In the worked example below, even under ideal conditions a link rate of 1,201 Mbps yields only about three quarters of that in useful data.
 
 **Short answer:** link speed is a theoretical radio rate. Real throughput is lower because every transmission carries fixed overhead, because Wi-Fi is half-duplex (a device sends or receives, never both at once), and because every other active device uses some of the same airtime. When one Wi-Fi device sends to another through the router, the data crosses the air twice, which roughly halves the speed again.
 
@@ -25,8 +25,8 @@ Every Wi-Fi rate comes from one formula:
 
 Here is each term for a common Wi-Fi 6 setup, an 80 MHz channel at the fastest setting (called MCS 11, where *MCS* means modulation and coding scheme):
 
-- **Data subcarriers: 980.** An 80 MHz channel in Wi-Fi 6 has 996 usable subcarriers (narrow tones, each 78.125 kHz wide, as described in [how Wi-Fi works](/blog/how-wifi-works/)). Sixteen of them are pilots, reference tones used to keep the receiver in step, which leaves 980 for data.
-- **Bits per subcarrier: 10.** 1024-QAM has 1,024 possible symbols, and 2^10 = 1,024, so each subcarrier carries 10 bits at a time.
+- **Data subcarriers: 980.** An 80 MHz channel in Wi-Fi 6 has 996 usable subcarriers (narrow tones, each 78.125 kHz wide, as described in [how Wi-Fi works](/blog/how-wifi-works/)). Sixteen of them are pilots, reference tones used to keep the receiver in step, which leaves 980 for data. [Cisco's Wi-Fi 6 white paper](https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html) gives the same 980 data tones per 13.6 µs symbol.
+- **Bits per subcarrier: 10.** 1024-QAM (one of the [Wi-Fi 6 features the Wi-Fi Alliance lists](https://www.wi-fi.org/wi-fi-macphy)) has 1,024 possible symbols, and 2^10 = 1,024, so each subcarrier carries 10 bits at a time.
 - **Coding rate: 5/6.** Wi-Fi adds error-correcting redundancy. At rate 5/6, out of every 6 coded bits, 5 are your data and 1 is protection.
 - **Symbol time: 13.6 µs.** Each OFDM symbol lasts 12.8 µs (that is 1 ÷ 78.125 kHz) plus a 0.8 µs *guard interval*, a short pause that keeps echoes from one symbol from smearing into the next. 12.8 + 0.8 = 13.6 µs.
 - **Spatial streams: 1 or 2.** Each stream is an independent data path from a separate antenna pairing. A two-antenna phone or laptop typically gets two.
@@ -56,7 +56,7 @@ Walk away from the router and the device moves down this table. The top rate nee
 
 ## Step 2: where the gap to real throughput comes from
 
-The 1,201 Mbps figure counts only the time when data bits are on the air. A real exchange spends time on other things. Take a common case, one device sending one *aggregate*: a burst that packs 64 packets of 1,500 bytes into a single transmission. These are typical timing values from the standard (a 5 GHz channel with 9 µs slots), and the exercise is arithmetic on paper, not a measurement.
+The 1,201 Mbps figure counts only the time when data bits are on the air. A real exchange spends time on other things. Take a common case, one device sending one *aggregate*: a burst that packs 64 packets of 1,500 bytes into a single transmission. The 43 µs gap (the best-effort arbitration interframe space), the 9 µs slots, the 16 µs short gap and the backoff range are the standard's defaults for 5 GHz; the preamble and acknowledgement times are rounded estimates. The exercise is arithmetic on paper, not a measurement.
 
 | Step | Time |
 | --- | --- |
@@ -68,15 +68,18 @@ The 1,201 Mbps figure counts only the time when data bits are on the air. A real
 | Block acknowledgement from the receiver | about 32 µs |
 | **Total** | **about 865 µs** |
 
+![Timeline of one 865 microsecond Wi-Fi burst showing idle wait, random backoff, preamble, 656.5 microseconds of data, a short gap and an acknowledgement, so only about 74 percent of the 1,201 Mbps link rate carries data](./images/figure.svg)
+*Even in this best case, waiting, headers and acknowledgements keep the link rate from becoming file-copy speed.*
+
 Useful payload is 768,000 bits in 865 µs, which is 768,000 ÷ 0.000865 = **about 888 Mbps**, or 74 percent of the link rate. That is the best case with one active device, a perfect signal, nothing retried and large aggregates. Several things then reduce it further:
 
-- **Half-duplex.** Wi-Fi is half-duplex: a device sends or receives on a channel, never both. When you download, your device must still send TCP acknowledgements (small packets saying "got it"), and each one needs its own turn on the air. If each downstream burst triggers an extra 200 µs for the return traffic, the same example drops to 768,000 ÷ 0.001065 = about 721 Mbps, 60 percent of the link rate.
+- **Half-duplex.** Wi-Fi is half-duplex: a device sends or receives on a channel, never both. When you download, your device must still send TCP acknowledgements (small packets saying "got it"), and each one needs its own turn on the air. Suppose, as an assumed figure for illustration, that each downstream burst triggers an extra 200 µs for the return traffic. The same example then drops to 768,000 ÷ 0.001065 = about 721 Mbps, 60 percent of the link rate.
 - **Other devices.** Every device that is transferring takes airtime. Ten active devices do not each get 1,201 Mbps. Neighbors on the same channel count too.
 - **Retries at low signal.** If the signal is marginal, the radio drops to a lower MCS and also loses some frames. A retried frame wastes its airtime and widens the random backoff for the next attempt.
 - **Smaller bursts.** The overhead in the table above is mostly fixed per transmission, so small or interrupted bursts waste a larger share.
 - **Higher layers.** TCP slows itself when it sees loss or long delays, the receiving program may be slow, and a remote server has its own limits.
 
-One consequence is counterintuitive: lower rates are more efficient. At MCS 7 with two streams (720.6 Mbps), the data takes 788,480 ÷ 720.6 = 1,094 µs, and the same 208.5 µs of overhead brings the total to about 1,303 µs. That gives 768,000 ÷ 0.001303 = about 590 Mbps, 82 percent of the link rate. Cutting the link rate by 40 percent, from 1,201 to 720 Mbps, reduced throughput by only about a third (888 to 590), because overhead is a smaller share of a longer transmission. This is why throughput does not rise in step with the number on the router box.
+One consequence is counterintuitive: slower rates keep a larger share of their speed. At MCS 7 with two streams (720.6 Mbps), the data takes 788,480 ÷ 720.6 = 1,094 µs, and the same 208.5 µs of overhead brings the total to about 1,303 µs. That gives 768,000 ÷ 0.001303 = about 590 Mbps, 82 percent of the link rate. Cutting the link rate by 40 percent, from 1,201 to 720 Mbps, reduced throughput by only about a third (888 to 590), because overhead is a smaller share of a longer transmission. This is why throughput does not rise in step with the number on the router box.
 
 ## Step 3: the extra halving between two Wi-Fi devices
 
@@ -108,7 +111,7 @@ The labels vary by system version, so treat these as pointers.
 - **macOS:** holding the Option key while clicking the Wi-Fi menu icon shows details such as transmit rate, channel width and signal.
 - **Android and iOS:** some Android versions show a link speed in the connected network's details; other systems may not show it at all.
 
-Two cautions. Receive and transmit rates can differ because each direction is negotiated separately, and the numbers drop when the connection is idle because the radio only needs to send small packets. To see your top rate, stand near the router while something is actively transferring. As a rough rule, useful throughput in good conditions is commonly somewhere between half and three quarters of the link rate, falling with distance, interference and the number of active devices.
+Two cautions. Receive and transmit rates can differ because each direction is negotiated separately, and the numbers drop when the connection is idle because the radio only needs to send small packets. To see your top rate, stand near the router while something is actively transferring. As a rough rule of thumb, useful throughput in good conditions is somewhere between half and three quarters of the link rate, falling with distance, interference and the number of active devices. The worked example above lands at the upper end of that range because it assumes a perfect signal and large bursts.
 
 ## Setting expectations for a transfer between your own phone and laptop
 
@@ -120,7 +123,7 @@ AnyAirDrop.com is our own tool, and when a direct connection is possible it send
 
 ### Why is my Wi-Fi speed lower than the link speed my laptop shows?
 
-The link speed counts only the time when data bits are being transmitted. Waiting, headers, acknowledgements, retries and other devices use the rest of the airtime. Throughput of around half to three quarters of the link rate is normal in good conditions.
+The link speed counts only the time when data bits are being transmitted. Waiting, headers, acknowledgements, retries and other devices use the rest of the airtime. A rule of thumb is that throughput of about half to three quarters of the link rate is normal in good conditions.
 
 ### Is 1 Gbps Wi-Fi the same as 1 gigabyte per second?
 
@@ -148,7 +151,5 @@ MCS stands for modulation and coding scheme, a number that selects how many bits
 
 ## Sources
 
+- Cisco: [IEEE 802.11ax: The Sixth Generation of Wi-Fi White Paper](https://www.cisco.com/c/en/us/products/collateral/wireless/white-paper-c11-740788.html)
 - Wi-Fi Alliance: [Wi-Fi (MAC/PHY) features](https://www.wi-fi.org/wi-fi-macphy)
-- IEEE 802.11 Working Group: [Project overview](https://www.ieee802.org/11/)
-- Wi-Fi Alliance: [Wi-Fi Alliance delivers Wi-Fi 6E certification program](https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-delivers-wi-fi-6e-certification-program)
-- Microsoft Support: [Wi-Fi and your home layout](https://support.microsoft.com/en-us/windows/experience/connectivity-networking/wi-fi-and-your-home-layout)

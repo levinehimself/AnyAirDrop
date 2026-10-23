@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Time to download 500 MB over each tethering link at an assumed 50 Mbps of mobile speed</title>
+  <defs>
+  <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">PHONES AS MODEMS · BY THE NUMBERS</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Wi-Fi and USB keep up; Bluetooth does not</text>
+  <text x="32" y="112" font-size="14" fill="#475569">Time to download 500 MB (4,000 megabits) with an assumed 50 Mbps of mobile speed</text>
+
+  <rect x="32" y="130" width="736" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="48" y="150" font-size="15" font-weight="700" fill="#0F172A">Wi-Fi hotspot, 5 GHz</text>
+  <text x="48" y="168" font-size="13" font-weight="700" fill="#15803D">Cellular is the limit</text>
+  <rect x="244" y="145" width="9.0" height="18" rx="4.5" fill="#15803D"/>
+  <text x="265.0" y="151" font-size="16" font-weight="700" fill="#0F172A">80 seconds</text>
+  <text x="265.0" y="169" font-size="13" fill="#475569">4,000 / 50</text>
+
+  <rect x="32" y="186" width="736" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="48" y="206" font-size="15" font-weight="700" fill="#0F172A">USB 2.0 tethering</text>
+  <text x="48" y="224" font-size="13" font-weight="700" fill="#15803D">Cellular is the limit</text>
+  <rect x="244" y="201" width="9.0" height="18" rx="4.5" fill="#15803D"/>
+  <text x="265.0" y="207" font-size="16" font-weight="700" fill="#0F172A">80 seconds</text>
+  <text x="265.0" y="225" font-size="13" fill="#475569">4,000 / 50</text>
+
+  <rect x="32" y="242" width="736" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="48" y="262" font-size="15" font-weight="700" fill="#0F172A">Bluetooth, 3 Mbps</text>
+  <text x="48" y="280" font-size="13" font-weight="700" fill="#B45309">The link is the limit</text>
+  <rect x="244" y="257" width="149.9" height="18" rx="5.0" fill="#B45309"/>
+  <text x="405.9" y="263" font-size="16" font-weight="700" fill="#0F172A">about 22 minutes</text>
+  <text x="405.9" y="281" font-size="13" fill="#475569">4,000 / 3 = 1,333 seconds, a floor</text>
+
+  <rect x="32" y="298" width="736" height="48" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="48" y="318" font-size="15" font-weight="700" fill="#0F172A">Bluetooth, 1.5 Mbps</text>
+  <text x="48" y="336" font-size="13" font-weight="700" fill="#B45309">The link is the limit</text>
+  <rect x="244" y="313" width="300.0" height="18" rx="5.0" fill="#B45309"/>
+  <text x="556.0" y="319" font-size="16" font-weight="700" fill="#0F172A">about 44 minutes</text>
+  <text x="556.0" y="337" font-size="13" fill="#475569">4,000 / 1.5 = 2,667 seconds</text>
+  <line x1="243" y1="138" x2="243" y2="338" stroke="#CBD5E1" stroke-width="1.5"/>
+  <text x="32" y="373" font-size="14" fill="#475569">Wi-Fi and USB have headroom, so cellular decides. Bluetooth does not, so the link decides.</text>
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Bars to scale. 50 and 1.5 Mbps are assumed</text>
+</svg>

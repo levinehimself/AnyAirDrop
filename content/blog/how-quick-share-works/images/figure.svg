@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Quick Share visibility options compared: your own devices, contacts and everyone nearby for 10 minutes, with who can find you and who must accept</title>
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-people" viewBox="0 0 48 48"><circle cx="17" cy="16" r="7" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M4 41c0-8 6-13 13-13s13 5 13 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="34" cy="18" r="5.5" stroke="currentColor" stroke-width="2.5" fill="none"/><path d="M36 28c5 1 8 5 8 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="0" cy="450" r="80"/><circle cx="0" cy="450" r="140"/><circle cx="0" cy="450" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">LOCAL TRANSFER TECH · COMPARED</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Choose the narrowest visibility that works</text>
+
+  <rect x="32" y="108" width="234" height="272" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="72" cy="144" r="23" fill="#DBEAFE"/>
+  <use href="#i-phone" x="58" y="130" width="28" height="28" color="#2563EB"/>
+  <text x="108" y="150" font-size="17" font-weight="700" fill="#0F172A">Your own devices</text>
+  <line x1="48" y1="178" x2="250" y2="178" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="48" y="201" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">WHO CAN FIND YOU</text>
+  <rect x="48" y="210" width="62" height="8" rx="4" fill="#2563EB"/><rect x="114" y="210" width="62" height="8" rx="4" fill="#E2E8F0"/><rect x="180" y="210" width="62" height="8" rx="4" fill="#E2E8F0"/>
+  <text x="48" y="242" font-size="14" fill="#475569">Devices signed in to the</text>
+  <text x="48" y="261" font-size="14" fill="#475569">same Google Account</text>
+  <line x1="48" y1="294" x2="250" y2="294" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="48" y="316" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">THE ACCEPT STEP</text>
+  <text x="48" y="340" font-size="15" font-weight="700" fill="#0F172A">Accepted automatically</text>
+  <text x="48" y="359" font-size="14" fill="#475569">between your own devices</text>
+  <rect x="283" y="108" width="234" height="272" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="323" cy="144" r="23" fill="#DBEAFE"/>
+  <use href="#i-people" x="309" y="130" width="28" height="28" color="#2563EB"/>
+  <text x="359" y="150" font-size="17" font-weight="700" fill="#0F172A">Contacts</text>
+  <line x1="299" y1="178" x2="501" y2="178" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="299" y="201" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">WHO CAN FIND YOU</text>
+  <rect x="299" y="210" width="62" height="8" rx="4" fill="#2563EB"/><rect x="365" y="210" width="62" height="8" rx="4" fill="#2563EB"/><rect x="431" y="210" width="62" height="8" rx="4" fill="#E2E8F0"/>
+  <text x="299" y="242" font-size="14" fill="#475569">Your contacts, only while</text>
+  <text x="299" y="261" font-size="14" fill="#475569">the screen is on and</text>
+  <text x="299" y="280" font-size="14" fill="#475569">unlocked</text>
+  <line x1="299" y1="294" x2="501" y2="294" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="299" y="316" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">THE ACCEPT STEP</text>
+  <text x="299" y="340" font-size="15" font-weight="700" fill="#0F172A">Receiver must accept</text>
+  <text x="299" y="359" font-size="14" fill="#475569">a share from another person</text>
+  <rect x="534" y="108" width="234" height="272" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="574" cy="144" r="23" fill="#FEF3C7"/>
+  <use href="#i-radar" x="560" y="130" width="28" height="28" color="#B45309"/>
+  <text x="610" y="150" font-size="17" font-weight="700" fill="#0F172A">Everyone nearby</text>
+  <line x1="550" y1="178" x2="752" y2="178" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="550" y="201" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">WHO CAN FIND YOU</text>
+  <rect x="550" y="210" width="62" height="8" rx="4" fill="#B45309"/><rect x="616" y="210" width="62" height="8" rx="4" fill="#B45309"/><rect x="682" y="210" width="62" height="8" rx="4" fill="#B45309"/>
+  <text x="550" y="242" font-size="14" fill="#475569">Anyone nearby, for 10</text>
+  <text x="550" y="261" font-size="14" fill="#475569">minutes, then it goes back</text>
+  <text x="550" y="280" font-size="14" fill="#475569">to the previous setting</text>
+  <line x1="550" y1="294" x2="752" y2="294" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="550" y="316" font-size="13" font-weight="700" letter-spacing="1" fill="#475569">THE ACCEPT STEP</text>
+  <text x="550" y="340" font-size="15" font-weight="700" fill="#0F172A">Receiver must still accept</text>
+  <text x="550" y="359" font-size="14" fill="#475569">Not open to unsolicited files</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Option names and defaults vary by phone and Android version</text>
+</svg>

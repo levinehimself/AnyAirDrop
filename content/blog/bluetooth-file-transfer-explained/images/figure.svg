@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>When to use Bluetooth to send a file: worth using for small items and unmatched devices, Wi-Fi for photos, videos and folders, and no standard route between an iPhone and Android or Windows</title>
+  <defs>
+    <symbol id="i-bluetooth" viewBox="0 0 48 48"><path d="M13 16l21 17-10 9V6l10 9-21 17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-file" viewBox="0 0 48 48"><path d="M12 5h17l9 9v29H12z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M29 5v9h9M18 25h14M18 32h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 48 48"><rect x="9" y="9" width="30" height="21" rx="3" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M3 37h42l-3.5 4h-35z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 48 48"><path d="M5 12a3 3 0 0 1 3-3h11l4 5h17a3 3 0 0 1 3 3v21a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="0" cy="450" r="80"/><circle cx="0" cy="450" r="140"/><circle cx="0" cy="450" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">LOCAL TRANSFER TECH · DECISION GUIDE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Bluetooth suits small items, not photos</text>
+
+  <!-- Question card -->
+  <rect x="32" y="172" width="152" height="148" rx="16" fill="#0F172A"/>
+  <circle cx="108" cy="210" r="22" fill="#DBEAFE"/>
+  <use href="#i-bluetooth" x="94" y="196" width="28" height="28" color="#2563EB"/>
+  <text x="108" y="258" font-size="17" font-weight="700" text-anchor="middle" fill="#FFFFFF">What are you</text>
+  <text x="108" y="280" font-size="17" font-weight="700" text-anchor="middle" fill="#FFFFFF">sending?</text>
+
+  <path d="M184 246 C 208 246, 208 138, 232 138" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="232" y="108" width="536" height="60" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="265" cy="138" r="19" fill="#DBEAFE"/>
+  <use href="#i-file" x="253" y="126" width="24" height="24" color="#2563EB"/>
+  <text x="296" y="134" font-size="15" font-weight="700" fill="#0F172A">A contact card or a short document</text>
+  <text x="296" y="154" font-size="14" fill="#475569">Small items are what Bluetooth suits</text>
+  <rect x="628" y="125" width="128" height="26" rx="13" fill="#DCFCE7"/>
+  <text x="692" y="143" font-size="13" font-weight="700" text-anchor="middle" fill="#15803D">Worth using</text>
+  <path d="M184 246 C 208 246, 208 210, 232 210" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="232" y="180" width="536" height="60" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="265" cy="210" r="19" fill="#DBEAFE"/>
+  <use href="#i-laptop" x="253" y="198" width="24" height="24" color="#2563EB"/>
+  <text x="296" y="206" font-size="15" font-weight="700" fill="#0F172A">Two devices with nothing else in common</text>
+  <text x="296" y="226" font-size="14" fill="#475569">For example, an older phone and a basic laptop</text>
+  <rect x="628" y="197" width="128" height="26" rx="13" fill="#DCFCE7"/>
+  <text x="692" y="215" font-size="13" font-weight="700" text-anchor="middle" fill="#15803D">Worth using</text>
+  <path d="M184 246 C 208 246, 208 282, 232 282" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="232" y="252" width="536" height="60" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="265" cy="282" r="19" fill="#DBEAFE"/>
+  <use href="#i-folder" x="253" y="270" width="24" height="24" color="#2563EB"/>
+  <text x="296" y="278" font-size="15" font-weight="700" fill="#0F172A">Photos, videos and folders</text>
+  <text x="296" y="298" font-size="14" fill="#475569">Nearby sharing, or a browser tool on Wi-Fi</text>
+  <rect x="628" y="269" width="128" height="26" rx="13" fill="#2563EB"/>
+  <text x="692" y="287" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">Use Wi-Fi</text>
+  <path d="M184 246 C 208 246, 208 354, 232 354" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+  <rect x="232" y="324" width="536" height="60" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="265" cy="354" r="19" fill="#DBEAFE"/>
+  <use href="#i-phone" x="253" y="342" width="24" height="24" color="#2563EB"/>
+  <text x="296" y="350" font-size="15" font-weight="700" fill="#0F172A">iPhone with Android or Windows</text>
+  <text x="296" y="370" font-size="14" fill="#475569">Use shared Wi-Fi, a cable or cloud storage</text>
+  <rect x="628" y="341" width="128" height="26" rx="13" fill="#FEF3C7"/>
+  <text x="692" y="359" font-size="13" font-weight="700" text-anchor="middle" fill="#B45309">No standard route</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Apple's iOS profile list has no Object Push or File Transfer</text>
+</svg>

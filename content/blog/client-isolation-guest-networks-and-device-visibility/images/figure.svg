@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Is it isolation? Three quick tests tell you</title>
+  <defs>
+    <symbol id="i-warning" viewBox="0 0 48 48"><path d="M24 6L44 40H4z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 18v11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34.5" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-check" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M15 25l7 7 12-14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">ROUTERS AND NETWORKS · DECISION GUIDE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Is it isolation? Three quick tests tell you</text>
+
+  <!-- connectors between step badges -->
+  <path d="M50 159V213M50 245V316" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+  <!-- Step 1 -->
+  <circle cx="50" cy="143" r="16" fill="#0F172A"/>
+  <text x="50" y="148.5" font-size="16" font-weight="700" text-anchor="middle" fill="#FFFFFF">1</text>
+  <text x="82" y="128" font-size="17" font-weight="700" fill="#0F172A">Compare the IP addresses</text>
+  <text x="82" y="148" font-size="14" fill="#475569">Find both in the Wi-Fi details.</text>
+  <text x="82" y="167" font-size="14" fill="#475569">Do the first three numbers match?</text>
+  <path d="M338 143H360M354 137l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="372" y="108" width="396" height="70" rx="14" fill="#FEF3C7"/>
+  <circle cx="404" cy="143" r="19" fill="#FFFFFF"/>
+  <use href="#i-warning" x="392" y="131" width="24" height="24" color="#B45309"/>
+  <text x="438" y="138" font-size="15" font-weight="700" fill="#0F172A">First three numbers differ</text>
+  <text x="438" y="158" font-size="14" fill="#475569">Different subnets, not isolation as such.</text>
+
+  <!-- Step 2 -->
+  <circle cx="50" cy="229" r="16" fill="#0F172A"/>
+  <text x="50" y="234.5" font-size="16" font-weight="700" text-anchor="middle" fill="#FFFFFF">2</text>
+  <text x="82" y="214" font-size="17" font-weight="700" fill="#0F172A">Ping the router</text>
+  <text x="82" y="234" font-size="14" fill="#475569">If they match, ping the gateway,</text>
+  <text x="82" y="253" font-size="14" fill="#475569">usually the address ending in .1.</text>
+  <path d="M338 229H360M354 223l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="372" y="194" width="396" height="70" rx="14" fill="#DCFCE7"/>
+  <circle cx="404" cy="229" r="19" fill="#FFFFFF"/>
+  <use href="#i-check" x="392" y="217" width="24" height="24" color="#15803D"/>
+  <text x="438" y="224" font-size="15" font-weight="700" fill="#0F172A">The router replies</text>
+  <text x="438" y="244" font-size="14" fill="#475569">The Wi-Fi connection works.</text>
+
+  <!-- Step 3 -->
+  <circle cx="50" cy="332" r="16" fill="#0F172A"/>
+  <text x="50" y="337.5" font-size="16" font-weight="700" text-anchor="middle" fill="#FFFFFF">3</text>
+  <text x="82" y="317" font-size="17" font-weight="700" fill="#0F172A">Ping the other device</text>
+  <text x="82" y="337" font-size="14" fill="#475569">From the first device, ping the</text>
+  <text x="82" y="356" font-size="14" fill="#475569">other one's IP address.</text>
+  <path d="M334 332H346M346 304V360M346 304H360M354 298l6 6-6 6M346 360H360M354 354l6 6-6 6" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="372" y="280" width="396" height="48" rx="14" fill="#DCFCE7"/>
+  <circle cx="400" cy="304" r="16" fill="#FFFFFF"/>
+  <use href="#i-check" x="390" y="294" width="20" height="20" color="#15803D"/>
+  <text x="430" y="299" font-size="15" font-weight="700" fill="#0F172A">A reply: it is discovery, not isolation</text>
+  <text x="430" y="318" font-size="14" fill="#475569">Direct device-to-device traffic works.</text>
+  <rect x="372" y="336" width="396" height="48" rx="14" fill="#FEF3C7"/>
+  <circle cx="400" cy="360" r="16" fill="#FFFFFF"/>
+  <use href="#i-warning" x="390" y="350" width="20" height="20" color="#B45309"/>
+  <text x="430" y="355" font-size="15" font-weight="700" fill="#0F172A">No reply: isolation, a firewall, or both</text>
+  <text x="430" y="374" font-size="14" fill="#475569">Some healthy devices ignore pings, too.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">A failed ping is a clue, not proof</text>
+</svg>

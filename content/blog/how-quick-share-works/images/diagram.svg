@@ -35,8 +35,8 @@
   <text x="450" y="150" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">4821</text>
   <text x="400" y="148" text-anchor="middle" font-size="20" font-weight="700" fill="#15803D">=</text>
   <text x="400" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Key exchange and PIN</text>
-  <text x="400" y="224" text-anchor="middle" font-size="14" fill="#475569">Both screens show the</text>
-  <text x="400" y="242" text-anchor="middle" font-size="14" fill="#475569">same PIN (example only).</text>
+  <text x="400" y="224" text-anchor="middle" font-size="14" fill="#475569">Both screens can show</text>
+  <text x="400" y="242" text-anchor="middle" font-size="14" fill="#475569">a PIN (example only).</text>
   <text x="400" y="268" text-anchor="middle" font-size="14" fill="#475569">Receiver taps Accept.</text>
   <text x="400" y="286" text-anchor="middle" font-size="14" fill="#475569">The link is encrypted.</text>
 
@@ -48,13 +48,13 @@
   <rect x="688" y="124" width="72" height="40" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
   <text x="724" y="149" text-anchor="middle" font-size="13" fill="#0F172A">Receiver</text>
   <line x1="632" y1="144" x2="680" y2="144" stroke="#0F172A" stroke-width="5" marker-end="url(#ad)"/>
-  <text x="656" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Faster Wi-Fi link</text>
+  <text x="656" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Faster link</text>
   <text x="656" y="224" text-anchor="middle" font-size="14" fill="#475569">Wi-Fi LAN, Wi-Fi Direct,</text>
   <text x="656" y="242" text-anchor="middle" font-size="14" fill="#475569">hotspot or WebRTC.</text>
   <text x="656" y="268" text-anchor="middle" font-size="14" fill="#475569">The devices negotiate</text>
   <text x="656" y="286" text-anchor="middle" font-size="14" fill="#475569">which one to use.</text>
 
   <!-- Footer -->
-  <text x="400" y="352" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Bluetooth is for finding, Wi-Fi is for moving data</text>
-  <text x="400" y="376" text-anchor="middle" font-size="14" fill="#475569">The receiver must accept before any file is sent.</text>
+  <text x="400" y="352" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Bluetooth is for finding, a faster link is for moving data</text>
+  <text x="400" y="376" text-anchor="middle" font-size="14" fill="#475569">A share from another person needs the receiver to accept first.</text>
 </svg>

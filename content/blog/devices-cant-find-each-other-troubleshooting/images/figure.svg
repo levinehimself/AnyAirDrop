@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Two devices share a network only if the first three numbers of their addresses match</title>
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-laptop" viewBox="0 0 48 48"><rect x="9" y="9" width="30" height="21" rx="3" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M3 37h42l-3.5 4h-35z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 48 48"><path d="M24 6L44 40H4z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 18v11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34.5" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">TRANSFER IN PRACTICE · COMPARED</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Do the first three numbers match?</text>
+
+  <!-- Phone card -->
+  <g>
+    <rect x="32" y="112" width="336" height="200" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="68" cy="146" r="22" fill="#DBEAFE"/>
+    <use href="#i-phone" x="54" y="132" width="28" height="28" color="#2563EB"/>
+    <text x="102" y="142" font-size="18" font-weight="700" fill="#0F172A">Phone</text>
+    <text x="102" y="162" font-size="14" fill="#475569">IPv4 address</text>
+    <rect x="52.0" y="180" width="63.5" height="44" rx="10" fill="#DBEAFE"/>
+    <text x="83.75" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#0F172A">192</text>
+    <circle cx="122.5" cy="218" r="2.5" fill="#475569"/>
+    <rect x="129.5" y="180" width="63.5" height="44" rx="10" fill="#DBEAFE"/>
+    <text x="161.25" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#0F172A">168</text>
+    <circle cx="200.0" cy="218" r="2.5" fill="#475569"/>
+    <rect x="207.0" y="180" width="63.5" height="44" rx="10" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+    <text x="238.75" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#B45309">1</text>
+    <circle cx="277.5" cy="218" r="2.5" fill="#475569"/>
+    <rect x="284.5" y="180" width="63.5" height="44" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    <text x="316.25" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#475569">23</text>
+    <path d="M52 238v6h218.5v-6" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="52" y="264" font-size="13" font-weight="700" fill="#2563EB">Mask 255.255.255.0 keeps these three</text>
+    <line x1="52" y1="276" x2="348" y2="276" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="52" y="300" font-size="14" fill="#475569">Network</text>
+    <text x="348" y="301" font-size="20" font-weight="700" text-anchor="end" fill="#0F172A">192.168.1.0</text>
+  </g>
+
+  <!-- Laptop card -->
+  <g>
+    <rect x="432" y="112" width="336" height="200" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="468" cy="146" r="22" fill="#DBEAFE"/>
+    <use href="#i-laptop" x="454" y="132" width="28" height="28" color="#2563EB"/>
+    <text x="502" y="142" font-size="18" font-weight="700" fill="#0F172A">Laptop</text>
+    <text x="502" y="162" font-size="14" fill="#475569">IPv4 address</text>
+    <rect x="452.0" y="180" width="63.5" height="44" rx="10" fill="#DBEAFE"/>
+    <text x="483.75" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#0F172A">192</text>
+    <circle cx="522.5" cy="218" r="2.5" fill="#475569"/>
+    <rect x="529.5" y="180" width="63.5" height="44" rx="10" fill="#DBEAFE"/>
+    <text x="561.25" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#0F172A">168</text>
+    <circle cx="600.0" cy="218" r="2.5" fill="#475569"/>
+    <rect x="607.0" y="180" width="63.5" height="44" rx="10" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+    <text x="638.75" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#B45309">0</text>
+    <circle cx="677.5" cy="218" r="2.5" fill="#475569"/>
+    <rect x="684.5" y="180" width="63.5" height="44" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    <text x="716.25" y="210" font-size="22" font-weight="700" text-anchor="middle" fill="#475569">14</text>
+    <path d="M452 238v6h218.5v-6" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="452" y="264" font-size="13" font-weight="700" fill="#2563EB">Mask 255.255.255.0 keeps these three</text>
+    <line x1="452" y1="276" x2="748" y2="276" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="452" y="300" font-size="14" fill="#475569">Network</text>
+    <text x="748" y="301" font-size="20" font-weight="700" text-anchor="end" fill="#0F172A">192.168.0.0</text>
+  </g>
+
+  <!-- Not equal sign between the cards -->
+  <circle cx="400" cy="212" r="22" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+  <path d="M391 206.5h18M391 217.5h18M405 199l-10 26" fill="none" stroke="#B45309" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Result strip -->
+  <rect x="32" y="324" width="736" height="60" rx="16" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+  <use href="#i-warning" x="52" y="339" width="30" height="30" color="#B45309"/>
+  <text x="98" y="348" font-size="17" font-weight="700" fill="#0F172A">The third number differs (1 and 0), so these are two networks.</text>
+  <text x="98" y="368" font-size="14" fill="#475569">Broadcast and multicast discovery between them fails.</text>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Example addresses, common mask 255.255.255.0</text>
+</svg>

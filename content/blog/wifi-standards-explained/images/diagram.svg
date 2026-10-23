@@ -44,7 +44,7 @@
   <rect x="230" y="204" width="228" height="24" rx="4" fill="#2563EB"/>
   <rect x="230" y="244" width="334" height="24" rx="4" fill="#2563EB"/>
   <rect x="230" y="284" width="348" height="24" rx="4" fill="#2563EB"/>
-  <rect x="230" y="324" width="416" height="24" rx="4" fill="#2563EB"/>
+  <rect x="230" y="324" width="386" height="24" rx="4" fill="#2563EB"/>
 
   <!-- value labels -->
   <g font-size="15" font-weight="700" fill="#0F172A" stroke="#F8FAFC" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
@@ -54,6 +54,6 @@
     <text x="466" y="221">600 Mbps</text>
     <text x="572" y="261">6.9 Gbps</text>
     <text x="586" y="301">9.6 Gbps</text>
-    <text x="654" y="341">46 Gbps</text>
+    <text x="624" y="341">23 Gbps</text>
   </g>
 </svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>One fixed hardware address versus a different private address on each network</title>
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M21 9h6M21 39h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">ROUTERS AND NETWORKS · COMPARED</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">One phone, a new address per network</text>
+
+  <!-- Left panel: one fixed address -->
+  <rect x="32" y="108" width="360" height="276" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="136" font-size="17" font-weight="700" fill="#0F172A">One fixed address</text>
+  <text x="52" y="154" font-size="13" fill="#475569">How it worked for years</text>
+
+  <circle cx="92" cy="238" r="28" fill="#DBEAFE"/>
+  <use href="#i-phone" x="76" y="222" width="32" height="32" color="#2563EB"/>
+  <text x="92" y="286" font-size="14" font-weight="700" text-anchor="middle" fill="#0F172A">Your phone</text>
+
+  <g fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round">
+    <path d="M120 238C138 238 138 188 156 188"/>
+    <path d="M120 238H156"/>
+    <path d="M120 238C138 238 138 288 156 288"/>
+  </g>
+
+  <rect x="156" y="168" width="220" height="40" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="170" y="193" font-size="14" font-weight="700" fill="#0F172A">Your home</text>
+  <rect x="274" y="176" width="94" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="321" y="193" font-size="13" font-weight="700" text-anchor="middle" fill="#B45309">Real address</text>
+
+  <rect x="156" y="218" width="220" height="40" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="170" y="243" font-size="14" font-weight="700" fill="#0F172A">A shop</text>
+  <rect x="274" y="226" width="94" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="321" y="243" font-size="13" font-weight="700" text-anchor="middle" fill="#B45309">Real address</text>
+
+  <rect x="156" y="268" width="220" height="40" rx="10" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="170" y="293" font-size="14" font-weight="700" fill="#0F172A">An airport</text>
+  <rect x="274" y="276" width="94" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="321" y="293" font-size="13" font-weight="700" text-anchor="middle" fill="#B45309">Real address</text>
+
+  <line x1="52" y1="326" x2="372" y2="326" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="52" y="349" font-size="14" font-weight="700" fill="#B45309">Easy to recognize</text>
+  <text x="52" y="368" font-size="14" fill="#475569">A shop or an airport can spot the same phone.</text>
+
+  <!-- Right panel: a different address per network -->
+  <rect x="408" y="108" width="360" height="276" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="428" y="136" font-size="17" font-weight="700" fill="#0F172A">One address per network</text>
+  <text x="428" y="154" font-size="13" fill="#475569">How phones work now</text>
+
+  <circle cx="468" cy="238" r="28" fill="#DBEAFE"/>
+  <use href="#i-phone" x="452" y="222" width="32" height="32" color="#2563EB"/>
+  <text x="468" y="286" font-size="14" font-weight="700" text-anchor="middle" fill="#0F172A">Your phone</text>
+
+  <g fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round">
+    <path d="M496 238C514 238 514 188 532 188"/>
+    <path d="M496 238H532"/>
+    <path d="M496 238C514 238 514 288 532 288"/>
+  </g>
+
+  <rect x="532" y="168" width="220" height="40" rx="10" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <text x="546" y="193" font-size="14" font-weight="700" fill="#0F172A">Your home</text>
+  <rect x="650" y="176" width="94" height="24" rx="12" fill="#2563EB"/>
+  <text x="697" y="193" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">Address A</text>
+
+  <rect x="532" y="218" width="220" height="40" rx="10" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <text x="546" y="243" font-size="14" font-weight="700" fill="#0F172A">A shop</text>
+  <rect x="650" y="226" width="94" height="24" rx="12" fill="#2563EB"/>
+  <text x="697" y="243" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">Address B</text>
+
+  <rect x="532" y="268" width="220" height="40" rx="10" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+  <text x="546" y="293" font-size="14" font-weight="700" fill="#0F172A">An airport</text>
+  <rect x="650" y="276" width="94" height="24" rx="12" fill="#2563EB"/>
+  <text x="697" y="293" font-size="13" font-weight="700" text-anchor="middle" fill="#FFFFFF">Address C</text>
+
+  <line x1="428" y1="326" x2="748" y2="326" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="428" y="349" font-size="14" font-weight="700" fill="#15803D">Hard to link across networks</text>
+  <text x="428" y="368" font-size="14" fill="#475569">Your home router still sees the same phone.</text>
+
+  <!-- connector -->
+  <circle cx="400" cy="238" r="14" fill="#2563EB"/>
+  <path d="M396 231l7 7-7 7" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Simplified; settings differ by device and version</text>
+</svg>

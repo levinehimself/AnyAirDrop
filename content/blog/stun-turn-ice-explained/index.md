@@ -61,13 +61,15 @@ Each candidate gets a priority number from a formula in RFC 8445, section 5.1.2.
 
 priority = 2^24 × type preference + 2^8 × local preference + (256 − component ID)
 
-The recommended type preferences are 126 for host, 110 for peer-reflexive, 100 for server-reflexive and 0 for relayed. The local preference is a tiebreaker between multiple interfaces (for example Wi-Fi and Ethernet), and the component ID is 1 for a single data stream, which is what a data channel uses. With a single interface and the recommended local preference of 65,535, the numbers work out to:
+The recommended type preferences (section 5.1.2.2) are 126 for host, 110 for peer-reflexive, 100 for server-reflexive and 0 for relayed. The local preference is a tiebreaker between multiple interfaces (for example Wi-Fi and Ethernet), and the component ID is 1 when all traffic shares a single component, as it does in a WebRTC connection. For a device with a single address, the RFC says the local preference should be 65,535, and the numbers then work out to:
 
 - Host: 126 × 16,777,216 + 65,535 × 256 + 255 = 2,130,706,431
 - Server-reflexive: 100 × 16,777,216 + 65,535 × 256 + 255 = 1,694,498,815
 - Relayed: 0 + 65,535 × 256 + 255 = 16,777,215
 
-A pair's priority is built from both candidates' numbers using 2^32 × MIN(G, D) + 2 × MAX(G, D) + (1 if G > D, else 0), where G and D are the two priorities. The MIN term dominates, so a pair is only as good as its worse half. A host candidate paired with a relayed candidate ranks near the bottom, which is the behavior you want: the order of tries is "direct local, then direct public, then relay."
+Browsers choose their own local preference values, so the priorities in a browser's debugging output will not match these exact numbers, but the ordering of the types is the same.
+
+A pair's priority is built from both candidates' numbers using 2^32 × MIN(G, D) + 2 × MAX(G, D) + (1 if G > D, else 0), where G and D are the two priorities (section 6.1.2.3). The MIN term dominates, so a pair is only as good as its worse half. A host candidate paired with a relayed candidate ranks near the bottom, which is the behavior you want: the order of tries is "direct local, then direct public, then relay."
 
 ## A worked trace: two devices on the same Wi-Fi
 
@@ -83,11 +85,16 @@ Phone A is at 192.168.1.23 and laptop B is at 192.168.1.42. Both are connected t
 
 At no point did a file packet reach the public internet. The router still did its normal job of passing frames between the two Wi-Fi devices (as in [how Wi-Fi works](/blog/how-wifi-works/)), but no address translation was involved. The reflexive pair would also have been a valid route, but it would depend on the router looping traffic back to itself, a feature called *hairpinning* that some routers handle poorly. ICE avoids the question by trying the host pair first.
 
+![Phone A and laptop B on the same Wi-Fi each list a host and a server-reflexive address. The host pair, 192.168.1.23 to 192.168.1.42, is tested first and carries the file, while only STUN and signaling messages reach the internet.](./images/figure.svg)
+*In the usual home case the first test succeeds, so the file passes from one device to the other through the router and never reaches the internet.*
+
 ### Why browsers often show a .local name instead of an address
 
 A host candidate normally reveals your private IP address to every site that asks, which is a small privacy leak and a fingerprinting aid. [RFC 8828](https://www.rfc-editor.org/rfc/rfc8828), the IETF's document on WebRTC IP address handling, discusses the trade-off between disclosing private addresses and keeping direct connections working.
 
-An approach implemented by browsers is to replace the address with a randomly generated name ending in `.local`, an idea described in an [IETF Internet-Draft on mDNS ICE candidates](https://datatracker.ietf.org/doc/draft-ietf-mmusic-mdns-ice-candidates/) (the draft has expired without becoming an RFC, but the technique is the one browsers use). The peer resolves the name with multicast DNS, the same local-discovery mechanism covered in [mDNS and Bonjour](/blog/mdns-bonjour-device-discovery/). On the same network, the name resolves and the host pair works. On a different network, the query gets no answer, so ICE falls through to the other candidates. A side effect is useful: resolving the name effectively asks, "are you on my network?"
+To close that leak, browsers can replace the address with a randomly generated name ending in `.local`. The technique is described in an [IETF Internet-Draft on mDNS ICE candidates](https://datatracker.ietf.org/doc/draft-ietf-mmusic-mdns-ice-candidates/). That draft has expired without becoming an RFC, so it is not a finished standard, but major browsers have implemented the idea. The peer resolves the name with multicast DNS (mDNS), the same local-discovery mechanism covered in [mDNS and Bonjour](/blog/mdns-bonjour-device-discovery/). On the same network, the name resolves and the host pair works. On a different network, the query gets no answer, so ICE falls through to the other candidates. A side effect is useful: resolving the name effectively asks, "are you on my network?"
+
+The draft also warns about the cost. If a network disables mDNS, or the peer is too many network segments away, the name cannot be resolved, and ICE then falls back to NAT hairpinning if the router supports it, or to a TURN relay if not, with lower throughput and higher latency. That is one reason two devices on the same Wi-Fi sometimes still end up on a relay.
 
 ## The hard cases
 
@@ -101,17 +108,17 @@ Some routers use a different public port for each destination. A STUN server see
 
 Mobile networks and some home internet providers place a second NAT inside their own network. Your router's "public" address is then itself private, often from the block 100.64.0.0/10 that [RFC 6598](https://www.rfc-editor.org/rfc/rfc6598) reserves for this purpose. Two layers of translation give the traversal procedure fewer chances to succeed, and the outer layer is outside your control. Whether a connection works depends on the provider's NAT behavior, which varies, so this guide makes no promise about any particular network.
 
-## What this means for sending files between your own devices
+## What ICE decides when a phone sends a file to a laptop in the same room
 
-For the usual home case, a phone and a laptop in one room on one Wi-Fi network, the first ICE test succeeds. That is the best outcome: the transfer is limited by your Wi-Fi, no relay bandwidth is used, and the file does not leave the building. This is the reason local transfer can be so much faster than uploading to a cloud service, as we calculate in [local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/).
+For the usual home case, a phone and a laptop in one room on one Wi-Fi network, the first ICE test normally succeeds. That is the best outcome: the transfer is limited by your Wi-Fi, no relay bandwidth is used, and the file does not leave the building. This is the reason local transfer can be so much faster than uploading to a cloud service, as we calculate in [local transfer vs cloud upload](/blog/local-transfer-vs-cloud-upload/).
 
-It breaks when the host pair is blocked, for example by a guest network that isolates clients ([client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/)) or a VPN that moves the device onto a different network. ICE then falls back to the public or relayed routes, and the transfer may travel through the internet. AnyAirDrop.com is our own tool, and it tries a direct connection first; it uses an encrypted relay only if a direct connection is impossible, and the page tells you when that happens.
+It breaks when the host pair is blocked, for example by a guest network that isolates clients ([client isolation and guest networks](/blog/client-isolation-guest-networks-and-device-visibility/)), a network that filters mDNS, or a VPN that moves the device onto a different network. ICE then falls back to the public or relayed routes, and the transfer may travel through the internet. AnyAirDrop.com is our own tool, and it tries a direct connection first; it uses an encrypted relay only if a direct connection is impossible, and the page tells you when that happens.
 
 ## Common questions
 
 ### What is the difference between STUN and TURN?
 
-STUN only tells a device its public address and port, and relays nothing. TURN actually carries the traffic through a server. STUN is cheap and often enough; TURN is the fallback that costs the operator bandwidth.
+STUN only tells a device its public address and port, and relays nothing. TURN carries the traffic through a server. STUN is cheap and often enough; TURN is the fallback that costs the operator bandwidth.
 
 ### Does STUN see my files?
 
@@ -119,7 +126,7 @@ No. A STUN server answers a tiny request about addresses and is not part of the 
 
 ### Why do two devices on the same Wi-Fi sometimes still connect through the internet?
 
-Usually something prevents the local test from succeeding. Common causes are client isolation on the network, a VPN, or devices that are actually on different networks, such as one on Wi-Fi and one on mobile data. Our [troubleshooting guide](/blog/devices-cant-find-each-other-troubleshooting/) lists them in order.
+Usually something prevents the local test from succeeding. Common causes are client isolation on the network, a network that blocks mDNS, a VPN, or devices on different networks, such as one on Wi-Fi and one on mobile data. Our [troubleshooting guide](/blog/devices-cant-find-each-other-troubleshooting/) lists them in order.
 
 ### What is a candidate in ICE?
 

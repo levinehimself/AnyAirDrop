@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" font-family="Urbanist, system-ui, -apple-system, &apos;Segoe UI&apos;, sans-serif">
+  <title>Three NFC modes and where each stands on phones today</title>
+  <defs>
+    <symbol id="i-nfc" viewBox="0 0 48 48"><rect x="4" y="12" width="14" height="24" rx="3.5" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M25 17a10 10 0 0 1 0 14M31 12a17 17 0 0 1 0 24M37 7a24 24 0 0 1 0 34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 48 48"><path d="M24 4l16 6v13c0 10-7 17-16 21C15 40 8 33 8 23V10z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M16.5 24l5 5 10-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 48 48"><path d="M6 17h34M32 9l8 8-8 8M42 31H8M16 23l-8 8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-check" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5"/><path d="M15 25l7 7 12-14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 48 48"><path d="M24 6L44 40H4z" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M24 18v11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="34.5" r="1.8" fill="currentColor"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" fill="none"/><circle cx="24" cy="24" r="4.6" fill="currentColor"/><path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"/></symbol>
+    <clipPath id="card"><rect x="0.5" y="0.5" width="799" height="449" rx="20"/></clipPath>
+  </defs>
+  <rect x="0.5" y="0.5" width="799" height="449" rx="20" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <g clip-path="url(#card)" fill="none" stroke="#E2E8F0" stroke-width="1.5">
+    <circle cx="790" cy="-10" r="80"/><circle cx="790" cy="-10" r="140"/><circle cx="790" cy="-10" r="200"/>
+  </g>
+  <text x="32" y="46" font-size="13" font-weight="700" letter-spacing="1.6" fill="#2563EB">LOCAL TRANSFER TECH · AT A GLANCE</text>
+  <text x="32" y="86" font-size="29" font-weight="700" fill="#0F172A">Three NFC modes, and none moves big files</text>
+
+  <!-- Column labels -->
+  <text x="104" y="124" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">MODE</text>
+  <text x="272" y="124" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">WHAT THE TAP DOES</text>
+  <text x="544" y="124" font-size="13" font-weight="700" letter-spacing="1.2" fill="#475569">ON PHONES TODAY</text>
+
+  <!-- Row 1: reader/writer -->
+  <g>
+    <rect x="32" y="134" width="736" height="72" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="68" cy="170" r="24" fill="#DBEAFE"/>
+    <use href="#i-nfc" x="54" y="156" width="28" height="28" color="#2563EB"/>
+    <text x="104" y="164" font-size="17" font-weight="700" fill="#0F172A">Reader/writer</text>
+    <text x="104" y="185" font-size="14" fill="#475569">Phone reads a tag</text>
+    <line x1="258" y1="148" x2="258" y2="192" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="272" y="156" font-size="14" fill="#475569">Stickers, cards and posters hold</text>
+    <text x="272" y="174" font-size="14" fill="#475569">a small message, such as a link</text>
+    <text x="272" y="192" font-size="14" fill="#475569">or Wi-Fi credentials.</text>
+    <line x1="526" y1="148" x2="526" y2="192" stroke="#E2E8F0" stroke-width="1.5"/>
+    <use href="#i-check" x="544" y="150" width="20" height="20" color="#15803D"/>
+    <text x="570" y="165" font-size="14" font-weight="700" fill="#15803D">Works on iPhone</text>
+    <text x="570" y="185" font-size="14" fill="#475569">Reads and writes tags</text>
+  </g>
+
+  <!-- Row 2: card emulation -->
+  <g>
+    <rect x="32" y="220" width="736" height="72" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="68" cy="256" r="24" fill="#DBEAFE"/>
+    <use href="#i-shield" x="54" y="242" width="28" height="28" color="#2563EB"/>
+    <text x="104" y="250" font-size="17" font-weight="700" fill="#0F172A">Card emulation</text>
+    <text x="104" y="271" font-size="14" fill="#475569">Phone acts as a card</text>
+    <line x1="258" y1="234" x2="258" y2="278" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="272" y="242" font-size="14" fill="#475569">The phone acts like a contactless</text>
+    <text x="272" y="260" font-size="14" fill="#475569">card at payment terminals, transit</text>
+    <text x="272" y="278" font-size="14" fill="#475569">gates and door readers.</text>
+    <line x1="526" y1="234" x2="526" y2="278" stroke="#E2E8F0" stroke-width="1.5"/>
+    <use href="#i-check" x="544" y="236" width="20" height="20" color="#15803D"/>
+    <text x="570" y="251" font-size="14" font-weight="700" fill="#15803D">Works on iPhone</text>
+    <text x="570" y="271" font-size="14" fill="#475569">Payments, certain cards</text>
+  </g>
+
+  <!-- Row 3: peer-to-peer -->
+  <g>
+    <rect x="32" y="306" width="736" height="72" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="68" cy="342" r="24" fill="#DBEAFE"/>
+    <use href="#i-arrows" x="54" y="328" width="28" height="28" color="#2563EB"/>
+    <text x="104" y="336" font-size="17" font-weight="700" fill="#0F172A">Peer-to-peer</text>
+    <text x="104" y="357" font-size="14" fill="#475569">Two phones touch</text>
+    <line x1="258" y1="320" x2="258" y2="364" stroke="#E2E8F0" stroke-width="1.5"/>
+    <text x="272" y="328" font-size="14" fill="#475569">Two devices touch to exchange data</text>
+    <text x="272" y="346" font-size="14" fill="#475569">directly. Android Beam used a tap</text>
+    <text x="272" y="364" font-size="14" fill="#475569">to start a Bluetooth transfer.</text>
+    <line x1="526" y1="320" x2="526" y2="364" stroke="#E2E8F0" stroke-width="1.5"/>
+    <use href="#i-warning" x="544" y="322" width="20" height="20" color="#B45309"/>
+    <text x="570" y="337" font-size="14" font-weight="700" fill="#B45309">Not on iPhone</text>
+    <text x="570" y="357" font-size="14" fill="#475569">Android Beam: removed</text>
+  </g>
+
+  <line x1="32" y1="394" x2="768" y2="394" stroke="#E2E8F0" stroke-width="1.5"/>
+  <use href="#i-radar" x="32" y="408" width="24" height="24" color="#2563EB"/>
+  <text x="62" y="426" font-size="15" font-weight="700" fill="#0F172A">AnyAirDrop<tspan font-weight="500" fill="#475569">.com</tspan></text>
+  <text x="768" y="426" font-size="13" text-anchor="end" fill="#475569">Availability varies by model and version</text>
+</svg>
