@@ -23,7 +23,7 @@
 
   --font-sans: 'Urbanist Variable', 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   /* Only for the logo wordmark. */
-  --font-brand: 'Space Grotesk Variable', 'Space Grotesk', var(--font-sans);
+  --font-brand: 'Unbounded Variable', 'Unbounded', var(--font-sans);
   /* The logo's blue: the accent on light, a touch brighter on dark so it keeps its contrast. */
   --color-brand: #2563eb;
 

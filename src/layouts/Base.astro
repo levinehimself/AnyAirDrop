@@ -1,6 +1,6 @@
 ---
 import '@fontsource-variable/urbanist';
-import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/unbounded';
 import '../styles/global.css';
 
 interface Props {
@@ -163,10 +163,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     color: var(--color-brand);
   }
 
+  /* Unbounded is very wide, so it is set smaller than the body text would be. */
   .wordmark {
     font-family: var(--font-brand);
-    font-size: 21px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1;
   }
