@@ -5,10 +5,24 @@
   import type { PeerLink, Route } from '../lib/transfer/link';
   import { countFiles, formatBytes } from '../lib/transfer/format';
   import { makeQr } from '../lib/qr';
+  import { saveName } from '../lib/transfer/identity';
+  import {
+    canStoreTrusted,
+    loadTrusted,
+    saveTrusted,
+    TRUSTED_LIMIT,
+    type TrustedDevice,
+    type TrustedRow,
+  } from '../lib/transfer/trusted';
+  import { saveAsZip } from '../lib/zip';
+  import DeviceBar from './DeviceBar.svelte';
   import DeviceIcon from './DeviceIcon.svelte';
+  import TrustedPanel from './TrustedPanel.svelte';
 
   type View =
     | { kind: 'idle' }
+    | { kind: 'trust-wait'; peer: RemotePeer; cancel: () => void }
+    | { kind: 'trust-ask'; peer: RemotePeer; xid: string; token: string }
     | { kind: 'confirm'; peer: RemotePeer; files: File[] }
     | { kind: 'waiting'; peer: RemotePeer; transfer: OutgoingTransfer }
     | { kind: 'sending'; peer: RemotePeer; transfer: OutgoingTransfer }
@@ -18,7 +32,7 @@
     | { kind: 'received'; peer: RemotePeer; files: ReceivedFile[] }
     | { kind: 'notice'; title: string; detail: string };
 
-  type PlacedPeer = RemotePeer & { left: string; top: string };
+  type PlacedPeer = RemotePeer & { left: string; top: string; trusted: boolean };
 
   // Where devices sit on the radar: angles (degrees, clockwise from 3 o'clock).
   const SLOT_ANGLES = [215, 335, 95, 275, 155, 35, 245, 65];
@@ -37,6 +51,17 @@
   let myCode = $state('');
   let codeInput = $state('');
   let pairNote = $state('');
+
+  // Trusted devices: kept on this device, and found again through a secret room.
+  let trusted = $state<TrustedDevice[]>([]);
+  let onlineTokens = $state<string[]>([]);
+  let trustedOpen = $state(false);
+  let canStore = $state(true);
+  const trustedRows = $derived<TrustedRow[]>(trusted.map((t) => ({ ...t, online: onlineTokens.includes(t.token) })));
+  const untrustedPeers = $derived(peers.filter((p) => !p.trusted));
+
+  let zipBusy = $state(false);
+  let zipNote = $state('');
 
   // ?debug=1 shows which shared-network group this device lands in. Two devices find each
   // other automatically only when their groups match.
@@ -99,6 +124,7 @@
         ...p,
         left: `${(50 + radius * Math.cos(angle)).toFixed(2)}%`,
         top: `${(50 + radius * Math.sin(angle)).toFixed(2)}%`,
+        trusted: hub?.trustTokenOf(p.id) != null,
       };
     });
   }
@@ -112,6 +138,7 @@
     const offs = [
       hub.on('peers', (list) => {
         place(list);
+        syncTrusted();
         if (list.length > 0) pairNote = '';
         const v = view;
         if (v.kind === 'confirm' && !list.some((p) => p.id === v.peer.id)) {
@@ -120,8 +147,21 @@
       }),
       hub.on('status', (s) => (status = s)),
       hub.on('incoming', onIncoming),
+      hub.on('trustoffer', onTrustOffer),
+      hub.on('trustcancelled', (xid) => {
+        if (view.kind === 'trust-ask' && view.xid === xid) view = { kind: 'idle' };
+      }),
+      hub.on('trustrevoked', (token) => {
+        const gone = trusted.find((t) => t.token === token);
+        if (!gone) return;
+        removeTrusted(token, false);
+        if (free) view = { kind: 'notice', title: `${gone.name} removed this device`, detail: 'It is no longer a trusted device.' };
+      }),
     ];
     hub.start();
+    canStore = canStoreTrusted();
+    trusted = loadTrusted();
+    for (const device of trusted) hub.joinTrust(device.token);
     if (params.has('debug')) {
       fetch(new URL('/ws/whoami/', signalingEndpoint().replace(/^ws/, 'http')), { cache: 'no-store' })
         .then((r) => r.json())
@@ -255,6 +295,7 @@
     view = { kind: 'incoming', transfer };
     transfer.on('progress', setProgress);
     transfer.on('done', (files) => {
+      zipNote = '';
       view = { kind: 'received', peer: transfer.peer, files };
       releaseAwake();
     });
@@ -266,6 +307,9 @@
           : { kind: 'notice', title: 'Transfer stopped', detail: 'The connection was lost before every file arrived.' };
       releaseAwake();
     });
+    // A trusted device the person chose to auto-accept skips the question.
+    const token = hub?.trustTokenOf(transfer.peer.id);
+    if (token && trusted.find((t) => t.token === token)?.autoAccept) accept();
   }
 
   function accept(): void {
@@ -339,6 +383,128 @@
     files.forEach((file, i) => setTimeout(() => save(file), i * 400));
   }
 
+  async function zipAll(files: ReceivedFile[], from: string): Promise<void> {
+    if (zipBusy) return;
+    zipBusy = true;
+    zipNote = '';
+    try {
+      const safe = from.replace(/[\\/:*?"<>|]/g, '_');
+      const result = await saveAsZip(files, `AnyAirDrop from ${safe}.zip`);
+      if (result === 'too-large') zipNote = 'These files are too big to zip in this browser. Use Save all instead.';
+    } catch {
+      zipNote = 'Couldn’t make the ZIP. Use Save all instead.';
+    } finally {
+      zipBusy = false;
+    }
+  }
+
+  function rename(raw: string): void {
+    const name = saveName(raw);
+    hub?.rename(name);
+    myName = name;
+  }
+
+  // Marks which trusted devices are online and keeps their saved names current.
+  function syncTrusted(): void {
+    if (!hub) return;
+    const online: string[] = [];
+    let changed = false;
+    trusted = trusted.map((t) => {
+      const peer = hub?.trustedPeer(t.token);
+      if (!peer) return t;
+      online.push(t.token);
+      if (peer.name === t.name && peer.device === t.device && peer.os === t.os) return t;
+      changed = true;
+      return { ...t, name: peer.name, device: peer.device, os: peer.os };
+    });
+    onlineTokens = online;
+    if (changed) saveTrusted(trusted);
+  }
+
+  function addTrusted(token: string, peer: RemotePeer): void {
+    if (trusted.some((t) => t.token === token)) return;
+    trusted = [
+      ...trusted,
+      { token, name: peer.name, device: peer.device, os: peer.os, autoAccept: false, addedAt: Date.now() },
+    ].slice(-TRUSTED_LIMIT);
+    saveTrusted(trusted);
+    syncTrusted();
+    if (hub) place(hub.list());
+  }
+
+  function removeTrusted(token: string, tellThem: boolean): void {
+    trusted = trusted.filter((t) => t.token !== token);
+    saveTrusted(trusted);
+    if (tellThem) void hub?.revokeTrust(token);
+    else hub?.leaveTrust(token);
+    syncTrusted();
+  }
+
+  function toggleAutoAccept(token: string): void {
+    trusted = trusted.map((t) => (t.token === token ? { ...t, autoAccept: !t.autoAccept } : t));
+    saveTrusted(trusted);
+  }
+
+  async function trustPeer(peer: RemotePeer): Promise<void> {
+    if (!hub || !free) return;
+    if (!canStore || trusted.length >= TRUSTED_LIMIT) {
+      view = {
+        kind: 'notice',
+        title: canStore ? 'Too many trusted devices' : 'Can’t save trusted devices',
+        detail: canStore
+          ? 'Remove one from the Trusted list first.'
+          : 'This browser blocks site storage (private mode?), so the device would be forgotten.',
+      };
+      return;
+    }
+    const abort = new AbortController();
+    view = { kind: 'trust-wait', peer, cancel: () => abort.abort() };
+    try {
+      const { answer, token } = await hub.offerTrust(peer.id, abort.signal);
+      if (answer === 'cancelled') {
+        if (view.kind === 'trust-wait') view = { kind: 'idle' };
+      } else if (answer === 'accepted') {
+        addTrusted(token, peer);
+        view = {
+          kind: 'notice',
+          title: `${peer.name} is now a trusted device`,
+          detail: 'You will find each other automatically on any network, even through a VPN.',
+        };
+      } else if (answer === 'declined') {
+        view = { kind: 'notice', title: `${peer.name} said no`, detail: 'They did not add this device as trusted.' };
+      } else {
+        view = { kind: 'notice', title: `${peer.name} didn’t answer`, detail: 'Ask them to check their screen, then try again.' };
+      }
+    } catch {
+      view = { kind: 'notice', title: `Couldn’t reach ${peer.name}`, detail: 'Check that both devices are still online, then try again.' };
+    }
+  }
+
+  function onTrustOffer(peer: RemotePeer, xid: string, token: string): void {
+    if (!hub) return;
+    if (!free || !canStore || trusted.length >= TRUSTED_LIMIT || trusted.some((t) => t.token === token)) {
+      hub.answerTrust(peer.id, xid, token, false);
+      return;
+    }
+    view = { kind: 'trust-ask', peer, xid, token };
+  }
+
+  function answerTrust(accepted: boolean): void {
+    if (view.kind !== 'trust-ask' || !hub) return;
+    const { peer, xid, token } = view;
+    hub.answerTrust(peer.id, xid, token, accepted);
+    if (!accepted) {
+      view = { kind: 'idle' };
+      return;
+    }
+    addTrusted(token, peer);
+    view = {
+      kind: 'notice',
+      title: `${peer.name} is now a trusted device`,
+      detail: 'You will find each other automatically on any network, even through a VPN.',
+    };
+  }
+
   function joinCode(event: SubmitEvent): void {
     event.preventDefault();
     const code = codeInput.replace(/\D/g, '');
@@ -372,7 +538,7 @@
         style:left={peer.left}
         style:top={peer.top}
         disabled={!free}
-        aria-label={`Send files to ${peer.name} (${peer.os}, ${peer.browser})`}
+        aria-label={`Send files to ${peer.name} (${peer.os}, ${peer.browser})${peer.trusted ? ', trusted device' : ''}`}
         onclick={() => pick(peer)}
         ondragover={(e) => {
           e.preventDefault();
@@ -382,11 +548,22 @@
         ondrop={(e) => onDrop(e, peer)}
       >
         <span class="dot"><DeviceIcon kind={peer.device} /><span class="badge" aria-hidden="true"></span></span>
-        <span class="name">{peer.name}</span>
+        <span class="name">
+          {peer.name}
+          {#if peer.trusted}
+            <svg class="shield" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6Z" /><path d="M9 12l2 2 4-4" /></svg>
+          {/if}
+        </span>
         <span class="os">{peer.os}</span>
       </button>
     {/each}
   </div>
+
+  {#if myName}
+    <DeviceBar name={myName} trustedCount={trusted.length} onrename={rename} ontrusted={() => (trustedOpen = true)} />
+  {:else}
+    <div class="bar-space"></div>
+  {/if}
 
   <button type="button" class="scrim" class:open={sheetOpen} aria-label="Close" tabindex="-1" onclick={dismiss}></button>
 
@@ -395,6 +572,11 @@
       {#if peers.length > 0}
         <p class="connected" role="status">
           <span class="live" aria-hidden="true"></span>Connected to {peerNames}
+          {#if canStore}
+            {#each untrustedPeers as peer (peer.id)}
+              <button type="button" class="link-btn trust-btn" onclick={() => trustPeer(peer)}>Trust {peer.name}</button>
+            {/each}
+          {/if}
         </p>
       {/if}
       <p class="muted hint">{hint}</p>
@@ -425,6 +607,20 @@
           Network: {debugNet} · relay {relayOn ? 'on' : 'off'} · {peers.length} device{peers.length === 1 ? '' : 's'} found · you are {myName}
         </p>
       {/if}
+    {:else if view.kind === 'trust-wait'}
+      <p class="title">Waiting for {view.peer.name} to accept…</p>
+      <p class="small muted">They will be asked to add this device as a trusted device.</p>
+      <div class="row"><button type="button" class="secondary" onclick={view.cancel}>Cancel</button></div>
+    {:else if view.kind === 'trust-ask'}
+      <p class="title">{view.peer.name} wants to be a trusted device</p>
+      <p class="small muted">
+        Trusted devices find each other automatically on any network, even through a VPN. You still approve every
+        transfer unless you choose otherwise.
+      </p>
+      <div class="row">
+        <button type="button" class="secondary" onclick={() => answerTrust(false)}>Not now</button>
+        <button type="button" class="primary" onclick={() => answerTrust(true)}>Trust</button>
+      </div>
     {:else if view.kind === 'confirm'}
       <p class="title">Send {countFiles(view.files.length)} ({formatBytes(view.files.reduce((s, f) => s + f.size, 0))}) to {view.peer.name}?</p>
       <div class="row">
@@ -461,6 +657,7 @@
       </div>
     {:else if view.kind === 'received'}
       {@const files = view.files}
+      {@const from = view.peer.name}
       <p class="title done">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4L19 7" /></svg>
         Received {countFiles(files.length)} from {view.peer.name}
@@ -474,8 +671,14 @@
           </li>
         {/each}
       </ul>
-      <div class="row">
-        {#if files.length > 1}<button type="button" class="secondary" onclick={() => saveAll(files)}>Save all</button>{/if}
+      {#if zipNote}<p class="small muted" role="status">{zipNote}</p>{/if}
+      <div class="row wrap">
+        {#if files.length > 1}
+          <button type="button" class="secondary" disabled={zipBusy} onclick={() => zipAll(files, from)}>
+            {zipBusy ? 'Making ZIP…' : 'Save as ZIP'}
+          </button>
+          <button type="button" class="secondary" onclick={() => saveAll(files)}>Save all</button>
+        {/if}
         <button type="button" class="primary" onclick={reset}>Done</button>
       </div>
     {:else if view.kind === 'notice'}
@@ -486,6 +689,15 @@
   </div>
 
   <input class="visually-hidden" type="file" multiple tabindex="-1" aria-hidden="true" bind:this={fileInput} onchange={onFilesChosen} />
+
+  <TrustedPanel
+    open={trustedOpen}
+    devices={trustedRows}
+    {canStore}
+    onclose={() => (trustedOpen = false)}
+    onremove={(token) => removeTrusted(token, true)}
+    ontoggle={toggleAutoAccept}
+  />
 </div>
 
 <style>
@@ -506,7 +718,7 @@
   /* Desktop: size the radar to the window so the whole page fits without scrolling. */
   @media (min-width: 721px) and (min-height: 640px) {
     .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 515px), 440px));
+      width: min(86vw, clamp(200px, calc(100dvh - 575px), 440px));
       margin-top: var(--space-3);
     }
   }
@@ -514,7 +726,7 @@
   /* The benefit row is hidden in short windows, which frees up room for the radar. */
   @media (min-width: 721px) and (min-height: 640px) and (max-height: 780px) {
     .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 450px), 440px));
+      width: min(86vw, clamp(200px, calc(100dvh - 505px), 440px));
     }
   }
 
@@ -682,6 +894,32 @@
     justify-content: center;
   }
 
+  .row.wrap {
+    flex-wrap: wrap;
+  }
+
+  .secondary:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .shield {
+    display: inline-block;
+    vertical-align: -1px;
+    margin-left: 2px;
+    color: var(--color-success);
+  }
+
+  .bar-space {
+    min-height: 52px;
+  }
+
+  .trust-btn {
+    min-height: 32px;
+    margin-left: 4px;
+    font-weight: 600;
+  }
+
   .primary,
   .secondary {
     min-height: 44px;
@@ -796,8 +1034,10 @@
 
   .connected {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 2px 8px;
     font-size: 15px;
     font-weight: 600;
     color: var(--color-success);

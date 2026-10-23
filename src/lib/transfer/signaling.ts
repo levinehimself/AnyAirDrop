@@ -42,6 +42,13 @@ export class SignalingRoom extends Emitter<SignalingEvents> {
     this.open();
   }
 
+  /** Tells the room this device's details changed (for example, it was renamed). */
+  rehello(): void {
+    if (this.ws?.readyState !== WebSocket.OPEN) return;
+    const { id, name, device, os, browser } = this.me;
+    this.ws.send(JSON.stringify({ type: 'hello', id, name, device, os, browser }));
+  }
+
   send(to: string, data: unknown): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({ type: 'signal', to, data }));

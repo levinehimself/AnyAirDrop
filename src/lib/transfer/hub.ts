@@ -1,18 +1,29 @@
 import { Emitter } from './emitter';
 import { IceProvider, iceEndpoint } from './ice';
-import { loadIdentity, type Identity } from './identity';
+import { loadIdentity, randomHex, type Identity } from './identity';
 import { PeerLink } from './link';
 import { SignalingRoom, type RemotePeer } from './signaling';
 import { IncomingTransfer, OutgoingTransfer, parseControl, validateOffer } from './transfer';
+import { isToken } from './trusted';
 
 export type HubStatus = 'connecting' | 'online' | 'offline';
 export type { RemotePeer };
+
+export type TrustAnswer = 'accepted' | 'declined' | 'timeout' | 'cancelled';
 
 type HubEvents = {
   peers: [RemotePeer[]];
   status: [HubStatus];
   incoming: [IncomingTransfer];
+  /** Another device asks to be trusted: answer with answerTrust(). */
+  trustoffer: [peer: RemotePeer, xid: string, token: string];
+  trustcancelled: [xid: string];
+  /** A trusted device removed this device from its list. */
+  trustrevoked: [token: string];
 };
+
+const TRUST_ANSWER_MS = 60_000;
+const trustRoom = (token: string): string => `trust:${token}`;
 
 interface PeerEntry {
   info: RemotePeer;
@@ -32,6 +43,7 @@ export class Hub extends Emitter<HubEvents> {
   private lastRoom = new Map<string, string>();
   private outgoing = new Map<string, OutgoingTransfer>();
   private incoming = new Map<string, IncomingTransfer>();
+  private pendingTrust = new Map<string, (answer: TrustAnswer) => void>();
   private readonly ice: IceProvider;
   private readonly forceRelay: boolean;
 
@@ -62,6 +74,111 @@ export class Hub extends Emitter<HubEvents> {
   joinPair(code: string): void {
     const key = `pair:${code}`;
     if (!this.rooms.has(key)) this.addRoom(key, `${this.endpoint}?pair=${code}`);
+  }
+
+  /** Joins the secret room shared with a trusted device. */
+  joinTrust(token: string): void {
+    if (!isToken(token)) return;
+    const key = trustRoom(token);
+    if (!this.rooms.has(key)) this.addRoom(key, `${this.endpoint}?trust=${token}`);
+  }
+
+  /** Stops looking for a trusted device. */
+  leaveTrust(token: string): void {
+    const key = trustRoom(token);
+    const room = this.rooms.get(key);
+    if (!room) return;
+    this.rooms.delete(key);
+    room.close();
+    for (const entry of this.peers.values()) entry.rooms.delete(key);
+    this.prune();
+  }
+
+  /** The device currently online in a trusted room, if any. */
+  trustedPeer(token: string): RemotePeer | undefined {
+    const key = trustRoom(token);
+    for (const entry of this.peers.values()) if (entry.rooms.has(key)) return entry.info;
+    return undefined;
+  }
+
+  /** The trusted-room token this device was found through, or null if it is not trusted. */
+  trustTokenOf(peerId: string): string | null {
+    for (const key of this.peers.get(peerId)?.rooms ?? []) {
+      if (key.startsWith('trust:')) return key.slice('trust:'.length);
+    }
+    return null;
+  }
+
+  /**
+   * Asks a connected device to become a trusted device. Resolves with their answer; when it
+   * is 'accepted' this device has already joined the shared room and the caller should store
+   * the token.
+   */
+  async offerTrust(peerId: string, signal?: AbortSignal): Promise<{ answer: TrustAnswer; token: string }> {
+    if (!this.peers.has(peerId)) throw new Error('peer-gone');
+    const link = this.link(peerId);
+    const token = randomHex(32);
+    const xid = randomHex(8);
+    await link.ready();
+
+    const answer = new Promise<TrustAnswer>((resolve) => {
+      const finish = (result: TrustAnswer): void => {
+        clearTimeout(timer);
+        signal?.removeEventListener('abort', onAbort);
+        this.pendingTrust.delete(xid);
+        resolve(result);
+      };
+      const onAbort = (): void => {
+        try {
+          link.sendJSON({ t: 'trust-cancel', xid });
+        } catch {
+          // Channel already gone.
+        }
+        finish('cancelled');
+      };
+      const timer = setTimeout(() => finish('timeout'), TRUST_ANSWER_MS);
+      this.pendingTrust.set(xid, finish);
+      signal?.addEventListener('abort', onAbort);
+    });
+    link.sendJSON({ t: 'trust-offer', xid, token });
+
+    const result = await answer;
+    if (result === 'accepted') this.joinTrust(token);
+    return { answer: result, token };
+  }
+
+  /** Replies to a trustoffer event. Accepting joins the shared room. */
+  answerTrust(peerId: string, xid: string, token: string, accepted: boolean): void {
+    try {
+      this.links.get(peerId)?.sendJSON({ t: accepted ? 'trust-accept' : 'trust-decline', xid });
+    } catch {
+      // Channel already gone: the other device will time out.
+    }
+    if (accepted) this.joinTrust(token);
+  }
+
+  /** Tells any online devices in a trusted room that this device no longer trusts them, then leaves it. */
+  async revokeTrust(token: string): Promise<void> {
+    const key = trustRoom(token);
+    const ids = [...this.peers].filter(([, entry]) => entry.rooms.has(key)).map(([id]) => id);
+    await Promise.all(
+      ids.map(async (id) => {
+        try {
+          const link = this.link(id);
+          await link.ready(5000);
+          link.sendJSON({ t: 'trust-revoke', xid: randomHex(8), token });
+        } catch {
+          // Offline or unreachable: they keep the entry until they remove it themselves.
+        }
+      }),
+    );
+    this.leaveTrust(token);
+  }
+
+  /** Changes this device's name and tells every room so other radars update. */
+  rename(name: string): void {
+    this.me.name = name;
+    for (const room of this.rooms.values()) room.rehello();
   }
 
   stop(): void {
@@ -189,6 +306,28 @@ export class Hub extends Emitter<HubEvents> {
     }
     const msg = parseControl(data);
     if (!msg) return;
+
+    if (msg.t === 'trust-offer') {
+      if (!isToken(msg.token)) return;
+      const peer = this.peers.get(peerId)?.info;
+      if (peer) this.emit('trustoffer', peer, msg.xid, msg.token);
+      return;
+    }
+    if (msg.t === 'trust-accept' || msg.t === 'trust-decline') {
+      this.pendingTrust.get(msg.xid)?.(msg.t === 'trust-accept' ? 'accepted' : 'declined');
+      return;
+    }
+    if (msg.t === 'trust-cancel') {
+      this.emit('trustcancelled', msg.xid);
+      return;
+    }
+    if (msg.t === 'trust-revoke') {
+      // Only a device found through that trusted room can revoke it.
+      if (isToken(msg.token) && this.peers.get(peerId)?.rooms.has(trustRoom(msg.token))) {
+        this.emit('trustrevoked', msg.token);
+      }
+      return;
+    }
 
     if (msg.t === 'offer') {
       const offer = validateOffer(msg);

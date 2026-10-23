@@ -19,7 +19,12 @@ export interface ReceivedFile extends FileMeta {
 export type Control =
   | { t: 'offer'; xid: string; files: FileMeta[]; total: number }
   | { t: 'accept' | 'decline' | 'busy' | 'cancel' | 'done' | 'ack'; xid: string }
-  | { t: 'file' | 'eof'; xid: string; i: number };
+  | { t: 'file' | 'eof'; xid: string; i: number }
+  // Trusted devices: one side proposes a secret room token, the other accepts or declines.
+  // Either side can later revoke it.
+  | { t: 'trust-offer'; xid: string; token: string }
+  | { t: 'trust-accept' | 'trust-decline' | 'trust-cancel'; xid: string }
+  | { t: 'trust-revoke'; xid: string; token: string };
 
 export function parseControl(text: string): Control | null {
   try {

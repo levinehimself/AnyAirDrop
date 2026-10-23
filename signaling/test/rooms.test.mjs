@@ -64,6 +64,32 @@ const badResult = await new Promise((r) => {
 });
 check('Malformed code is rejected', badResult === 'rejected');
 
+// Trusted devices: a secret 64-hex token is a permanent private room, wherever the devices are.
+const token = hex(32);
+const t1 = client('T1', `${base}?trust=${token}`);
+await t1.ready;
+await until(() => t1.inbox.some((m) => m.type === 'peers'));
+const t2 = client('T2', `${base}?trust=${token}`);
+const t3 = client('T3', `${base}?trust=${hex(32)}`);
+await Promise.all([t2.ready, t3.ready]);
+check('Trusted room: T2 sees T1', await until(() => t2.inbox.some((m) => m.type === 'peers' && m.peers.some((p) => p.id === t1.id))));
+check('Trusted room: T1 is told T2 joined', await until(() => t1.inbox.some((m) => m.type === 'peer-joined' && m.peer.id === t2.id)));
+await until(() => t3.inbox.some((m) => m.type === 'peers'));
+check('Trusted room: a different token sees nobody', t3.inbox.find((m) => m.type === 'peers')?.peers.length === 0);
+t1.ws.send(JSON.stringify({ type: 'signal', to: t2.id, data: { trusted: true } }));
+check('Trusted room: signals are relayed', await until(() => t2.inbox.some((m) => m.type === 'signal' && m.from === t1.id)));
+// A rename is a second hello on the same socket; the others see the new name.
+t1.ws.send(JSON.stringify({ type: 'hello', id: t1.id, name: 'Renamed', device: 'phone', os: 'Test', browser: 'Node' }));
+check('Rename reaches the others', await until(() => t2.inbox.some((m) => m.type === 'peer-joined' && m.peer.id === t1.id && m.peer.name === 'Renamed')));
+const badTrust = new WebSocket(`${base}?trust=${hex(31)}`);
+const badTrustResult = await new Promise((r) => {
+  badTrust.onopen = () => r('opened');
+  badTrust.onerror = () => r('rejected');
+  badTrust.onclose = () => r('rejected');
+});
+check('Malformed trusted token is rejected', badTrustResult === 'rejected');
+for (const t of [t1, t2, t3]) t.ws.close();
+
 b.ws.close();
 check('A is told B left', await until(() => a.inbox.some((m) => m.type === 'peer-left' && m.id === b.id)));
 

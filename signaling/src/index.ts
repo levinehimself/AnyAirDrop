@@ -27,11 +27,16 @@ export default {
       return new Response('Expected a WebSocket upgrade', { status: 426 });
     }
 
-    // A pairing code puts two devices in their own room, wherever they are.
-    // Without one, devices behind the same network address share a room.
+    // A pairing code puts two devices in their own room, wherever they are. A trusted-device
+    // token (64 random hex characters, known only to devices that trust each other) does the
+    // same, permanently. Without either, devices behind the same network address share a room.
     const code = url.searchParams.get('pair');
+    const trust = url.searchParams.get('trust');
     let room: string;
-    if (code !== null) {
+    if (trust !== null) {
+      if (!/^[a-f0-9]{64}$/.test(trust)) return new Response('Invalid trusted-device token', { status: 400 });
+      room = `trust:${trust}`;
+    } else if (code !== null) {
       if (!/^\d{6}$/.test(code)) return new Response('Invalid pairing code', { status: 400 });
       room = `pair:${code}`;
     } else {

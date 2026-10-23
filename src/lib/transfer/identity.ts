@@ -79,10 +79,52 @@ export function detectDevice(
   return { device, os, browser };
 }
 
+// A name the person chose is kept on this device for good (localStorage). Without one,
+// each tab gets a random friendly name.
+const NAME_KEY = 'anyairdrop:devicename';
+export const MAX_NAME_LENGTH = 24;
+
+/** Trims a typed name, drops control characters and limits its length. */
+export function cleanName(raw: string): string {
+  return raw.replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim().slice(0, MAX_NAME_LENGTH);
+}
+
+function savedName(): string {
+  try {
+    return cleanName(localStorage.getItem(NAME_KEY) ?? '');
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Remembers a new name for this device. An empty name clears the saved one, so the
+ * device goes back to its random name. Returns the name now in use.
+ */
+export function saveName(raw: string): string {
+  const name = cleanName(raw);
+  try {
+    if (name) {
+      localStorage.setItem(NAME_KEY, name);
+      sessionStorage.setItem('anyairdrop:name', name);
+    } else {
+      localStorage.removeItem(NAME_KEY);
+      sessionStorage.removeItem('anyairdrop:name');
+    }
+  } catch {
+    // Storage blocked: the name still applies until the page is closed.
+  }
+  return name || sessionValue('anyairdrop:name', randomName);
+}
+
+function randomName(): string {
+  return `${pick(ADJECTIVES)} ${pick(ANIMALS)}`;
+}
+
 export function loadIdentity(): Identity {
   return {
     id: sessionValue('anyairdrop:id', () => randomHex(16)),
-    name: sessionValue('anyairdrop:name', () => `${pick(ADJECTIVES)} ${pick(ANIMALS)}`),
+    name: savedName() || sessionValue('anyairdrop:name', randomName),
     ...detectDevice(),
   };
 }

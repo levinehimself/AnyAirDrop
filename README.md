@@ -46,7 +46,7 @@ npm run build
 npm run test:signal
 ```
 
-`test:signal` needs `npm run signal` running. It checks that devices with the same pairing code see each other, other codes stay isolated, signals reach only their target, malformed codes are rejected, and leaving is announced. It also checks the relay-credential endpoint: well-formed ICE servers, no caching, port 53 filtered, cross-site browser requests refused. Running it twice within a minute can trip the rate limit; wait a minute.
+`test:signal` needs `npm run signal` running. It checks that devices with the same pairing code see each other, other codes stay isolated, signals reach only their target, malformed codes are rejected, and leaving is announced. It also covers trusted-device rooms (private, isolated, malformed tokens rejected) and renaming. It also checks the relay-credential endpoint: well-formed ICE servers, no caching, port 53 filtered, cross-site browser requests refused. Running it twice within a minute can trip the rate limit; wait a minute.
 
 ## How a transfer works
 
@@ -55,6 +55,13 @@ npm run test:signal
 3. The sender offers the file list; the receiver taps Accept. Files stream in chunks of up to 64 KB with backpressure. The receiver confirms when everything is saved.
 4. Files of 32 MB and up stream into the browser's private file system (OPFS) when available, so large videos don't fill a phone's memory. Smaller files stay in memory.
 5. The UI reads the selected ICE candidate pair to say whether the transfer is direct over the Wi-Fi, direct over the internet, or relayed.
+
+### Device name, trusted devices and ZIP
+
+- **Device name:** shown under the radar, editable, kept in `localStorage` (`anyairdrop:devicename`). A rename is a second `hello` on the open socket, so other radars update at once.
+- **Trusted devices:** while two devices are connected, one proposes a random 64-hex token over the data channel and the other accepts. Both store it (`anyairdrop:trusted`) and join the private room `/ws?trust=<token>` whenever the site is open, so they find each other on any network or VPN. The token is a bearer secret: anyone holding it can join that room, which only lists devices and relays signals. Trust never skips the Accept prompt unless the person turns on "accept their files without asking" for that device. Removing a device sends a revoke message so the other side forgets it too (if it is offline, it keeps the entry until removed there).
+- **ZIP:** when several files arrive, "Save as ZIP" packs them with `client-zip` (stored, not recompressed). Browsers with a save dialog stream it to disk; others build it in memory up to 1 GB.
+- A browser cannot read the Wi-Fi network name (SSID), so the site never shows it.
 
 ## Relay (TURN)
 
