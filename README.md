@@ -96,6 +96,8 @@ The pages are static files on a cPanel host. The domain's DNS is on Cloudflare w
 2. **Pages:** `npm run build`, then upload the **contents** of `dist/` to the `anyairdrop.com` folder in cPanel File Manager (zip them, upload, Extract). Build the zip with forward-slash paths: Windows PowerShell 5.1's `Compress-Archive` writes backslashes, which unpack as wrong file names on Linux hosts.
 3. **Cloudflare settings:** SSL/TLS mode Full (strict), Always Use HTTPS on, and a redirect rule from `www` to the root domain.
 
+Search engines: `public/BingSiteAuth.xml` proves ownership of the site to Bing Webmaster Tools, and `public/<32 hex characters>.txt` is the IndexNow key file. After a deploy that adds or changes pages, run `npm run build` and `npm run indexnow` (or `npm run indexnow -- <address> …` for specific pages) to tell Bing and the other IndexNow search engines. The key file must be live first. Keep both files in `public/`: removing them breaks verification and submission.
+
 Live checks against production: `node signaling/test/rooms.test.mjs wss://anyairdrop.com/ws` and `node signaling/test/ice.test.mjs https://anyairdrop.com/ws/ice/`.
 
 On Windows PowerShell, if `npm` or `npx` fail with "running scripts is disabled", use `npm.cmd` and `npx.cmd`.

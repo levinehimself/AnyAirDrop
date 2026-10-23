@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "deploy:signal": "wrangler deploy --config signaling/wrangler.jsonc",
+    "indexnow": "node scripts/indexnow.mjs",
     "test:signal": "node signaling/test/rooms.test.mjs && node signaling/test/ice.test.mjs"
   },
   "dependencies": {
