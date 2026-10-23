@@ -1,6 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import { FOUNDER, GITHUB_URL, PROJECTS } from '../config';
+import { FOUNDER, GITHUB_URL, PROJECTS, listSeparator } from '../config';
 
 const nameParts = FOUNDER.name.split(' ');
 const initials = nameParts[0][0] + nameParts[nameParts.length - 1][0];
@@ -89,8 +89,7 @@ const founderJsonLd = {
         AnyAirDrop.com himself, and reads every message that comes in. He also runs
         {PROJECTS.map((project, i) => (
           <>
-            <a href={project.url}>{project.name}</a>
-            {i < PROJECTS.length - 1 ? ' and ' : '.'}
+            <a href={project.url}>{project.name}</a>{listSeparator(i, PROJECTS.length)}
           </>
         ))}
       </p>

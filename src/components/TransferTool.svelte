@@ -846,15 +846,8 @@
   /* Desktop: size the radar to the window so the whole page fits without scrolling. */
   @media (min-width: 721px) and (min-height: 640px) {
     .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 575px), 440px));
+      width: min(86vw, clamp(200px, calc(100dvh - 500px), 440px));
       margin-top: var(--space-3);
-    }
-  }
-
-  /* The benefit row is hidden in short windows, which frees up room for the radar. */
-  @media (min-width: 721px) and (min-height: 640px) and (max-height: 780px) {
-    .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 505px), 440px));
     }
   }
 

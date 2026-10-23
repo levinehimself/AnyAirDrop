@@ -20,7 +20,7 @@ const jsonLd = {
       '@id': 'https://anyairdrop.com/#organization',
       name: 'AnyAirDrop.com',
       url: 'https://anyairdrop.com/',
-      logo: 'https://anyairdrop.com/favicon.svg',
+      logo: 'https://anyairdrop.com/icon-512.png',
       founder: { '@id': 'https://anyairdrop.com/about/#founder' },
     },
     {
@@ -44,21 +44,6 @@ const jsonLd = {
 
     <TransferTool client:load />
     <noscript><p class="lead">AnyAirDrop.com needs JavaScript to find nearby devices.</p></noscript>
-
-    <ul class="benefits" aria-label="Why AnyAirDrop.com">
-      <li>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 9h20M6 6.5h.01M9 6.5h.01" /></svg>
-        <strong>No app or account</strong>
-      </li>
-      <li>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.6 17A5 5 0 0 0 18 10h-1.3a8 8 0 0 0-7-6M5 5a8 8 0 0 0 4 15h9a5 5 0 0 0 1.7-.3" /><path d="M2 2l20 20" /></svg>
-        <strong>Nothing uploaded</strong>
-      </li>
-      <li>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16c5 0 7-8 12-8a4 4 0 0 1 0 8c-5 0-7-8-12-8a4 4 0 1 0 0 8" /></svg>
-        <strong>No size limit</strong>
-      </li>
-    </ul>
   </main>
 </Base>
 
@@ -115,38 +100,8 @@ const jsonLd = {
     text-wrap: balance;
   }
 
-  .benefits {
-    list-style: none;
-    margin: var(--space-4) 0 0;
-    padding: var(--space-3) 0 var(--space-2);
-    width: 100%;
-    max-width: 1000px;
-    border-top: 1px solid var(--color-line);
-    display: flex;
-    justify-content: center;
-    gap: 8px var(--space-5);
-    flex-wrap: wrap;
-  }
-
-  .benefits li {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    font-size: 15px;
-    color: var(--color-link);
-  }
-
-  .benefits strong {
-    font-weight: 700;
-    color: var(--color-text);
-  }
-
-  /* Short desktop windows: drop the benefit row so the tool stays in view. */
+  /* Short desktop windows: a smaller headline keeps the tool in view. */
   @media (min-width: 721px) and (max-height: 780px) {
-    .benefits {
-      display: none;
-    }
-
     h1 {
       font-size: 36px;
     }
@@ -159,25 +114,6 @@ const jsonLd = {
 
     h1 {
       font-size: 34px;
-    }
-
-    /* Phones: the three benefits sit side by side, icon above label, to save height. */
-    .benefits {
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      gap: var(--space-1);
-      margin-top: var(--space-3);
-      padding: var(--space-2) 0;
-    }
-
-    .benefits li {
-      flex: 1 1 0;
-      min-width: 0;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 13px;
-      line-height: 1.25;
-      text-align: center;
     }
   }
 </style>

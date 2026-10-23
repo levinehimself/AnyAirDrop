@@ -92,6 +92,9 @@ Cards and feature grids on the homepage, more than one accent color, shadows, gr
 - **Font:** Urbanist (self-hosted via `@fontsource-variable/urbanist`), body 17px / weight 500, headings 700, H1 44px (36px in short windows, 34px on phones). Inter is no longer used.
 - **Themes:** light and dark share the same tokens. Dark: bg #0B1220, surface #131C2E, text #F1F5F9, muted #A3B1C6, lines #1F2A3D / #33415A, link #7FB0FF, success #4ADE80. A saved choice (localStorage `anyairdrop:theme`) wins; otherwise the device's `prefers-color-scheme`; light if neither can be read. A header button toggles it. Use `--color-link` for blue text, `--color-accent` only for fills.
 - **Header:** logo left; right: a small "Blog" link and the theme toggle. No other links.
-- **Benefits row:** three icons with bold labels only ("No app or account", "Nothing uploaded", "No size limit"), one line.
+- **Benefits row:** removed on 2026-10-23. The homepage holds only the headline, the radar and the pairing area; the benefits are explained on the About page.
+- **Logo (chosen 2026-10-23, "Radar ping"):** a 3.5-unit ring, a centre dot and a short signal arc at the upper right, drawn in a 48-unit box (`viewBox="2.9 -1.9 48 48"` centres the visible shape). Blue `--color-brand`: #2563EB on light, #3B82F6 on dark. Wordmark "AnyAirDrop" in Space Grotesk 700, tracking -0.03em, with ".com" in weight 500 and the muted text colour. Space Grotesk is used only for the wordmark; everything else stays Urbanist.
+- **Icons:** `public/favicon.svg` (follows the browser's light and dark mode), `favicon.ico`, `apple-touch-icon.png`, `icon-192.png` and `icon-512.png` (the mark in #3B82F6 on a #0B1220 tile).
+- **Header and footer:** span the window (padding up to 56px, capped at 2000px wide) so the logo and menu sit near the corners; page content stays centered.
 - **Footer:** the Apple-independence disclaimer on the left; About, Contact, Privacy, Terms on the right. No guide links.
 - **Pairing row:** "Your code" + input always visible. No explanatory VPN note on the homepage. `?debug=1` shows the network group for troubleshooting.

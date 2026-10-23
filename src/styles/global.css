@@ -22,6 +22,10 @@
   --qr-frame: #0b1220;
 
   --font-sans: 'Urbanist Variable', 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Only for the logo wordmark. */
+  --font-brand: 'Space Grotesk Variable', 'Space Grotesk', var(--font-sans);
+  /* The logo's blue: the accent on light, a touch brighter on dark so it keeps its contrast. */
+  --color-brand: #2563eb;
 
   --space-1: 8px;
   --space-2: 12px;
@@ -56,6 +60,7 @@
     --color-success: #4ade80;
     --color-scrim: rgba(0, 0, 0, 0.55);
     --qr-frame: #2a3750;
+    --color-brand: #3b82f6;
   }
 }
 
@@ -74,6 +79,7 @@
   --color-success: #4ade80;
   --color-scrim: rgba(0, 0, 0, 0.55);
   --qr-frame: #2a3750;
+  --color-brand: #3b82f6;
 }
 
 :root[data-theme='light'] {

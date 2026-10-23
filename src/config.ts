@@ -31,7 +31,18 @@ export const PROJECTS = [
     url: 'https://explorecityguides.com/',
     summary: 'Plain guides to cities and their public transport: fares, lines, stations and how to get around.',
   },
+  {
+    name: 'Levine Tech Talks',
+    url: 'https://levine-tech-talks.com/',
+    summary: 'A tech blog and YouTube channel with practical guides and fixes, plus articles on software, cybersecurity and AI.',
+  },
 ];
+
+/** "A", "A and B" or "A, B and C": the separator that goes after item i of n. */
+export function listSeparator(i: number, n: number): string {
+  if (i === n - 1) return '.';
+  return i === n - 2 ? ' and ' : ', ';
+}
 
 /** Shown on the Privacy and Terms pages. Change it whenever either page changes. */
 export const LEGAL_UPDATED = 'October 23, 2026';

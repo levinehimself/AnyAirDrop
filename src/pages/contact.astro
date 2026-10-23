@@ -1,6 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import { CONTACT_EMAIL, FOUNDER, GITHUB_URL, PROJECTS } from '../config';
+import { CONTACT_EMAIL, FOUNDER, GITHUB_URL, PROJECTS, listSeparator } from '../config';
 
 const mail = (subject: string) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
 
@@ -71,8 +71,7 @@ const cards = [
     I also run
     {PROJECTS.map((project, i) => (
       <>
-        <a href={project.url}>{project.name}</a>
-        {i < PROJECTS.length - 1 ? ' and ' : '.'}
+        <a href={project.url}>{project.name}</a>{listSeparator(i, PROJECTS.length)}
       </>
     ))}
     Messages about those go to their own contact pages.

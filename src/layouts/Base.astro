@@ -1,5 +1,6 @@
 ---
 import '@fontsource-variable/urbanist';
+import '@fontsource-variable/space-grotesk';
 import '../styles/global.css';
 
 interface Props {
@@ -23,6 +24,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
     {noindex && <meta name="robots" content="noindex, follow" />}
@@ -50,9 +53,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="/">
-        <span class="mark" aria-hidden="true"><span></span></span>
-        <span>AnyAirDrop.com</span>
+      <a class="brand" href="/" aria-label="AnyAirDrop.com home">
+        <svg class="mark" width="32" height="32" viewBox="2.9 -1.9 48 48" fill="none" aria-hidden="true">
+          <circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="3.5" />
+          <circle cx="24" cy="24" r="4.6" fill="currentColor" />
+          <path d="M32.87 4.97A21 21 0 0 1 44.92 22.17" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+        </svg>
+        <span class="wordmark" aria-hidden="true">AnyAirDrop<span class="tld">.com</span></span>
       </a>
       <nav aria-label="Main">
         <a href="/blog/">Blog</a>
@@ -110,12 +117,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <style>
+  /* The header and footer span the window, so the logo and menu sit near the corners and the
+     content stays centered between them. A cap keeps them from drifting apart on ultrawide
+     screens. */
   .site-header,
   .site-footer {
     width: 100%;
-    max-width: var(--container);
+    max-width: 2000px;
     margin: 0 auto;
-    padding: var(--space-4);
+    padding: var(--space-4) clamp(var(--space-4), 3vw, 56px);
   }
 
   .site-header {
@@ -132,32 +142,38 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     }
   }
 
+  @media (max-width: 720px) {
+    .site-header,
+    .site-footer {
+      padding-inline: var(--space-4);
+    }
+  }
+
   .brand {
     display: flex;
     align-items: center;
     gap: 10px;
     color: var(--color-text);
     text-decoration: none;
-    font-size: 19px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
     min-height: 44px;
   }
 
   .mark {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 2px solid var(--color-accent);
-    display: grid;
-    place-items: center;
+    flex: none;
+    color: var(--color-brand);
   }
 
-  .mark span {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-accent);
+  .wordmark {
+    font-family: var(--font-brand);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .tld {
+    font-weight: 500;
+    color: var(--color-text-muted);
   }
 
   .site-header nav {
