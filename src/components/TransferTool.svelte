@@ -118,9 +118,14 @@
   // Live speed while a transfer runs, and the route and average speed once it is done, so a
   // slow transfer can be explained (for example, a VPN pushing it through the relay).
   let speed = $state(0);
+  let rtt = $state<number | null>(null);
   let startedAt = 0;
   let lastRun = $state<{ route: Route; rate: number } | null>(null);
   const rate = (bytes: number): string => `${formatBytes(bytes)}/s`;
+  // A transfer that is not going straight across the Wi-Fi and is crawling: say why.
+  const slowRoute = $derived(
+    (route === 'relay' || route === 'internet') && speed > 0 && speed < 1_000_000 && done < total,
+  );
 
   function place(list: RemotePeer[]): void {
     for (const id of [...slotOf.keys()]) {
@@ -323,6 +328,7 @@
   function startStats(): void {
     startedAt = performance.now();
     speed = 0;
+    rtt = null;
     tick = null;
     lastRun = null;
   }
@@ -404,12 +410,19 @@
     if (view.kind === 'confirm' || view.kind === 'sent' || view.kind === 'notice') reset();
   }
 
+  // Read the route shortly after the transfer starts, and again a few seconds in, because the
+  // browser can settle on a different path once the connection is busy.
   async function readRoute(link: PeerLink): Promise<void> {
-    await new Promise((r) => setTimeout(r, 400));
-    try {
-      route = await link.route();
-    } catch {
-      route = 'unknown';
+    for (const wait of [400, 2600]) {
+      await new Promise((r) => setTimeout(r, wait));
+      if (view.kind !== 'sending' && view.kind !== 'receiving') return;
+      try {
+        const info = await link.stats();
+        route = info.route;
+        rtt = info.rttMs;
+      } catch {
+        route = 'unknown';
+      }
     }
   }
 
@@ -753,6 +766,13 @@
       <p class="small muted">
         {routeLabel} · {formatBytes(done)} of {formatBytes(total)}{#if speed > 0} · {rate(speed)}{/if}
       </p>
+      {#if slowRoute}
+        <p class="small slow" role="status">
+          This is going over the internet, not straight across your Wi-Fi{#if rtt}, with a delay of {rtt} ms{/if}, so it is
+          limited by your upload speed. If both devices are on the same Wi-Fi, turn off any VPN on both (or allow local
+          network access in it) and send again.
+        </p>
+      {/if}
       <button type="button" class="text-btn" onclick={stop}>Cancel</button>
     {:else if view.kind === 'sent'}
       <p class="title done">
@@ -1029,6 +1049,15 @@
     vertical-align: -1px;
     margin-left: 2px;
     color: var(--color-success);
+  }
+
+  .slow {
+    max-width: 460px;
+    color: var(--color-text);
+    padding: 8px 12px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-button);
+    line-height: 1.4;
   }
 
   .bar-space {

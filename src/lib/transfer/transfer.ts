@@ -20,6 +20,8 @@ export type Control =
   | { t: 'offer'; xid: string; files: FileMeta[]; total: number }
   | { t: 'accept' | 'decline' | 'busy' | 'cancel' | 'done' | 'ack'; xid: string }
   | { t: 'file' | 'eof'; xid: string; i: number }
+  // The receiver tells the sender how many bytes have actually arrived, so both bars agree.
+  | { t: 'prog'; xid: string; n: number }
   // Trusted devices: one side proposes a secret room token, the other accepts or declines.
   // Either side can later revoke it.
   | { t: 'trust-offer'; xid: string; token: string; auto?: boolean }
@@ -52,6 +54,7 @@ export function validateOffer(msg: { files?: unknown }): { files: FileMeta[]; to
 }
 
 const READ_BLOCK = 1024 * 1024;
+const PROGRESS_REPORT_MS = 100;
 
 export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: number] }> {
   readonly xid = randomHex(8);
@@ -71,7 +74,20 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
     this.total = files.reduce((sum, f) => sum + f.size, 0);
   }
 
+  // Bytes the receiver says it has received. Once these arrive they are the progress shown,
+  // not what this side has queued, which can run megabytes ahead on a slow connection.
+  private confirmed = 0;
+  private receiverReports = false;
+
   handle(msg: Control): void {
+    if (msg.t === 'prog') {
+      if (typeof msg.n === 'number' && msg.n > this.confirmed) {
+        this.confirmed = Math.min(msg.n, this.total);
+        this.receiverReports = true;
+        this.emit('progress', this.confirmed, this.total);
+      }
+      return;
+    }
     if (msg.t === 'cancel') {
       this.stopped ??= 'cancelled';
       this.abort.abort();
@@ -115,8 +131,11 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
             await this.link.sendBinary(piece, this.abort.signal);
             if (this.stopped) throw new Error(this.stopped);
             sent += piece.byteLength;
-            // Report what has left the buffer, not what is merely queued.
-            this.emit('progress', Math.max(0, sent - this.link.dc.bufferedAmount), this.total);
+            // Until the receiver reports (an older page on the other device never does), show
+            // what has left the buffer, not what is merely queued.
+            if (!this.receiverReports) {
+              this.emit('progress', Math.max(0, sent - this.link.dc.bufferedAmount), this.total);
+            }
           }
         }
         this.link.sendJSON({ t: 'eof', xid: this.xid, i });
@@ -171,6 +190,7 @@ export class IncomingTransfer extends Emitter<IncomingEvents> {
   state: 'pending' | 'receiving' | 'done' | 'closed' = 'pending';
   onSettled: (() => void) | null = null;
   private received = 0;
+  private lastReportAt = 0;
   private sink: Sink | null = null;
   private results: ReceivedFile[] = [];
   private queue: Promise<void> = Promise.resolve();
@@ -231,6 +251,12 @@ export class IncomingTransfer extends Emitter<IncomingEvents> {
       await this.sink.write(data);
       this.received += data.byteLength;
       this.emit('progress', this.received, this.total);
+      // Tell the sender how much has really arrived, a few times a second.
+      const now = performance.now();
+      if (now - this.lastReportAt >= PROGRESS_REPORT_MS || this.received >= this.total) {
+        this.lastReportAt = now;
+        this.safeSend({ t: 'prog', xid: this.xid, n: this.received });
+      }
       return;
     }
     if (data.t === 'file') {

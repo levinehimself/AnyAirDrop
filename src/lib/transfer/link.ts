@@ -21,7 +21,8 @@ export interface LinkOptions {
 }
 
 // Keep a few MB queued so the network stays busy without holding a whole file in memory.
-const HIGH_WATER = 8 * 1024 * 1024;
+// A smaller queue also means a cancel takes effect sooner on a slow connection.
+const HIGH_WATER = 4 * 1024 * 1024;
 const LOW_WATER = 1024 * 1024;
 
 /**
@@ -175,23 +176,33 @@ export class PeerLink extends Emitter<LinkEvents> {
     this.dc.send(chunk);
   }
 
-  /** How the bytes travel: same network, across the internet, or through a relay. */
-  async route(): Promise<Route> {
+  /**
+   * How the bytes travel (same network, across the internet, or through a relay), the
+   * round-trip delay of that path and whether it runs over TCP, which is slower than UDP.
+   */
+  async stats(): Promise<{ route: Route; rttMs: number | null; viaTcp: boolean }> {
     const stats = await this.pc.getStats();
     let pairId: string | undefined;
     stats.forEach((report) => {
       if (report.type === 'transport' && report.selectedCandidatePairId) pairId = report.selectedCandidatePairId;
     });
-    let pair: { localCandidateId: string; remoteCandidateId: string } | undefined;
+    let pair: { localCandidateId: string; remoteCandidateId: string; currentRoundTripTime?: number } | undefined;
     stats.forEach((report) => {
       if (report.type !== 'candidate-pair') return;
       if (report.id === pairId || (!pairId && report.nominated && report.state === 'succeeded')) pair = report;
     });
-    if (!pair) return 'unknown';
-    const types = [stats.get(pair.localCandidateId)?.candidateType, stats.get(pair.remoteCandidateId)?.candidateType];
-    if (types.includes('relay')) return 'relay';
-    if (types.every((t) => t === 'host')) return 'lan';
-    return 'internet';
+    if (!pair) return { route: 'unknown', rttMs: null, viaTcp: false };
+    const local = stats.get(pair.localCandidateId);
+    const remote = stats.get(pair.remoteCandidateId);
+    const types = [local?.candidateType, remote?.candidateType];
+    const route: Route = types.includes('relay') ? 'relay' : types.every((t) => t === 'host') ? 'lan' : 'internet';
+    const rttMs = typeof pair.currentRoundTripTime === 'number' ? Math.round(pair.currentRoundTripTime * 1000) : null;
+    const viaTcp = local?.protocol === 'tcp' || (local?.relayProtocol !== undefined && local.relayProtocol !== 'udp');
+    return { route, rttMs, viaTcp };
+  }
+
+  async route(): Promise<Route> {
+    return (await this.stats()).route;
   }
 
   close(): void {
