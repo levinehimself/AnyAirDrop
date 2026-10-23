@@ -22,11 +22,12 @@ const others = TOPIC_KEYS.filter((other) => other !== key);
   description={`${topic.summary} ${posts.length} plain-language guides.`}
   heading={topic.name}
   lead={topic.summary}
+  wide
 >
-  <PostList posts={posts} />
+  <PostList posts={posts} eager={3} />
 
   <h2>Other topics</h2>
-  <ul class="other">
+  <ul>
     {
       others.map((other) => (
         <li>

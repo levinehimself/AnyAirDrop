@@ -26,15 +26,16 @@ const list = {
   heading="Blog"
   lead="How Wi-Fi, routers, phone modems and nearby file sharing actually work, explained from the radio up. Read a topic from the start, or jump to the question you have."
   extraJsonLd={[list]}
+  wide
 >
   {
-    sections.map(({ key, topic, posts: topicPosts }) => (
+    sections.map(({ key, topic, posts: topicPosts }, i) => (
       <section aria-labelledby={`topic-${key}`}>
         <h2 id={`topic-${key}`}>
           <a href={`/blog/topic/${key}/`}>{topic.name}</a>
         </h2>
         <p class="topic-summary">{topic.summary}</p>
-        <PostList posts={topicPosts} />
+        <PostList posts={topicPosts} eager={i === 0 ? 3 : 0} />
       </section>
     ))
   }
@@ -51,6 +52,7 @@ const list = {
   }
 
   .topic-summary {
+    max-width: 680px;
     color: var(--color-text-muted);
   }
 </style>

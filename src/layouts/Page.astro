@@ -12,9 +12,11 @@ interface Props {
   extraJsonLd?: Record<string, unknown>[];
   type?: 'AboutPage' | 'ContactPage' | 'WebPage';
   noindex?: boolean;
+  /** A wider column, for pages that show a grid of cards. The heading and intro stay narrow. */
+  wide?: boolean;
 }
 
-const { title, description, heading, lead, updated, extraJsonLd = [], type = 'WebPage', noindex = false } = Astro.props;
+const { title, description, heading, lead, updated, extraJsonLd = [], type = 'WebPage', noindex = false, wide = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 
 const page = {
@@ -31,7 +33,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [page, ...extraJson
 
 <Base title={title} description={description} jsonLd={jsonLd} noindex={noindex}>
   <main class="page">
-    <article class="prose">
+    <article class:list={['prose', { wide }]}>
       <h1>{heading}</h1>
       {lead && <p class="lead">{lead}</p>}
       {updated && <p class="updated">Last updated {updated}</p>}
@@ -50,6 +52,17 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [page, ...extraJson
   .prose {
     max-width: 680px;
     margin: 0 auto;
+  }
+
+  .prose.wide {
+    max-width: 1040px;
+  }
+
+  /* On a wide page the introduction keeps a comfortable reading width. */
+  .prose.wide > h1,
+  .prose.wide > .lead,
+  .prose.wide > :global(.intro) {
+    max-width: 680px;
   }
 
   h1 {
