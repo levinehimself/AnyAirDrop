@@ -6,6 +6,8 @@
     open,
     devices,
     canStore,
+    autoTrust,
+    ontoggleauto,
     onclose,
     onremove,
     ontoggle,
@@ -13,6 +15,8 @@
     open: boolean;
     devices: TrustedRow[];
     canStore: boolean;
+    autoTrust: boolean;
+    ontoggleauto: () => void;
     onclose: () => void;
     onremove: (token: string) => void;
     ontoggle: (token: string) => void;
@@ -68,6 +72,16 @@
           </li>
         {/each}
       </ul>
+    {/if}
+
+    {#if canStore}
+      <label class="autotrust">
+        <input type="checkbox" checked={autoTrust} onchange={ontoggleauto} />
+        <span>
+          Add devices automatically after a transfer
+          <small>Turn this off if you share files with people you don’t know.</small>
+        </span>
+      </label>
     {/if}
   </div>
 {/if}
@@ -208,6 +222,32 @@
     width: 18px;
     height: 18px;
     accent-color: var(--color-accent);
+  }
+
+  .autotrust {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .autotrust input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex: none;
+    accent-color: var(--color-accent);
+  }
+
+  .autotrust small {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-text-muted);
   }
 
   .remove {

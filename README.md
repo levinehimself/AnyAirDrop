@@ -60,6 +60,7 @@ npm run test:signal
 
 - **Device name:** shown under the radar, editable, kept in `localStorage` (`anyairdrop:devicename`). A rename is a second `hello` on the open socket, so other radars update at once.
 - **Trusted devices:** while two devices are connected, one proposes a random 64-hex token over the data channel and the other accepts. Both store it (`anyairdrop:trusted`) and join the private room `/ws?trust=<token>` whenever the site is open, so they find each other on any network or VPN. The token is a bearer secret: anyone holding it can join that room, which only lists devices and relays signals. Trust never skips the Accept prompt unless the person turns on "accept their files without asking" for that device. Removing a device sends a revoke message so the other side forgets it too (if it is offline, it keeps the entry until removed there).
+- **Automatic trust:** after a completed transfer the sender proposes the same handshake with `auto: true`. The receiver agrees only if its "Add devices automatically after a transfer" setting is on (default) and it received files from that device in the last two minutes, so nobody can add themselves without delivering something the receiver accepted. Both screens show "… is now a trusted device. Undo".
 - **ZIP:** when several files arrive, "Save as ZIP" packs them with `client-zip` (stored, not recompressed). Browsers with a save dialog stream it to disk; others build it in memory up to 1 GB.
 - A browser cannot read the Wi-Fi network name (SSID), so the site never shows it.
 

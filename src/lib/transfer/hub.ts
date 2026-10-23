@@ -16,7 +16,7 @@ type HubEvents = {
   status: [HubStatus];
   incoming: [IncomingTransfer];
   /** Another device asks to be trusted: answer with answerTrust(). */
-  trustoffer: [peer: RemotePeer, xid: string, token: string];
+  trustoffer: [peer: RemotePeer, xid: string, token: string, auto: boolean];
   trustcancelled: [xid: string];
   /** A trusted device removed this device from its list. */
   trustrevoked: [token: string];
@@ -114,7 +114,11 @@ export class Hub extends Emitter<HubEvents> {
    * is 'accepted' this device has already joined the shared room and the caller should store
    * the token.
    */
-  async offerTrust(peerId: string, signal?: AbortSignal): Promise<{ answer: TrustAnswer; token: string }> {
+  async offerTrust(
+    peerId: string,
+    signal?: AbortSignal,
+    auto = false,
+  ): Promise<{ answer: TrustAnswer; token: string }> {
     if (!this.peers.has(peerId)) throw new Error('peer-gone');
     const link = this.link(peerId);
     const token = randomHex(32);
@@ -140,7 +144,7 @@ export class Hub extends Emitter<HubEvents> {
       this.pendingTrust.set(xid, finish);
       signal?.addEventListener('abort', onAbort);
     });
-    link.sendJSON({ t: 'trust-offer', xid, token });
+    link.sendJSON(auto ? { t: 'trust-offer', xid, token, auto: true } : { t: 'trust-offer', xid, token });
 
     const result = await answer;
     if (result === 'accepted') this.joinTrust(token);
@@ -310,7 +314,7 @@ export class Hub extends Emitter<HubEvents> {
     if (msg.t === 'trust-offer') {
       if (!isToken(msg.token)) return;
       const peer = this.peers.get(peerId)?.info;
-      if (peer) this.emit('trustoffer', peer, msg.xid, msg.token);
+      if (peer) this.emit('trustoffer', peer, msg.xid, msg.token, msg.auto === true);
       return;
     }
     if (msg.t === 'trust-accept' || msg.t === 'trust-decline') {

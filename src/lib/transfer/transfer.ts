@@ -22,7 +22,7 @@ export type Control =
   | { t: 'file' | 'eof'; xid: string; i: number }
   // Trusted devices: one side proposes a secret room token, the other accepts or declines.
   // Either side can later revoke it.
-  | { t: 'trust-offer'; xid: string; token: string }
+  | { t: 'trust-offer'; xid: string; token: string; auto?: boolean }
   | { t: 'trust-accept' | 'trust-decline' | 'trust-cancel'; xid: string }
   | { t: 'trust-revoke'; xid: string; token: string };
 

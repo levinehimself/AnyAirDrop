@@ -61,6 +61,26 @@ export function saveTrusted(list: TrustedDevice[]): boolean {
   }
 }
 
+const AUTO_KEY = 'anyairdrop:autotrust';
+
+/** After a completed transfer, remember the other device as trusted. On unless switched off. */
+export function loadAutoTrust(): boolean {
+  try {
+    return localStorage.getItem(AUTO_KEY) !== 'off';
+  } catch {
+    return true;
+  }
+}
+
+export function saveAutoTrust(on: boolean): void {
+  try {
+    if (on) localStorage.removeItem(AUTO_KEY);
+    else localStorage.setItem(AUTO_KEY, 'off');
+  } catch {
+    // Storage blocked: the choice lasts until the page is closed.
+  }
+}
+
 export function canStoreTrusted(): boolean {
   try {
     const probe = 'anyairdrop:probe';

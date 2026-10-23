@@ -8,7 +8,9 @@
   import { saveName } from '../lib/transfer/identity';
   import {
     canStoreTrusted,
+    loadAutoTrust,
     loadTrusted,
+    saveAutoTrust,
     saveTrusted,
     TRUSTED_LIMIT,
     type TrustedDevice,
@@ -59,6 +61,14 @@
   let canStore = $state(true);
   const trustedRows = $derived<TrustedRow[]>(trusted.map((t) => ({ ...t, online: onlineTokens.includes(t.token) })));
   const untrustedPeers = $derived(peers.filter((p) => !p.trusted));
+
+  // After a completed transfer both devices remember each other as trusted (can be turned
+  // off). The receiver only agrees to a device it has just received files from.
+  let autoTrust = $state(true);
+  let trustNote = $state<{ token: string; peerId: string; name: string } | null>(null);
+  const autoDeclined = new Set<string>();
+  let lastReceived: { peerId: string; at: number } | null = null;
+  const AUTO_TRUST_WINDOW_MS = 2 * 60 * 1000;
 
   let zipBusy = $state(false);
   let zipNote = $state('');
@@ -160,6 +170,7 @@
     ];
     hub.start();
     canStore = canStoreTrusted();
+    autoTrust = loadAutoTrust();
     trusted = loadTrusted();
     for (const device of trusted) hub.joinTrust(device.token);
     if (params.has('debug')) {
@@ -227,6 +238,7 @@
   async function send(): Promise<void> {
     if (view.kind !== 'confirm' || !hub) return;
     const { peer, files } = view;
+    trustNote = null;
     let transfer: OutgoingTransfer;
     try {
       transfer = hub.send(peer.id, files);
@@ -251,7 +263,10 @@
         void holdAwake();
         void readRoute(transfer.link);
       });
-      if (result === 'done') view = { kind: 'sent', peer, count: files.length };
+      if (result === 'done') {
+        view = { kind: 'sent', peer, count: files.length };
+        void autoTrustPeer(peer);
+      }
       else if (result === 'declined') view = { kind: 'notice', title: `${peer.name} declined`, detail: 'Nothing was sent.' };
       else view = { kind: 'notice', title: `${peer.name} is busy`, detail: 'They are in another transfer. Try again in a moment.' };
     } catch (err) {
@@ -296,6 +311,7 @@
     transfer.on('progress', setProgress);
     transfer.on('done', (files) => {
       zipNote = '';
+      lastReceived = { peerId: transfer.peer.id, at: Date.now() };
       view = { kind: 'received', peer: transfer.peer, files };
       releaseAwake();
     });
@@ -315,6 +331,7 @@
   function accept(): void {
     if (view.kind !== 'incoming') return;
     const transfer = view.transfer;
+    trustNote = null;
     done = 0;
     total = transfer.total;
     route = 'unknown';
@@ -338,6 +355,7 @@
 
   function reset(): void {
     view = { kind: 'idle' };
+    trustNote = null;
   }
 
   // Tapping outside the phone sheet closes it only when nothing is in progress.
@@ -480,9 +498,52 @@
     }
   }
 
-  function onTrustOffer(peer: RemotePeer, xid: string, token: string): void {
+  // Sender side, right after a completed transfer: quietly propose to remember each other.
+  async function autoTrustPeer(peer: RemotePeer): Promise<void> {
+    if (!hub || !autoTrust || !canStore || trusted.length >= TRUSTED_LIMIT) return;
+    if (hub.trustTokenOf(peer.id) != null || autoDeclined.has(peer.id)) return;
+    try {
+      const { answer, token } = await hub.offerTrust(peer.id, undefined, true);
+      if (answer === 'accepted') {
+        addTrusted(token, peer);
+        trustNote = { token, peerId: peer.id, name: peer.name };
+      } else {
+        autoDeclined.add(peer.id);
+      }
+    } catch {
+      // The other device went away; nothing to remember.
+    }
+  }
+
+  function undoTrustNote(): void {
+    if (!trustNote) return;
+    autoDeclined.add(trustNote.peerId);
+    removeTrusted(trustNote.token, true);
+    trustNote = null;
+  }
+
+  function toggleAutoTrust(): void {
+    autoTrust = !autoTrust;
+    saveAutoTrust(autoTrust);
+  }
+
+  function onTrustOffer(peer: RemotePeer, xid: string, token: string, auto: boolean): void {
     if (!hub) return;
-    if (!free || !canStore || trusted.length >= TRUSTED_LIMIT || trusted.some((t) => t.token === token)) {
+    const blocked = !free || !canStore || trusted.length >= TRUSTED_LIMIT || trusted.some((t) => t.token === token);
+    if (auto) {
+      // Only accepted from a device we have just received files from, so nobody can add
+      // themselves without delivering something this person accepted.
+      const justReceived =
+        lastReceived != null && lastReceived.peerId === peer.id && Date.now() - lastReceived.at < AUTO_TRUST_WINDOW_MS;
+      const ok = autoTrust && justReceived && !blocked && hub.trustTokenOf(peer.id) == null;
+      hub.answerTrust(peer.id, xid, token, ok);
+      if (ok) {
+        addTrusted(token, peer);
+        trustNote = { token, peerId: peer.id, name: peer.name };
+      }
+      return;
+    }
+    if (blocked) {
       hub.answerTrust(peer.id, xid, token, false);
       return;
     }
@@ -645,6 +706,11 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4L19 7" /></svg>
         Sent {countFiles(view.count)} to {view.peer.name}
       </p>
+      {#if trustNote}
+        <p class="small muted" role="status">
+          {trustNote.name} is now a trusted device. <button type="button" class="link-btn" onclick={undoTrustNote}>Undo</button>
+        </p>
+      {/if}
       <div class="row"><button type="button" class="secondary" onclick={reset}>Send more</button></div>
     {:else if view.kind === 'incoming'}
       <p class="title">
@@ -672,6 +738,11 @@
         {/each}
       </ul>
       {#if zipNote}<p class="small muted" role="status">{zipNote}</p>{/if}
+      {#if trustNote}
+        <p class="small muted" role="status">
+          {trustNote.name} is now a trusted device. <button type="button" class="link-btn" onclick={undoTrustNote}>Undo</button>
+        </p>
+      {/if}
       <div class="row wrap">
         {#if files.length > 1}
           <button type="button" class="secondary" disabled={zipBusy} onclick={() => zipAll(files, from)}>
@@ -694,6 +765,8 @@
     open={trustedOpen}
     devices={trustedRows}
     {canStore}
+    {autoTrust}
+    ontoggleauto={toggleAutoTrust}
     onclose={() => (trustedOpen = false)}
     onremove={(token) => removeTrusted(token, true)}
     ontoggle={toggleAutoAccept}
