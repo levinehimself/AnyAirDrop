@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Inside a phone: the baseband modem sits between the main processor and the radio</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">Inside a phone: two processors, two jobs</text>
+
+  <!-- Phone body -->
+  <rect x="30" y="62" width="550" height="290" rx="18" fill="#F8FAFC" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Application processor -->
+  <rect x="50" y="90" width="140" height="120" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="120" y="120" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Application</text>
+  <text x="120" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">processor</text>
+  <text x="120" y="168" text-anchor="middle" font-size="13" fill="#475569">runs Android or iOS</text>
+  <text x="120" y="186" text-anchor="middle" font-size="13" fill="#475569">and your apps</text>
+
+  <!-- Interface arrow -->
+  <text x="240" y="132" text-anchor="middle" font-size="13" fill="#2563EB" font-weight="700">Radio</text>
+  <text x="240" y="148" text-anchor="middle" font-size="13" fill="#2563EB" font-weight="700">interface</text>
+  <line x1="194" y1="165" x2="286" y2="165" stroke="#2563EB" stroke-width="3"/>
+  <path d="M200 159 L192 165 L200 171 M280 159 L288 165 L280 171" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Baseband -->
+  <rect x="290" y="90" width="150" height="120" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="4"/>
+  <text x="365" y="120" text-anchor="middle" font-size="16" font-weight="700" fill="#2563EB">Baseband</text>
+  <text x="365" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#2563EB">(the modem)</text>
+  <text x="365" y="168" text-anchor="middle" font-size="13" fill="#475569">cellular protocols,</text>
+  <text x="365" y="186" text-anchor="middle" font-size="13" fill="#475569">login, IMEI</text>
+
+  <!-- RF -->
+  <line x1="440" y1="150" x2="468" y2="150" stroke="#0F172A" stroke-width="3"/>
+  <rect x="470" y="90" width="90" height="120" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="515" y="120" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Radio</text>
+  <text x="515" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">parts</text>
+  <text x="515" y="168" text-anchor="middle" font-size="13" fill="#475569">filters, amps,</text>
+  <text x="515" y="186" text-anchor="middle" font-size="13" fill="#475569">antennas</text>
+
+  <!-- SIM -->
+  <rect x="290" y="268" width="150" height="62" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="365" y="293" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">SIM or eSIM</text>
+  <text x="365" y="313" text-anchor="middle" font-size="13" fill="#475569">holds the secret key</text>
+  <line x1="365" y1="212" x2="365" y2="266" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Wi-Fi/Bluetooth chip -->
+  <rect x="50" y="268" width="150" height="62" rx="10" fill="#FFFFFF" stroke="#15803D" stroke-width="3"/>
+  <text x="125" y="293" text-anchor="middle" font-size="15" font-weight="700" fill="#15803D">Wi-Fi + Bluetooth</text>
+  <text x="125" y="313" text-anchor="middle" font-size="13" fill="#475569">separate radio chip</text>
+  <line x1="120" y1="212" x2="120" y2="266" stroke="#15803D" stroke-width="3"/>
+
+  <!-- Waves -->
+  <g fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round">
+    <path d="M596 134 Q608 150 596 166"/>
+    <path d="M612 122 Q632 150 612 178"/>
+    <path d="M628 110 Q656 150 628 190"/>
+  </g>
+  <line x1="560" y1="150" x2="590" y2="150" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Tower -->
+  <line x1="715" y1="110" x2="690" y2="250" stroke="#0F172A" stroke-width="4" stroke-linecap="round"/>
+  <line x1="715" y1="110" x2="740" y2="250" stroke="#0F172A" stroke-width="4" stroke-linecap="round"/>
+  <line x1="702" y1="180" x2="728" y2="180" stroke="#0F172A" stroke-width="3"/>
+  <line x1="696" y1="215" x2="734" y2="215" stroke="#0F172A" stroke-width="3"/>
+  <circle cx="715" cy="102" r="7" fill="#2563EB"/>
+  <text x="715" y="282" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Cell tower</text>
+  <text x="715" y="302" text-anchor="middle" font-size="13" fill="#475569">carrier network</text>
+
+  <!-- Footer note -->
+  <text x="30" y="378" font-size="14" fill="#475569">Local Wi-Fi and Bluetooth transfers use the green chip, not the baseband.</text>
+</svg>

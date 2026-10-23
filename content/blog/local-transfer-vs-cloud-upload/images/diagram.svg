@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Time for a 1 GB file locally and through the cloud, hypothetical</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="400" y="42" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">Same 1 GB file, two paths (hypothetical numbers)</text>
+
+  <!-- Row 1: local -->
+  <text x="40" y="92" font-size="16" font-weight="700" fill="#0F172A">Direct over the local Wi-Fi</text>
+  <rect x="40" y="104" width="36" height="34" rx="4" fill="#2563EB"/>
+  <text x="90" y="128" font-size="16" font-weight="700" fill="#2563EB">27 s</text>
+
+  <!-- Row 2: cloud -->
+  <text x="40" y="188" font-size="16" font-weight="700" fill="#0F172A">Upload to the cloud, then download</text>
+  <rect x="40" y="200" width="545" height="34" rx="4" fill="#475569"/>
+  <text x="56" y="222" font-size="14" font-weight="700" fill="#FFFFFF">upload 400 s</text>
+  <rect x="585" y="200" width="55" height="34" rx="4" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+  <text x="652" y="224" font-size="16" font-weight="700" fill="#0F172A">440 s</text>
+  <text x="640" y="256" text-anchor="end" font-size="14" fill="#475569">download 40 s</text>
+
+  <!-- Assumptions -->
+  <line x1="40" y1="282" x2="760" y2="282" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="40" y="308" font-size="14" fill="#475569">Assumed: 1 GB file (8,000 megabits); cloud upload 20 Mbps, cloud download 200 Mbps;</text>
+  <text x="40" y="328" font-size="14" fill="#475569">real local speed 300 Mbps. 8,000 / 20 = 400 s, 8,000 / 200 = 40 s, 8,000 / 300 = 26.7 s.</text>
+  <text x="40" y="364" font-size="16" font-weight="700" fill="#0F172A">Illustration only, not a measurement.</text>
+</svg>

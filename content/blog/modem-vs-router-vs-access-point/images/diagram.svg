@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Three common home wiring layouts: gateway, modem plus router, and router plus access point</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">Three common ways to wire a home</text>
+
+  <!-- Row 1: gateway -->
+  <text x="30" y="78" font-size="15" font-weight="700" fill="#2563EB">1  One all-in-one gateway</text>
+  <rect x="30" y="88" width="90" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="75" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Provider</text>
+  <text x="75" y="128" text-anchor="middle" font-size="13" fill="#475569">line</text>
+  <line x1="120" y1="113" x2="140" y2="113" stroke="#0F172A" stroke-width="3"/>
+  <rect x="140" y="88" width="410" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="345" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Gateway</text>
+  <text x="345" y="128" text-anchor="middle" font-size="13" fill="#475569">modem + router + switch + access point</text>
+  <line x1="550" y1="113" x2="650" y2="113" stroke="#2563EB" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+  <rect x="650" y="88" width="120" height="50" rx="10" fill="#E2E8F0" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="710" y="118" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Your devices</text>
+
+  <!-- Row 2: modem + router -->
+  <text x="30" y="178" font-size="15" font-weight="700" fill="#2563EB">2  Separate modem and router</text>
+  <rect x="30" y="188" width="90" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="75" y="210" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Provider</text>
+  <text x="75" y="228" text-anchor="middle" font-size="13" fill="#475569">line</text>
+  <line x1="120" y1="213" x2="140" y2="213" stroke="#0F172A" stroke-width="3"/>
+  <rect x="140" y="188" width="100" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="190" y="210" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Modem</text>
+  <text x="190" y="228" text-anchor="middle" font-size="13" fill="#475569">speaks to ISP</text>
+  <line x1="240" y1="213" x2="260" y2="213" stroke="#0F172A" stroke-width="3"/>
+  <rect x="260" y="188" width="290" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="405" y="210" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Router</text>
+  <text x="405" y="228" text-anchor="middle" font-size="13" fill="#475569">addresses + NAT + switch + Wi-Fi</text>
+  <line x1="550" y1="213" x2="650" y2="213" stroke="#2563EB" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+  <rect x="650" y="188" width="120" height="50" rx="10" fill="#E2E8F0" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="710" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Your devices</text>
+
+  <!-- Row 3: router + AP -->
+  <text x="30" y="278" font-size="15" font-weight="700" fill="#2563EB">3  Router plus a cabled access point</text>
+  <rect x="30" y="288" width="90" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="75" y="310" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Provider</text>
+  <text x="75" y="328" text-anchor="middle" font-size="13" fill="#475569">line</text>
+  <line x1="120" y1="313" x2="140" y2="313" stroke="#0F172A" stroke-width="3"/>
+  <rect x="140" y="288" width="100" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="190" y="310" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Modem</text>
+  <text x="190" y="328" text-anchor="middle" font-size="13" fill="#475569">speaks to ISP</text>
+  <line x1="240" y1="313" x2="260" y2="313" stroke="#0F172A" stroke-width="3"/>
+  <rect x="260" y="288" width="130" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="325" y="310" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Router</text>
+  <text x="325" y="328" text-anchor="middle" font-size="13" fill="#475569">addresses + NAT</text>
+  <line x1="390" y1="313" x2="410" y2="313" stroke="#0F172A" stroke-width="3"/>
+  <rect x="410" y="288" width="140" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="480" y="310" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Access point</text>
+  <text x="480" y="328" text-anchor="middle" font-size="13" fill="#475569">Wi-Fi radio only</text>
+  <line x1="550" y1="313" x2="650" y2="313" stroke="#2563EB" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+  <rect x="650" y="288" width="120" height="50" rx="10" fill="#E2E8F0" stroke="#0F172A" stroke-width="2.5"/>
+  <text x="710" y="318" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Your devices</text>
+
+  <text x="30" y="378" font-size="14" fill="#475569">Dark line: cable. Blue dots: Wi-Fi radio. The jobs stay the same; the box count changes.</text>
+</svg>

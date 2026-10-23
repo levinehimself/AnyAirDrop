@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>iPhone hotspot bands: Maximize Compatibility on versus off</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">iPhone hotspot band: compatibility vs speed</text>
+
+  <!-- Left card -->
+  <rect x="30" y="64" width="355" height="270" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="50" y="96" font-size="18" font-weight="700" fill="#0F172A">Maximize Compatibility on</text>
+  <text x="50" y="118" font-size="14" fill="#475569">2.4 GHz band</text>
+  <rect x="50" y="140" width="75" height="34" rx="6" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="137" y="163" font-size="14" fill="#475569">20 MHz channel</text>
+  <text x="50" y="224" font-size="22" font-weight="700" fill="#0F172A">about 72 Mbps</text>
+  <text x="50" y="246" font-size="13" fill="#475569">one stream, on paper</text>
+  <text x="50" y="288" font-size="14" font-weight="700" fill="#15803D">Older devices can join</text>
+  <text x="50" y="312" font-size="13" fill="#475569">Apple: may reduce performance and security</text>
+
+  <!-- Right card -->
+  <rect x="415" y="64" width="355" height="270" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="435" y="96" font-size="18" font-weight="700" fill="#0F172A">Maximize Compatibility off</text>
+  <text x="435" y="118" font-size="14" fill="#475569">5 GHz band (as commonly reported)</text>
+  <rect x="435" y="140" width="300" height="34" rx="6" fill="#2563EB"/>
+  <text x="585" y="163" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">80 MHz channel</text>
+  <text x="435" y="224" font-size="22" font-weight="700" fill="#2563EB">about 433 Mbps</text>
+  <text x="435" y="246" font-size="13" fill="#475569">one stream, on paper</text>
+  <text x="435" y="288" font-size="14" font-weight="700" fill="#0F172A">Faster, shorter reach</text>
+  <text x="435" y="312" font-size="13" fill="#475569">Some older devices cannot see the network</text>
+
+  <text x="30" y="372" font-size="14" fill="#475569">Illustrative Wi-Fi standard values. Apple does not publish the hotspot's channel width.</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>2.4 GHz Wi-Fi channels 1 to 11 and the three that do not overlap</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="38" font-size="20" font-weight="700" fill="#0F172A">2.4 GHz channels in the US (1 to 11)</text>
+  <text x="30" y="60" font-size="14" fill="#475569">Blue: the non-overlapping set. Gray: the other channels, which overlap their neighbors.</text>
+
+  <!-- other channels (overlapping) -->
+  <path d="M99.3 270 C129.3 270 154.0 190 184.0 190 C214.0 190 238.7 270 268.7 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M141.6 270 C171.6 270 196.3 190 226.3 190 C256.3 190 281.0 270 311.0 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M184.0 270 C214.0 270 238.7 190 268.7 190 C298.7 190 323.4 270 353.4 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M226.3 270 C256.3 270 281.0 190 311.0 190 C341.0 190 365.7 270 395.7 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M311.0 270 C341.0 270 365.7 190 395.7 190 C425.7 190 450.4 270 480.4 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M353.4 270 C383.4 270 408.1 190 438.1 190 C468.1 190 492.8 270 522.8 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M395.7 270 C425.7 270 450.4 190 480.4 190 C510.4 190 535.1 270 565.1 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <path d="M438.1 270 C468.1 270 492.8 190 522.8 190 C552.8 190 577.5 270 607.5 270" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 4"/>
+  <!-- non-overlapping channels -->
+  <path d="M56.9 270 C86.9 270 111.6 110 141.6 110 C171.6 110 196.3 270 226.3 270" fill="none" stroke="#2563EB" stroke-width="3"/>
+  <path d="M268.7 270 C298.7 270 323.4 110 353.4 110 C383.4 110 408.1 270 438.1 270" fill="none" stroke="#2563EB" stroke-width="3"/>
+  <path d="M480.4 270 C510.4 270 535.1 110 565.1 110 C595.1 110 619.8 270 649.8 270" fill="none" stroke="#2563EB" stroke-width="3"/>
+  <line x1="40" y1="270" x2="747.2" y2="270" stroke="#0F172A" stroke-width="2"/>
+  <!-- channel numbers -->
+  <text x="141.6" y="294" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">1</text>
+  <text x="141.6" y="314" text-anchor="middle" font-size="13" fill="#475569">2412 MHz</text>
+  <text x="184.0" y="294" text-anchor="middle" font-size="14" fill="#475569">2</text>
+  <text x="226.3" y="294" text-anchor="middle" font-size="14" fill="#475569">3</text>
+  <text x="268.7" y="294" text-anchor="middle" font-size="14" fill="#475569">4</text>
+  <text x="311.0" y="294" text-anchor="middle" font-size="14" fill="#475569">5</text>
+  <text x="353.4" y="294" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">6</text>
+  <text x="353.4" y="314" text-anchor="middle" font-size="13" fill="#475569">2437 MHz</text>
+  <text x="395.7" y="294" text-anchor="middle" font-size="14" fill="#475569">7</text>
+  <text x="438.1" y="294" text-anchor="middle" font-size="14" fill="#475569">8</text>
+  <text x="480.4" y="294" text-anchor="middle" font-size="14" fill="#475569">9</text>
+  <text x="522.8" y="294" text-anchor="middle" font-size="14" fill="#475569">10</text>
+  <text x="565.1" y="294" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">11</text>
+  <text x="565.1" y="314" text-anchor="middle" font-size="13" fill="#475569">2462 MHz</text>
+
+  <text x="30" y="350" font-size="14" fill="#0F172A">Each channel is 20 MHz wide, but channel numbers are only 5 MHz apart.</text>
+  <text x="30" y="372" font-size="14" fill="#0F172A">Channels 1, 6 and 11 are 25 MHz apart, so their 20 MHz widths never touch.</text>
+</svg>

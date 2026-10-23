@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>NFC introduces two devices, then a faster link carries the file</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <defs>
+    <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0F172A"/>
+    </marker>
+  </defs>
+
+  <line x1="400" y1="60" x2="400" y2="262" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4 6"/>
+
+  <!-- Left: tap -->
+  <text x="24" y="44" font-size="18" font-weight="700" fill="#2563EB">1. Tap: NFC at a few centimeters</text>
+  <rect x="48" y="86" width="64" height="112" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <rect x="124" y="86" width="64" height="112" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <g fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round">
+    <path d="M115 128 Q108 142 115 156"/>
+    <path d="M121 128 Q128 142 121 156"/>
+  </g>
+  <text x="80" y="224" text-anchor="middle" font-size="14" fill="#475569">Phone</text>
+  <text x="156" y="224" text-anchor="middle" font-size="14" fill="#475569">Phone</text>
+  <text x="214" y="110" font-size="16" font-weight="700" fill="#0F172A">13.56 MHz</text>
+  <text x="214" y="134" font-size="14" fill="#475569">Magnetic coupling,</text>
+  <text x="214" y="152" font-size="14" fill="#475569">about 22 m wavelength</text>
+  <text x="214" y="176" font-size="14" fill="#475569">106 to 424 kbit/s</text>
+  <text x="214" y="200" font-size="14" fill="#475569">100-byte message:</text>
+  <text x="214" y="218" font-size="14" fill="#475569">about 7.5 ms</text>
+
+  <!-- Right: faster link -->
+  <text x="424" y="44" font-size="18" font-weight="700" fill="#2563EB">2. Faster link: Bluetooth or Wi-Fi</text>
+  <rect x="440" y="86" width="64" height="112" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <rect x="696" y="86" width="64" height="112" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <line x1="516" y1="142" x2="684" y2="142" stroke="#0F172A" stroke-width="5" marker-end="url(#ad)"/>
+  <text x="600" y="106" text-anchor="middle" font-size="14" fill="#475569">photo, video, folder</text>
+  <text x="600" y="190" text-anchor="middle" font-size="14" fill="#475569">devices can be apart</text>
+  <text x="472" y="224" text-anchor="middle" font-size="14" fill="#475569">Phone</text>
+  <text x="728" y="224" text-anchor="middle" font-size="14" fill="#475569">Device</text>
+
+  <!-- Bottom -->
+  <line x1="24" y1="262" x2="776" y2="262" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="24" y="296" font-size="18" font-weight="700" fill="#0F172A">NFC introduces the devices; it does not carry the file.</text>
+  <text x="24" y="324" font-size="14" fill="#475569">A 3 MB photo would need about 57 s at 424 kbit/s, or nearly 4 minutes at 106 kbit/s,</text>
+  <text x="24" y="344" font-size="14" fill="#475569">before overhead, with the devices touching the whole time.</text>
+</svg>

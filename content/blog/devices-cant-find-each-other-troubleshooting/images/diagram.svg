@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Decision flow for devices that cannot see each other</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="400" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">Work down the list; on a no, apply the fix</text>
+
+  <!-- Row 1 -->
+  <rect x="40" y="56" width="250" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="56" y="84" font-size="16" font-weight="700" fill="#0F172A">1. Same network?</text>
+  <line x1="290" y1="78" x2="340" y2="78" stroke="#2563EB" stroke-width="3"/>
+  <text x="315" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">no</text>
+  <rect x="340" y="56" width="420" height="44" rx="10" fill="#E2E8F0"/>
+  <text x="354" y="75" font-size="14" fill="#0F172A">Join the same Wi-Fi on both devices.</text>
+  <text x="354" y="92" font-size="14" fill="#475569">Guest Wi-Fi and mobile data count as different.</text>
+  <line x1="165" y1="100" x2="165" y2="114" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Row 2 -->
+  <rect x="40" y="114" width="250" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="56" y="142" font-size="16" font-weight="700" fill="#0F172A">2. Permissions on?</text>
+  <line x1="290" y1="136" x2="340" y2="136" stroke="#2563EB" stroke-width="3"/>
+  <text x="315" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">no</text>
+  <rect x="340" y="114" width="420" height="44" rx="10" fill="#E2E8F0"/>
+  <text x="354" y="133" font-size="14" fill="#0F172A">Turn on Wi-Fi and Bluetooth; no airplane mode.</text>
+  <text x="354" y="150" font-size="14" fill="#475569">Allow Nearby devices or Local Network access.</text>
+  <line x1="165" y1="158" x2="165" y2="172" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Row 3 -->
+  <rect x="40" y="172" width="250" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="56" y="200" font-size="16" font-weight="700" fill="#0F172A">3. VPN off?</text>
+  <line x1="290" y1="194" x2="340" y2="194" stroke="#2563EB" stroke-width="3"/>
+  <text x="315" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">no</text>
+  <rect x="340" y="172" width="420" height="44" rx="10" fill="#E2E8F0"/>
+  <text x="354" y="191" font-size="14" fill="#0F172A">Pause the VPN while you transfer.</text>
+  <text x="354" y="208" font-size="14" fill="#475569">It can send traffic away from your local network.</text>
+  <line x1="165" y1="216" x2="165" y2="230" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Row 4 -->
+  <rect x="40" y="230" width="250" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="56" y="258" font-size="16" font-weight="700" fill="#0F172A">4. Isolation off?</text>
+  <line x1="290" y1="252" x2="340" y2="252" stroke="#2563EB" stroke-width="3"/>
+  <text x="315" y="244" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">no</text>
+  <rect x="340" y="230" width="420" height="44" rx="10" fill="#E2E8F0"/>
+  <text x="354" y="249" font-size="14" fill="#0F172A">Switch off client isolation on the router,</text>
+  <text x="354" y="266" font-size="14" fill="#475569">or leave the guest network.</text>
+  <line x1="165" y1="274" x2="165" y2="288" stroke="#0F172A" stroke-width="3"/>
+
+  <!-- Row 5 -->
+  <rect x="40" y="288" width="250" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="56" y="316" font-size="16" font-weight="700" fill="#0F172A">5. Firewall allows it?</text>
+  <line x1="290" y1="310" x2="340" y2="310" stroke="#2563EB" stroke-width="3"/>
+  <text x="315" y="302" text-anchor="middle" font-size="13" font-weight="700" fill="#2563EB">no</text>
+  <rect x="340" y="288" width="420" height="44" rx="10" fill="#E2E8F0"/>
+  <text x="354" y="307" font-size="14" fill="#0F172A">On Windows, set the network to Private</text>
+  <text x="354" y="324" font-size="14" fill="#475569">and allow the app through the firewall.</text>
+
+  <!-- Bottom note -->
+  <rect x="40" y="346" width="720" height="34" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="400" y="368" text-anchor="middle" font-size="14" fill="#475569">Still stuck? Pair with a code, restart the router, check for a second router.</text>
+</svg>

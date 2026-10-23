@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Through a router versus a direct Wi-Fi link</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <defs>
+    <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0F172A"/>
+    </marker>
+    <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2563EB"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1: through a router -->
+  <text x="24" y="44" font-size="18" font-weight="700" fill="#0F172A">Through a router: the data crosses the air twice</text>
+  <rect x="60" y="68" width="90" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="105" y="95" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Phone A</text>
+  <rect x="355" y="68" width="90" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="400" y="95" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Router</text>
+  <rect x="650" y="68" width="90" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="695" y="95" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Phone B</text>
+  <line x1="156" y1="90" x2="347" y2="90" stroke="#0F172A" stroke-width="3" marker-end="url(#ad)"/>
+  <line x1="451" y1="90" x2="642" y2="90" stroke="#0F172A" stroke-width="3" marker-end="url(#ad)"/>
+  <text x="252" y="80" text-anchor="middle" font-size="14" fill="#475569">1st transmission</text>
+  <text x="547" y="80" text-anchor="middle" font-size="14" fill="#475569">2nd transmission</text>
+
+  <!-- Row 2: direct -->
+  <text x="24" y="168" font-size="18" font-weight="700" fill="#2563EB">Directly: the data crosses once, no router needed</text>
+  <rect x="60" y="192" width="90" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="105" y="219" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Phone A</text>
+  <rect x="650" y="192" width="90" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="695" y="219" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Phone B</text>
+  <line x1="156" y1="214" x2="642" y2="214" stroke="#2563EB" stroke-width="4" marker-end="url(#ab)"/>
+  <text x="400" y="204" text-anchor="middle" font-size="14" fill="#475569">one transmission</text>
+
+  <!-- Row 3: three technologies -->
+  <rect x="24" y="270" width="240" height="106" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="144" y="298" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">Wi-Fi Direct</text>
+  <text x="144" y="324" text-anchor="middle" font-size="14" fill="#475569">One device becomes the</text>
+  <text x="144" y="342" text-anchor="middle" font-size="14" fill="#475569">group owner, a mini</text>
+  <text x="144" y="360" text-anchor="middle" font-size="14" fill="#475569">access point</text>
+
+  <rect x="280" y="270" width="240" height="106" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="400" y="298" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">Wi-Fi Aware</text>
+  <text x="400" y="324" text-anchor="middle" font-size="14" fill="#475569">Devices publish and</text>
+  <text x="400" y="342" text-anchor="middle" font-size="14" fill="#475569">subscribe to named</text>
+  <text x="400" y="360" text-anchor="middle" font-size="14" fill="#475569">services, then connect</text>
+
+  <rect x="536" y="270" width="240" height="106" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="656" y="298" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">AWDL (Apple only)</text>
+  <text x="656" y="324" text-anchor="middle" font-size="14" fill="#475569">Hops between channels</text>
+  <text x="656" y="342" text-anchor="middle" font-size="14" fill="#475569">in repeating windows,</text>
+  <text x="656" y="360" text-anchor="middle" font-size="14" fill="#475569">so one radio serves both</text>
+</svg>

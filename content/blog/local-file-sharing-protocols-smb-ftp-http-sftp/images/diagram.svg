@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>File sharing protocols: default ports and encryption</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <text x="24" y="40" font-size="20" font-weight="700" fill="#0F172A">Seven ways to share files: ports and encryption</text>
+  <text x="24" y="72" font-size="14" font-weight="700" fill="#475569">Protocol</text>
+  <text x="200" y="72" font-size="14" font-weight="700" fill="#475569">Default port</text>
+  <text x="340" y="72" font-size="14" font-weight="700" fill="#475569">Style</text>
+  <text x="520" y="72" font-size="14" font-weight="700" fill="#475569">Encryption</text>
+  <line x1="24" y1="82" x2="776" y2="82" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="24" y="110" font-size="16" font-weight="700" fill="#0F172A">SMB 2 / 3</text>
+  <text x="200" y="110" font-size="16" fill="#0F172A">445</text>
+  <text x="340" y="110" font-size="16" fill="#0F172A">Mounted folder</text>
+  <circle cx="528" cy="105" r="6" fill="#2563EB"/>
+  <text x="544" y="110" font-size="16" font-weight="700" fill="#2563EB">Optional (SMB 3)</text>
+  <line x1="24" y1="124" x2="776" y2="124" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="147" font-size="16" font-weight="700" fill="#0F172A">NFS 4</text>
+  <text x="200" y="147" font-size="16" fill="#0F172A">2049</text>
+  <text x="340" y="147" font-size="16" fill="#0F172A">Mounted folder</text>
+  <circle cx="528" cy="142" r="6" fill="#2563EB"/>
+  <text x="544" y="147" font-size="16" font-weight="700" fill="#2563EB">Optional (Kerberos)</text>
+  <line x1="24" y1="161" x2="776" y2="161" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="184" font-size="16" font-weight="700" fill="#0F172A">FTP</text>
+  <text x="200" y="184" font-size="16" fill="#0F172A">21 + data</text>
+  <text x="340" y="184" font-size="16" fill="#0F172A">Copy files</text>
+  <circle cx="528" cy="179" r="6" fill="#FFFFFF" stroke="#475569" stroke-width="2"/>
+  <text x="544" y="184" font-size="16" font-weight="700" fill="#475569">None</text>
+  <line x1="24" y1="198" x2="776" y2="198" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="221" font-size="16" font-weight="700" fill="#0F172A">FTPS</text>
+  <text x="200" y="221" font-size="16" fill="#0F172A">21 + data</text>
+  <text x="340" y="221" font-size="16" fill="#0F172A">Copy files</text>
+  <circle cx="528" cy="216" r="6" fill="#2563EB"/>
+  <text x="544" y="221" font-size="16" font-weight="700" fill="#2563EB">Optional (TLS)</text>
+  <line x1="24" y1="235" x2="776" y2="235" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="258" font-size="16" font-weight="700" fill="#0F172A">SFTP</text>
+  <text x="200" y="258" font-size="16" fill="#0F172A">22</text>
+  <text x="340" y="258" font-size="16" fill="#0F172A">Copy files</text>
+  <circle cx="528" cy="253" r="6" fill="#15803D"/>
+  <text x="544" y="258" font-size="16" font-weight="700" fill="#15803D">Always (SSH)</text>
+  <line x1="24" y1="272" x2="776" y2="272" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="295" font-size="16" font-weight="700" fill="#0F172A">HTTP / HTTPS</text>
+  <text x="200" y="295" font-size="16" fill="#0F172A">80 / 443</text>
+  <text x="340" y="295" font-size="16" fill="#0F172A">Download</text>
+  <circle cx="528" cy="290" r="6" fill="#FFFFFF" stroke="#475569" stroke-width="2"/>
+  <text x="544" y="295" font-size="16" font-weight="700" fill="#475569">None / Always (TLS)</text>
+  <line x1="24" y1="309" x2="776" y2="309" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="332" font-size="16" font-weight="700" fill="#0F172A">WebDAV</text>
+  <text x="200" y="332" font-size="16" fill="#0F172A">80 / 443</text>
+  <text x="340" y="332" font-size="16" fill="#0F172A">Web folder</text>
+  <circle cx="528" cy="327" r="6" fill="#2563EB"/>
+  <text x="544" y="332" font-size="16" font-weight="700" fill="#2563EB">Only with HTTPS</text>
+  <line x1="24" y1="346" x2="776" y2="346" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="24" y="378" font-size="14" fill="#475569">Well-known default ports; any service can be set to another. SMB 1 should stay off.</text>
+</svg>

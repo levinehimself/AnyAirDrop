@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>What Wi-Fi encryption covers: the radio link to the router</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="38" font-size="20" font-weight="700" fill="#0F172A">What Wi-Fi encryption covers</text>
+  <text x="30" y="60" font-size="14" fill="#475569">WPA2 or WPA3 protects the radio hop to the router, and only that hop.</text>
+
+  <!-- Phone -->
+  <rect x="40" y="130" width="90" height="60" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="85" y="166" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Phone</text>
+
+  <!-- Router -->
+  <rect x="330" y="120" width="110" height="80" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="385" y="152" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Router</text>
+  <text x="385" y="174" text-anchor="middle" font-size="13" fill="#475569">decrypts here</text>
+
+  <!-- Internet -->
+  <rect x="650" y="130" width="110" height="60" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="705" y="166" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Internet</text>
+
+  <!-- Encrypted radio link -->
+  <line x1="130" y1="160" x2="330" y2="160" stroke="#2563EB" stroke-width="4"/>
+  <text x="230" y="96" text-anchor="middle" font-size="15" font-weight="700" fill="#2563EB">Encrypted over the air</text>
+  <rect x="221" y="118" width="18" height="14" rx="2" fill="#2563EB"/>
+  <path d="M225 118 v-5 a5 5 0 0 1 10 0 v5" fill="none" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="230" y="184" text-anchor="middle" font-size="13" fill="#475569">WPA2 or WPA3</text>
+
+  <!-- Beyond the router -->
+  <line x1="440" y1="160" x2="650" y2="160" stroke="#475569" stroke-width="3" stroke-dasharray="8 6"/>
+  <text x="545" y="108" text-anchor="middle" font-size="14" fill="#475569">Beyond the router, only</text>
+  <text x="545" y="126" text-anchor="middle" font-size="14" fill="#475569">HTTPS or TLS protects you</text>
+
+  <!-- Other device -->
+  <rect x="40" y="290" width="90" height="50" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="85" y="320" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Laptop</text>
+  <text x="40" y="362" font-size="14" fill="#475569">Another device, same network</text>
+  <line x1="130" y1="315" x2="385" y2="315" stroke="#2563EB" stroke-width="4"/>
+  <line x1="385" y1="315" x2="385" y2="200" stroke="#2563EB" stroke-width="4"/>
+  <text x="150" y="304" font-size="13" fill="#475569">Also encrypted over the air</text>
+
+  <!-- Callout -->
+  <rect x="400" y="236" width="370" height="124" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="415" y="264" font-size="15" font-weight="700" fill="#0F172A">Stops outsiders reading the air link</text>
+  <text x="415" y="288" font-size="14" fill="#475569">The router itself sees everything.</text>
+  <text x="415" y="310" font-size="14" fill="#475569">Devices on the same network can still</text>
+  <text x="415" y="330" font-size="14" fill="#475569">reach each other unless isolation is on.</text>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Which link is slow? Test the phone and the laptop, then compare</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">Which link is slow? Test both ends</text>
+
+  <!-- Step 1 -->
+  <rect x="30" y="64" width="330" height="76" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="195" y="96" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">1. Test the phone alone</text>
+  <text x="195" y="120" text-anchor="middle" font-size="13" fill="#475569">Wi-Fi off, cellular only</text>
+
+  <!-- Step 2 -->
+  <rect x="440" y="64" width="330" height="76" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="605" y="96" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">2. Test the laptop on the hotspot</text>
+  <text x="605" y="120" text-anchor="middle" font-size="13" fill="#475569">same minute, same speed test</text>
+
+  <!-- Arrows to compare -->
+  <path d="M195 140 V157 H350 V172" fill="none" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M605 140 V157 H450 V172" fill="none" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M344 166 L350 175 L356 166 M444 166 L450 175 L456 166" fill="none" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Compare -->
+  <rect x="250" y="178" width="300" height="50" rx="10" fill="#E2E8F0" stroke="#2563EB" stroke-width="3"/>
+  <text x="400" y="209" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">3. Compare the two numbers</text>
+
+  <!-- Arrows to outcomes -->
+  <path d="M400 228 V250 H147 V268" fill="none" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M400 228 V268" fill="none" stroke="#0F172A" stroke-width="3"/>
+  <path d="M400 250 H652 V268" fill="none" stroke="#0F172A" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M141 260 L147 269 L153 260 M394 260 L400 269 L406 260 M646 260 L652 269 L658 260" fill="none" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Outcomes -->
+  <rect x="30" y="272" width="235" height="96" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <text x="147" y="302" text-anchor="middle" font-size="15" font-weight="700" fill="#2563EB">Results match</text>
+  <text x="147" y="326" text-anchor="middle" font-size="13" fill="#475569">Cellular side:</text>
+  <text x="147" y="344" text-anchor="middle" font-size="13" fill="#475569">signal, tower load, plan</text>
+
+  <rect x="282" y="272" width="235" height="96" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="400" y="302" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Phone much faster</text>
+  <text x="400" y="326" text-anchor="middle" font-size="13" fill="#475569">Hotspot link:</text>
+  <text x="400" y="344" text-anchor="middle" font-size="13" fill="#475569">band, distance, clients, heat</text>
+
+  <rect x="535" y="272" width="235" height="96" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="652" y="302" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">Both fine, pages slow</text>
+  <text x="652" y="326" text-anchor="middle" font-size="13" fill="#475569">Suspect DNS or latency,</text>
+  <text x="652" y="344" text-anchor="middle" font-size="13" fill="#475569">not raw speed</text>
+</svg>

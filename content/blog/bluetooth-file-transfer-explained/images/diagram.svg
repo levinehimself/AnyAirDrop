@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Time to send a 100 MB file by Bluetooth and by Wi-Fi</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="24" y="40" font-size="20" font-weight="700" fill="#0F172A">Time to send 100 MB (800 megabits) at each rate</text>
+
+  <!-- Axis baseline -->
+  <line x1="240" y1="58" x2="240" y2="286" stroke="#CBD5E1" stroke-width="2"/>
+
+  <!-- Row 1 -->
+  <text x="24" y="82" font-size="16" font-weight="700" fill="#0F172A">Bluetooth, 1 Mb/s</text>
+  <text x="24" y="100" font-size="13" fill="#475569">modest real-world rate</text>
+  <rect x="240" y="70" width="400" height="34" rx="4" fill="#475569"/>
+  <text x="650" y="92" font-size="16" font-weight="700" fill="#0F172A">13 min 20 s</text>
+
+  <!-- Row 2 -->
+  <text x="24" y="144" font-size="16" font-weight="700" fill="#0F172A">Bluetooth, 2.1 Mb/s</text>
+  <text x="24" y="162" font-size="13" fill="#475569">best case on paper</text>
+  <rect x="240" y="132" width="190.5" height="34" rx="4" fill="#475569"/>
+  <text x="440" y="154" font-size="16" font-weight="700" fill="#0F172A">6 min 21 s</text>
+
+  <!-- Row 3 -->
+  <text x="24" y="206" font-size="16" font-weight="700" fill="#0F172A">Bluetooth, 3 Mb/s</text>
+  <text x="24" y="224" font-size="13" fill="#475569">raw rate, not reachable</text>
+  <rect x="240" y="194" width="133.5" height="34" rx="4" fill="#475569"/>
+  <text x="383" y="216" font-size="16" font-weight="700" fill="#0F172A">4 min 27 s</text>
+
+  <!-- Row 4 -->
+  <text x="24" y="268" font-size="16" font-weight="700" fill="#2563EB">Wi-Fi, 100 Mb/s</text>
+  <text x="24" y="286" font-size="13" fill="#475569">illustrative rate</text>
+  <rect x="240" y="256" width="4" height="34" rx="1" fill="#2563EB"/>
+  <text x="254" y="278" font-size="16" font-weight="700" fill="#2563EB">8 s</text>
+
+  <!-- Caption -->
+  <text x="24" y="336" font-size="16" font-weight="700" fill="#0F172A">So phones find each other with Bluetooth, then send the file over Wi-Fi.</text>
+  <text x="24" y="360" font-size="14" fill="#475569">Times are arithmetic from the stated rates (size ÷ rate), not measurements.</text>
+</svg>

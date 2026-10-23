@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>How a router translates a laptop's connection with NAT</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">One web request, rewritten by the router</text>
+
+  <!-- Laptop -->
+  <rect x="30" y="76" width="130" height="86" rx="12" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="95" y="106" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">Laptop</text>
+  <text x="95" y="128" text-anchor="middle" font-size="14" fill="#475569">192.168.1.23</text>
+  <text x="95" y="146" text-anchor="middle" font-size="13" fill="#475569">from DHCP</text>
+
+  <!-- Router -->
+  <rect x="310" y="76" width="180" height="86" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <text x="400" y="106" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">Router</text>
+  <text x="400" y="128" text-anchor="middle" font-size="14" fill="#475569">public 198.51.100.17</text>
+  <text x="400" y="146" text-anchor="middle" font-size="13" fill="#2563EB">rewrites source (NAT)</text>
+
+  <!-- Server -->
+  <rect x="640" y="76" width="130" height="86" rx="12" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="705" y="106" text-anchor="middle" font-size="18" font-weight="700" fill="#0F172A">Web server</text>
+  <text x="705" y="128" text-anchor="middle" font-size="14" fill="#475569">203.0.113.80</text>
+  <text x="705" y="146" text-anchor="middle" font-size="13" fill="#475569">port 443</text>
+
+  <!-- Arrows -->
+  <line x1="160" y1="119" x2="310" y2="119" stroke="#0F172A" stroke-width="3"/>
+  <polygon points="310,119 300,113 300,125" fill="#0F172A"/>
+  <text x="235" y="104" text-anchor="middle" font-size="13" fill="#475569">from 192.168.1.23</text>
+  <text x="235" y="146" text-anchor="middle" font-size="13" fill="#475569">port 52144</text>
+
+  <line x1="490" y1="119" x2="640" y2="119" stroke="#2563EB" stroke-width="3"/>
+  <polygon points="640,119 630,113 630,125" fill="#2563EB"/>
+  <text x="565" y="104" text-anchor="middle" font-size="13" fill="#2563EB">from 198.51.100.17</text>
+  <text x="565" y="146" text-anchor="middle" font-size="13" fill="#2563EB">port 40211</text>
+
+  <!-- Table -->
+  <rect x="30" y="196" width="740" height="170" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="50" y="226" font-size="16" font-weight="700" fill="#0F172A">The router's translation table</text>
+  <text x="750" y="226" text-anchor="end" font-size="13" fill="#475569">Replies are matched against it</text>
+  <line x1="50" y1="240" x2="750" y2="240" stroke="#CBD5E1" stroke-width="2"/>
+
+  <text x="50" y="264" font-size="13" font-weight="700" fill="#475569">INSIDE (PRIVATE)</text>
+  <text x="290" y="264" font-size="13" font-weight="700" fill="#475569">OUTSIDE (PUBLIC)</text>
+  <text x="530" y="264" font-size="13" font-weight="700" fill="#475569">REMOTE END</text>
+
+  <rect x="42" y="276" width="716" height="30" rx="6" fill="#E2E8F0"/>
+  <text x="50" y="297" font-size="15" font-weight="700" fill="#0F172A">192.168.1.23:52144</text>
+  <text x="290" y="297" font-size="15" font-weight="700" fill="#2563EB">198.51.100.17:40211</text>
+  <text x="530" y="297" font-size="15" fill="#0F172A">203.0.113.80:443</text>
+
+  <text x="50" y="330" font-size="15" fill="#0F172A">192.168.1.31:49822</text>
+  <text x="290" y="330" font-size="15" fill="#0F172A">198.51.100.17:40212</text>
+  <text x="530" y="330" font-size="15" fill="#0F172A">203.0.113.80:443</text>
+
+  <text x="50" y="356" font-size="13" fill="#475569">Second row: a phone at home. Same public address, new port, so replies find the right device.</text>
+</svg>

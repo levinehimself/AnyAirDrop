@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>How an mDNS query reaches devices on one network and stops at a router</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <defs>
+    <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0F172A"/>
+    </marker>
+    <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2563EB"/>
+    </marker>
+  </defs>
+
+  <!-- Network A -->
+  <rect x="24" y="24" width="426" height="296" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="40" y="52" font-size="18" font-weight="700" fill="#0F172A">Network A: one segment</text>
+
+  <rect x="40" y="130" width="96" height="44" rx="10" fill="#E2E8F0" stroke="#0F172A" stroke-width="3"/>
+  <text x="88" y="158" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Laptop</text>
+  <rect x="330" y="130" width="110" height="44" rx="10" fill="#E2E8F0" stroke="#0F172A" stroke-width="3"/>
+  <text x="385" y="158" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Printer</text>
+
+  <line x1="142" y1="142" x2="322" y2="142" stroke="#0F172A" stroke-width="3" marker-end="url(#ad)"/>
+  <text x="232" y="94" text-anchor="middle" font-size="14" font-weight="700" fill="#0F172A">1. Multicast query</text>
+  <text x="232" y="112" text-anchor="middle" font-size="14" fill="#475569">224.0.0.251, UDP 5353</text>
+  <text x="232" y="130" text-anchor="middle" font-size="14" fill="#475569">who offers _ipp._tcp?</text>
+
+  <line x1="322" y1="164" x2="142" y2="164" stroke="#2563EB" stroke-width="3" stroke-dasharray="6 6" marker-end="url(#ab)"/>
+  <text x="232" y="192" text-anchor="middle" font-size="14" font-weight="700" fill="#2563EB">2. Reply: name,</text>
+  <text x="232" y="210" text-anchor="middle" font-size="14" fill="#475569">port and address</text>
+
+  <rect x="330" y="250" width="110" height="44" rx="10" fill="#FFFFFF" stroke="#475569" stroke-width="2"/>
+  <text x="385" y="278" text-anchor="middle" font-size="16" fill="#475569">TV</text>
+  <text x="40" y="268" font-size="14" fill="#475569">The TV hears the query too,</text>
+  <text x="40" y="286" font-size="14" fill="#475569">has no match and stays quiet.</text>
+
+  <!-- Router -->
+  <line x1="450" y1="152" x2="480" y2="152" stroke="#475569" stroke-width="3"/>
+  <rect x="480" y="130" width="80" height="44" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="520" y="158" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Router</text>
+  <text x="520" y="206" text-anchor="middle" font-size="14" fill="#475569">drops</text>
+  <text x="520" y="224" text-anchor="middle" font-size="14" fill="#475569">link-local</text>
+  <text x="520" y="242" text-anchor="middle" font-size="14" fill="#475569">multicast</text>
+  <line x1="560" y1="152" x2="620" y2="152" stroke="#475569" stroke-width="3" stroke-dasharray="3 5"/>
+  <path d="M582 142 L598 162 M598 142 L582 162" fill="none" stroke="#0F172A" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Network B -->
+  <rect x="620" y="24" width="156" height="296" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="636" y="52" font-size="18" font-weight="700" fill="#0F172A">Network B</text>
+  <rect x="640" y="130" width="116" height="44" rx="10" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+  <text x="698" y="158" text-anchor="middle" font-size="16" fill="#475569">Printer 2</text>
+  <text x="698" y="206" text-anchor="middle" font-size="14" fill="#475569">Never hears</text>
+  <text x="698" y="224" text-anchor="middle" font-size="14" fill="#475569">the query</text>
+
+  <!-- Caption -->
+  <text x="400" y="354" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">No server needed, but the question only travels as far as the segment.</text>
+  <text x="400" y="376" text-anchor="middle" font-size="14" fill="#475569">Query and reply are ordinary DNS messages; a reflector or repeater can copy them across.</text>
+</svg>

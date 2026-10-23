@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Where the gigabit Ethernet speed limit comes from</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="38" font-size="20" font-weight="700" fill="#0F172A">What one gigabit Ethernet frame carries</text>
+  <text x="30" y="60" font-size="14" fill="#475569">One full-size frame drawn to scale: 1,538 bytes on the wire</text>
+
+  <!-- Bar -->
+  <rect x="30" y="72" width="35.6" height="36" fill="#E2E8F0" stroke="#0F172A" stroke-width="1.5"/>
+  <rect x="65.6" y="72" width="696.6" height="36" fill="#FFFFFF" stroke="#2563EB" stroke-width="2.5"/>
+  <rect x="762.2" y="72" width="7.8" height="36" fill="#E2E8F0" stroke="#0F172A" stroke-width="1.5"/>
+  <text x="414" y="96" text-anchor="middle" font-size="16" font-weight="700" fill="#2563EB">1,448 bytes of your file data</text>
+  <text x="30" y="128" font-size="14" fill="#475569">74 bytes of headers</text>
+  <text x="770" y="128" text-anchor="end" font-size="14" fill="#475569">16 bytes: check + gap</text>
+
+  <!-- Breakdown -->
+  <text x="30" y="164" font-size="16" font-weight="700" fill="#0F172A">The 90 bytes of overhead</text>
+
+  <text x="100" y="188" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">8 bytes</text>
+  <text x="114" y="188" font-size="14" fill="#475569">preamble and start marker</text>
+  <text x="100" y="210" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">14 bytes</text>
+  <text x="114" y="210" font-size="14" fill="#475569">Ethernet header</text>
+  <text x="100" y="232" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">20 bytes</text>
+  <text x="114" y="232" font-size="14" fill="#475569">IP header</text>
+  <text x="100" y="254" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">20 bytes</text>
+  <text x="114" y="254" font-size="14" fill="#475569">TCP header</text>
+
+  <text x="500" y="188" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">12 bytes</text>
+  <text x="514" y="188" font-size="14" fill="#475569">TCP options (timestamps)</text>
+  <text x="500" y="210" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">4 bytes</text>
+  <text x="514" y="210" font-size="14" fill="#475569">frame check sequence</text>
+  <text x="500" y="232" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">12 bytes</text>
+  <text x="514" y="232" font-size="14" fill="#475569">idle gap between frames</text>
+  <line x1="410" y1="241" x2="720" y2="241" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="500" y="259" text-anchor="end" font-size="14" font-weight="700" fill="#0F172A">90 bytes</text>
+  <text x="514" y="259" font-size="14" font-weight="700" fill="#0F172A">overhead in total</text>
+
+  <!-- Math -->
+  <rect x="30" y="278" width="740" height="94" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="50" y="306" font-size="16" fill="#0F172A">1,448 / 1,538 = 0.9415, so 94.15 percent of the wire carries your data</text>
+  <text x="50" y="332" font-size="16" font-weight="700" fill="#2563EB">1,000 Mbps x 0.9415 = about 941 Mbps = about 117.7 MB/s</text>
+  <text x="50" y="357" font-size="14" fill="#475569">At 100 Mbps the same arithmetic gives about 94 Mbps, or 11.8 MB/s.</text>
+</svg>

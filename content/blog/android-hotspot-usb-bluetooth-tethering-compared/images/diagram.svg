@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Three ways to tether: Wi-Fi hotspot, USB cable and Bluetooth, with their speed ceilings</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">Three links, one cellular connection</text>
+
+  <!-- Phone -->
+  <rect x="30" y="80" width="80" height="250" rx="14" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <rect x="42" y="96" width="56" height="190" rx="4" fill="#E2E8F0"/>
+  <text x="70" y="200" text-anchor="middle" font-size="13" fill="#475569">mobile</text>
+  <text x="70" y="218" text-anchor="middle" font-size="13" fill="#475569">data</text>
+  <text x="70" y="352" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Phone</text>
+
+  <!-- Lane 1: Wi-Fi -->
+  <text x="395" y="98" text-anchor="middle" font-size="16" font-weight="700" fill="#2563EB">Wi-Fi hotspot</text>
+  <line x1="130" y1="112" x2="660" y2="112" stroke="#2563EB" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <text x="395" y="134" text-anchor="middle" font-size="13" fill="#475569">several devices, shared airtime, most battery use</text>
+
+  <!-- Lane 2: USB -->
+  <text x="395" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">USB cable</text>
+  <line x1="130" y1="212" x2="660" y2="212" stroke="#0F172A" stroke-width="5"/>
+  <text x="395" y="234" text-anchor="middle" font-size="13" fill="#475569">480 Mbps on USB 2.0, steadiest, can charge the phone</text>
+
+  <!-- Lane 3: Bluetooth -->
+  <text x="395" y="298" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Bluetooth</text>
+  <line x1="130" y1="312" x2="660" y2="312" stroke="#475569" stroke-width="3" stroke-dasharray="10 8" stroke-linecap="round"/>
+  <text x="395" y="334" text-anchor="middle" font-size="13" fill="#475569">1 to 3 Mbps over the air, lowest radio power</text>
+
+  <!-- Join to laptop -->
+  <line x1="660" y1="112" x2="676" y2="112" stroke="#CBD5E1" stroke-width="3"/>
+  <line x1="660" y1="212" x2="676" y2="212" stroke="#CBD5E1" stroke-width="3"/>
+  <line x1="660" y1="312" x2="676" y2="312" stroke="#CBD5E1" stroke-width="3"/>
+  <line x1="676" y1="112" x2="676" y2="312" stroke="#CBD5E1" stroke-width="3"/>
+  <line x1="676" y1="212" x2="690" y2="212" stroke="#CBD5E1" stroke-width="3"/>
+
+  <!-- Laptop -->
+  <rect x="690" y="180" width="80" height="54" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <rect x="697" y="187" width="66" height="40" rx="3" fill="#E2E8F0"/>
+  <line x1="682" y1="246" x2="778" y2="246" stroke="#0F172A" stroke-width="5" stroke-linecap="round"/>
+  <text x="730" y="276" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Laptop</text>
+
+  <text x="30" y="380" font-size="14" fill="#475569">The slowest stage sets the speed, usually the cellular link.</text>
+</svg>

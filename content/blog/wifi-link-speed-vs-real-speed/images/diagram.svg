@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>How a Wi-Fi 6 link rate is built and how much of it survives</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="36" font-size="20" font-weight="700" fill="#0F172A">Link rate: Wi-Fi 6, 80 MHz, per stream</text>
+  <rect x="30" y="52" width="132" height="70" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="96" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">980</text>
+  <text x="96" y="108" text-anchor="middle" font-size="13" fill="#475569">data subcarriers</text>
+  <rect x="182" y="52" width="132" height="70" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="248" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">× 10</text>
+  <text x="248" y="108" text-anchor="middle" font-size="13" fill="#475569">bits (1024-QAM)</text>
+  <rect x="334" y="52" width="132" height="70" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="400" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">× 5/6</text>
+  <text x="400" y="108" text-anchor="middle" font-size="13" fill="#475569">coding rate</text>
+  <rect x="486" y="52" width="132" height="70" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="552" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#0F172A">÷ 13.6 µs</text>
+  <text x="552" y="108" text-anchor="middle" font-size="13" fill="#475569">symbol + guard</text>
+  <rect x="638" y="52" width="132" height="70" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <text x="704" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#2563EB">= 600.5 Mbps</text>
+  <text x="704" y="108" text-anchor="middle" font-size="13" fill="#475569">per stream</text>
+  <text x="30" y="167" font-size="16" font-weight="700" fill="#0F172A">Link rate</text>
+  <text x="30" y="184" font-size="13" fill="#475569">× 2 streams, 80 MHz</text>
+  <rect x="215" y="150" width="535.0" height="40" rx="6" fill="#E2E8F0" stroke="#CBD5E1"/>
+  <text x="738.0" y="176" text-anchor="end" font-size="16" font-weight="700" fill="#0F172A">1,201 Mbps</text>
+  <text x="30" y="223" font-size="16" font-weight="700" fill="#0F172A">Real throughput</text>
+  <text x="30" y="240" font-size="13" fill="#475569">one device, ideal</text>
+  <rect x="215" y="206" width="395.6" height="40" rx="6" fill="#2563EB"/>
+  <text x="598.6" y="232" text-anchor="end" font-size="16" font-weight="700" fill="#FFFFFF">about 888 Mbps</text>
+  <text x="30" y="279" font-size="16" font-weight="700" fill="#0F172A">Phone to laptop</text>
+  <text x="30" y="296" font-size="13" fill="#475569">through one router</text>
+  <rect x="215" y="262" width="197.8" height="40" rx="6" fill="#2563EB"/>
+  <text x="400.8" y="288" text-anchor="end" font-size="16" font-weight="700" fill="#FFFFFF">about 444 Mbps</text>
+  <text x="30" y="336" font-size="14" fill="#475569">Arithmetic from the standard's timing values, not a measurement.</text>
+  <text x="30" y="356" font-size="14" fill="#475569">888 Mbps is about 111 MB/s. 444 Mbps is about 55 MB/s.</text>
+</svg>

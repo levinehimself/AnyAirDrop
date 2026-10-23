@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>ICE tries connection routes from best to last resort</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="400" y="44" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">ICE tries routes in priority order and keeps the first that works</text>
+
+  <!-- Row 1 -->
+  <rect x="50" y="64" width="700" height="76" rx="12" fill="#FFFFFF" stroke="#15803D" stroke-width="3"/>
+  <circle cx="86" cy="102" r="16" fill="#15803D"/>
+  <text x="86" y="108" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="116" y="96" font-size="18" font-weight="700" fill="#0F172A">Host pair</text>
+  <text x="116" y="118" font-size="14" fill="#475569">Each device's own address on the Wi-Fi</text>
+  <text x="730" y="108" text-anchor="end" font-size="16" font-weight="700" fill="#15803D">Chosen on the same Wi-Fi</text>
+
+  <!-- Row 2 -->
+  <rect x="50" y="152" width="700" height="76" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+  <circle cx="86" cy="190" r="16" fill="#475569"/>
+  <text x="86" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">2</text>
+  <text x="116" y="184" font-size="18" font-weight="700" fill="#0F172A">Server-reflexive pair</text>
+  <text x="116" y="206" font-size="14" fill="#475569">Public address learned from a STUN server</text>
+  <text x="730" y="196" text-anchor="end" font-size="16" font-weight="700" fill="#475569">Tried if row 1 fails</text>
+
+  <!-- Row 3 -->
+  <rect x="50" y="240" width="700" height="76" rx="12" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+  <circle cx="86" cy="278" r="16" fill="#475569"/>
+  <text x="86" y="284" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">3</text>
+  <text x="116" y="272" font-size="18" font-weight="700" fill="#0F172A">Relay pair</text>
+  <text x="116" y="294" font-size="14" fill="#475569">Traffic bounces off a TURN server</text>
+  <text x="730" y="284" text-anchor="end" font-size="16" font-weight="700" fill="#475569">Last resort, costs the operator</text>
+
+  <text x="400" y="360" text-anchor="middle" font-size="14" fill="#475569">Recommended type preference (RFC 8445): host 126, server-reflexive 100, relayed 0</text>
+</svg>

@@ -9,9 +9,15 @@ interface Props {
   jsonLd?: Record<string, unknown>;
   /** Keep a page out of search results, e.g. while it has no real content yet. */
   noindex?: boolean;
+  /** "article" for blog posts. */
+  ogType?: 'website' | 'article';
+  /** Absolute URL of the share image. */
+  ogImage?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
-const { title, description, jsonLd, noindex = false } = Astro.props;
+const { title, description, jsonLd, noindex = false, ogType = 'website', ogImage, publishedTime, modifiedTime } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -43,11 +49,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="AnyAirDrop.com" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
     <meta name="twitter:card" content="summary" />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
@@ -76,6 +85,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <p>AnyAirDrop.com is an independent service, not affiliated with or endorsed by Apple Inc. Apple’s trademarks belong to Apple Inc.</p>
       <nav aria-label="Company">
         <a href="/about/">About</a>
+        <a href="/editorial-policy/">Editorial policy</a>
         <a href="/contact/">Contact</a>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>

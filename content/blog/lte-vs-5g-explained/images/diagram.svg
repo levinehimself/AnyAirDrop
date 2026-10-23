@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Peak rate on paper: channel width, modulation and layers</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#0F172A">Peak rate on paper: width x modulation x layers</text>
+
+  <!-- Row 1: 20 MHz -->
+  <text x="30" y="98" font-size="16" font-weight="700" fill="#0F172A">20 MHz carrier</text>
+  <text x="30" y="118" font-size="13" fill="#475569">15 kHz, 106 resource blocks</text>
+  <rect x="270" y="82" width="80" height="44" rx="6" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="366" y="110" font-size="16" font-weight="700" fill="#0F172A">about 113 Mbps per layer</text>
+
+  <!-- Row 2: 100 MHz -->
+  <text x="30" y="168" font-size="16" font-weight="700" fill="#0F172A">100 MHz carrier</text>
+  <text x="30" y="188" font-size="13" fill="#475569">30 kHz, 273 resource blocks</text>
+  <rect x="270" y="150" width="400" height="44" rx="6" fill="#2563EB"/>
+  <text x="470" y="178" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">about 584 Mbps per layer</text>
+
+  <line x1="30" y1="222" x2="770" y2="222" stroke="#CBD5E1" stroke-width="2"/>
+
+  <!-- Build-up -->
+  <text x="30" y="252" font-size="16" font-weight="700" fill="#0F172A">How the 584 is built (one layer, 256-QAM)</text>
+
+  <rect x="30" y="268" width="170" height="64" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+  <text x="115" y="294" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">3,276 subcarriers</text>
+  <text x="115" y="316" text-anchor="middle" font-size="13" fill="#475569">273 x 12</text>
+
+  <rect x="220" y="268" width="170" height="64" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+  <text x="305" y="294" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">x 28,000 symbols/s</text>
+  <text x="305" y="316" text-anchor="middle" font-size="13" fill="#475569">14 x 2,000 slots/s</text>
+
+  <rect x="410" y="268" width="170" height="64" rx="10" fill="#FFFFFF" stroke="#0F172A" stroke-width="2"/>
+  <text x="495" y="294" text-anchor="middle" font-size="15" font-weight="700" fill="#0F172A">x 8 bits x 0.926</text>
+  <text x="495" y="316" text-anchor="middle" font-size="13" fill="#475569">256-QAM, code rate</text>
+
+  <rect x="600" y="268" width="170" height="64" rx="10" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <text x="685" y="294" text-anchor="middle" font-size="15" font-weight="700" fill="#2563EB">x 0.86 = 584 Mbps</text>
+  <text x="685" y="316" text-anchor="middle" font-size="13" fill="#475569">after 14% overhead</text>
+
+  <text x="30" y="372" font-size="14" fill="#475569">Two layers: about 1,168 Mbps. A ceiling on paper, not a typical speed.</text>
+</svg>

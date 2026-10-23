@@ -1,0 +1,56 @@
+---
+import Page from '../../layouts/Page.astro';
+import PostList from '../../components/PostList.astro';
+import { TOPICS, TOPIC_KEYS } from '../../lib/topics';
+import { getPosts, postsInTopic } from '../../lib/blog';
+
+const posts = await getPosts();
+const sections = TOPIC_KEYS.map((key) => ({ key, topic: TOPICS[key], posts: postsInTopic(posts, key) })).filter(
+  (section) => section.posts.length > 0,
+);
+
+const list = {
+  '@type': 'ItemList',
+  itemListElement: posts.map((post, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://anyairdrop.com/blog/${post.id}/`,
+    name: post.data.title,
+  })),
+};
+---
+
+<Page
+  title="Wi-Fi, Routers and Local File Transfer Guides | AnyAirDrop.com"
+  description="Plain-language guides to how Wi-Fi, routers, phone hotspots and nearby file sharing work, so you can send files between your devices without guessing."
+  heading="Blog"
+  lead="How Wi-Fi, routers, phone modems and nearby file sharing actually work, explained from the radio up. Read a topic from the start, or jump to the question you have."
+  extraJsonLd={[list]}
+>
+  {
+    sections.map(({ key, topic, posts: topicPosts }) => (
+      <section aria-labelledby={`topic-${key}`}>
+        <h2 id={`topic-${key}`}>
+          <a href={`/blog/topic/${key}/`}>{topic.name}</a>
+        </h2>
+        <p class="topic-summary">{topic.summary}</p>
+        <PostList posts={topicPosts} />
+      </section>
+    ))
+  }
+</Page>
+
+<style>
+  section h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  section h2 a:hover {
+    text-decoration: underline;
+  }
+
+  .topic-summary {
+    color: var(--color-text-muted);
+  }
+</style>

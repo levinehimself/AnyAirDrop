@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Headline theoretical speed of each Wi-Fi generation, 1999 to 2024</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="38" font-size="20" font-weight="700" fill="#0F172A">Headline theoretical rate by generation</text>
+  <text x="30" y="60" font-size="14" fill="#475569">Log scale: each gridline is 10 times the one before. Best case on paper, not a typical result.</text>
+
+  <!-- gridlines -->
+  <g stroke="#CBD5E1" stroke-width="1">
+    <line x1="280" y1="76" x2="280" y2="354"/>
+    <line x1="380" y1="76" x2="380" y2="354"/>
+    <line x1="480" y1="76" x2="480" y2="354"/>
+    <line x1="580" y1="76" x2="580" y2="354"/>
+  </g>
+  <g font-size="13" fill="#475569" text-anchor="middle">
+    <text x="280" y="372">10 Mbps</text>
+    <text x="380" y="372">100 Mbps</text>
+    <text x="480" y="372">1 Gbps</text>
+    <text x="580" y="372">10 Gbps</text>
+  </g>
+
+  <!-- row labels -->
+  <g text-anchor="end">
+    <text x="215" y="94" font-size="15" font-weight="700" fill="#0F172A">802.11b</text>
+    <text x="215" y="110" font-size="13" fill="#475569">1999</text>
+    <text x="215" y="134" font-size="15" font-weight="700" fill="#0F172A">802.11a</text>
+    <text x="215" y="150" font-size="13" fill="#475569">1999</text>
+    <text x="215" y="174" font-size="15" font-weight="700" fill="#0F172A">802.11g</text>
+    <text x="215" y="190" font-size="13" fill="#475569">2003</text>
+    <text x="215" y="214" font-size="15" font-weight="700" fill="#0F172A">Wi-Fi 4</text>
+    <text x="215" y="230" font-size="13" fill="#475569">802.11n, 2009</text>
+    <text x="215" y="254" font-size="15" font-weight="700" fill="#0F172A">Wi-Fi 5</text>
+    <text x="215" y="270" font-size="13" fill="#475569">802.11ac, 2013</text>
+    <text x="215" y="294" font-size="15" font-weight="700" fill="#0F172A">Wi-Fi 6</text>
+    <text x="215" y="310" font-size="13" fill="#475569">802.11ax, 2021</text>
+    <text x="215" y="334" font-size="15" font-weight="700" fill="#0F172A">Wi-Fi 7</text>
+    <text x="215" y="350" font-size="13" fill="#475569">802.11be, 2024</text>
+  </g>
+
+  <!-- bars: width = 100 * (log10(Mbps) - 0.5), starting at x=230 -->
+  <rect x="230" y="84" width="54" height="24" rx="4" fill="#CBD5E1"/>
+  <rect x="230" y="124" width="123" height="24" rx="4" fill="#CBD5E1"/>
+  <rect x="230" y="164" width="123" height="24" rx="4" fill="#CBD5E1"/>
+  <rect x="230" y="204" width="228" height="24" rx="4" fill="#2563EB"/>
+  <rect x="230" y="244" width="334" height="24" rx="4" fill="#2563EB"/>
+  <rect x="230" y="284" width="348" height="24" rx="4" fill="#2563EB"/>
+  <rect x="230" y="324" width="416" height="24" rx="4" fill="#2563EB"/>
+
+  <!-- value labels -->
+  <g font-size="15" font-weight="700" fill="#0F172A" stroke="#F8FAFC" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
+    <text x="292" y="101">11 Mbps</text>
+    <text x="361" y="141">54 Mbps</text>
+    <text x="361" y="181">54 Mbps</text>
+    <text x="466" y="221">600 Mbps</text>
+    <text x="572" y="261">6.9 Gbps</text>
+    <text x="586" y="301">9.6 Gbps</text>
+    <text x="654" y="341">46 Gbps</text>
+  </g>
+</svg>

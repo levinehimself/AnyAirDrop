@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>Which safeguard covers which risk in a local file transfer</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="400" y="42" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">What covers each risk in a local transfer</text>
+
+  <!-- Rows -->
+  <rect x="50" y="64" width="700" height="42" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="70" y="91" font-size="16" fill="#0F172A">Someone listening on the Wi-Fi</text>
+  <text x="450" y="91" font-size="16" font-weight="700" fill="#15803D">Covered by encryption</text>
+
+  <rect x="50" y="112" width="700" height="42" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="70" y="139" font-size="16" fill="#0F172A">Data altered in transit</text>
+  <text x="450" y="139" font-size="16" font-weight="700" fill="#15803D">Covered by encryption</text>
+
+  <rect x="50" y="160" width="700" height="42" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="70" y="187" font-size="16" fill="#0F172A">File goes to the wrong device</text>
+  <text x="450" y="187" font-size="16" font-weight="700" fill="#2563EB">Your check: name or code</text>
+
+  <rect x="50" y="208" width="700" height="42" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="70" y="235" font-size="16" fill="#0F172A">Unwanted file from a stranger</text>
+  <text x="450" y="235" font-size="16" font-weight="700" fill="#2563EB">Your choice: accept or decline</text>
+
+  <rect x="50" y="256" width="700" height="42" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="70" y="283" font-size="16" fill="#0F172A">Malware inside the file</text>
+  <text x="450" y="283" font-size="16" font-weight="700" fill="#475569">Not covered: open with care</text>
+
+  <rect x="50" y="304" width="700" height="42" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="70" y="331" font-size="16" fill="#0F172A">Location stored in a photo</text>
+  <text x="450" y="331" font-size="16" font-weight="700" fill="#475569">Not covered: strip metadata</text>
+
+  <text x="400" y="376" text-anchor="middle" font-size="14" fill="#475569">Encryption protects the journey, not the sender's identity or the file's contents</text>
+</svg>

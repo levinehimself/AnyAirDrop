@@ -16,8 +16,7 @@ export default defineConfig({
   // Compression drops the space when a link starts on a new line in the source, which glues
   // words together ("runs<a>WiserWork</a>"). Browsers collapse the whitespace themselves.
   compressHTML: false,
-  // The blog index stays out of the sitemap until the first post is published.
-  integrations: [svelte(), sitemap({ filter: (page) => !page.endsWith('/blog/') })],
+  integrations: [svelte(), sitemap()],
   vite: {
     plugins: lan ? [basicSsl()] : [],
     server: {

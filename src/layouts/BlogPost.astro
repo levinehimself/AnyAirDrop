@@ -1,0 +1,517 @@
+---
+import { Image } from 'astro:assets';
+import Base from './Base.astro';
+import { TOPICS } from '../lib/topics';
+import { formatDate, readingMinutes, type Post } from '../lib/blog';
+import { CONTACT_EMAIL, FOUNDER } from '../config';
+
+interface Props {
+  post: Post;
+  headings: { depth: number; slug: string; text: string }[];
+  related: Post[];
+  previous?: Post;
+  next?: Post;
+}
+
+const { post, headings, related, previous, next } = Astro.props;
+const { title, description, topic, publishDate, updatedDate, heroImage, heroAlt } = post.data;
+const topicInfo = TOPICS[topic];
+const url = new URL(`/blog/${post.id}/`, Astro.site).toString();
+const minutes = readingMinutes(post);
+const toc = headings.filter((heading) => heading.depth === 2);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BlogPosting',
+      '@id': `${url}#article`,
+      mainEntityOfPage: { '@id': `${url}#webpage` },
+      headline: title,
+      description,
+      image: new URL(heroImage.src, Astro.site).toString(),
+      datePublished: publishDate.toISOString(),
+      dateModified: (updatedDate ?? publishDate).toISOString(),
+      inLanguage: 'en',
+      articleSection: topicInfo.name,
+      author: { '@type': 'Person', '@id': 'https://anyairdrop.com/about/#founder', name: FOUNDER.name, url: 'https://anyairdrop.com/about/' },
+      publisher: { '@id': 'https://anyairdrop.com/#organization' },
+      isPartOf: { '@id': 'https://anyairdrop.com/#website' },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#webpage`,
+      url,
+      name: title,
+      isPartOf: { '@id': 'https://anyairdrop.com/#website' },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://anyairdrop.com/blog/' },
+        { '@type': 'ListItem', position: 2, name: topicInfo.name, item: `https://anyairdrop.com/blog/topic/${topic}/` },
+        { '@type': 'ListItem', position: 3, name: title, item: url },
+      ],
+    },
+  ],
+};
+
+const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correction: ${title}`)}`;
+---
+
+<Base
+  title={`${title} | AnyAirDrop.com`}
+  description={description}
+  jsonLd={jsonLd}
+  ogType="article"
+  publishedTime={publishDate.toISOString()}
+  modifiedTime={(updatedDate ?? publishDate).toISOString()}
+>
+  <main class="page">
+    <article class="post">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/blog/">Blog</a>
+        <span aria-hidden="true">/</span>
+        <a href={`/blog/topic/${topic}/`}>{topicInfo.name}</a>
+      </nav>
+
+      <h1>{title}</h1>
+      <p class="byline">
+        By <a href="/about/">{FOUNDER.name}</a>
+        <span aria-hidden="true">·</span>
+        <time datetime={publishDate.toISOString()}>{formatDate(publishDate)}</time>
+        {updatedDate && (
+          <>
+            <span aria-hidden="true">·</span> Updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+          </>
+        )}
+        <span aria-hidden="true">·</span>
+        {minutes} min read
+      </p>
+
+      <figure class="hero">
+        <Image src={heroImage} alt={heroAlt} widths={[800]} sizes="(min-width: 760px) 720px, 100vw" loading="eager" />
+      </figure>
+      <p class="hero-hint">Swipe the diagram sideways to see all of it.</p>
+
+      {
+        toc.length > 2 && (
+          <nav class="toc" aria-label="On this page">
+            <p class="toc-title">On this page</p>
+            <ol>
+              {toc.map((heading) => (
+                <li>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+
+      <div class="post-body">
+        <slot />
+      </div>
+
+      <footer class="post-end">
+        <p>
+          Spotted a mistake or something out of date? <a href={correction}>Tell us</a> and we will fix it. Read how we
+          write and update guides in our <a href="/editorial-policy/">editorial policy</a>.
+        </p>
+        <p class="legal">
+          Product and company names are trademarks of their respective owners. AnyAirDrop.com is an independent service and
+          is not affiliated with or endorsed by them.
+        </p>
+      </footer>
+
+      {
+        related.length > 0 && (
+          <section class="related" aria-labelledby="related-title">
+            <h2 id="related-title">Keep reading</h2>
+            <ul>
+              {related.map((item) => (
+                <li>
+                  <a href={`/blog/${item.id}/`}>{item.data.title}</a>
+                  <span>{item.data.description}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      {
+        (previous || next) && (
+          <nav class="pager" aria-label={`More in ${topicInfo.name}`}>
+            {previous ? (
+              <a href={`/blog/${previous.id}/`} rel="prev">
+                <span class="pager-label">Previous in this topic</span>
+                {previous.data.title}
+              </a>
+            ) : (
+              <span />
+            )}
+            {next ? (
+              <a href={`/blog/${next.id}/`} rel="next" class="next">
+                <span class="pager-label">Next in this topic</span>
+                {next.data.title}
+              </a>
+            ) : (
+              <span />
+            )}
+          </nav>
+        )
+      }
+    </article>
+  </main>
+</Base>
+
+<style>
+  .page {
+    flex: 1;
+    width: 100%;
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+
+  .post {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-text-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-text);
+  }
+
+  h1 {
+    margin: var(--space-2) 0 0;
+    font-size: 40px;
+    line-height: 1.13;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    margin: var(--space-2) 0 0;
+    font-size: 15px;
+    color: var(--color-text-muted);
+  }
+
+  .byline a {
+    color: inherit;
+  }
+
+  .hero {
+    margin: var(--space-4) 0 0;
+  }
+
+  .hero :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+  }
+
+  .hero-hint {
+    display: none;
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+
+  .toc {
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+  }
+
+  .toc-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .toc ol {
+    margin: var(--space-1) 0 0;
+    padding-left: 20px;
+    columns: 2;
+    column-gap: var(--space-5);
+  }
+
+  .toc li {
+    break-inside: avoid;
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .toc a {
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    text-decoration: underline;
+  }
+
+  /* The post's own markdown is rendered inside this wrapper, so its elements are styled globally. */
+  .post-body {
+    margin-top: var(--space-4);
+  }
+
+  .post-body :global(h2) {
+    margin: var(--space-7) 0 var(--space-1);
+    font-size: 27px;
+    line-height: 1.22;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    scroll-margin-top: var(--space-4);
+  }
+
+  .post-body :global(h3) {
+    margin: var(--space-5) 0 0;
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 700;
+    scroll-margin-top: var(--space-4);
+  }
+
+  .post-body :global(p),
+  .post-body :global(li) {
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  .post-body :global(p) {
+    margin: var(--space-2) 0 0;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin: var(--space-2) 0 0;
+    padding-left: 24px;
+  }
+
+  .post-body :global(li + li) {
+    margin-top: 8px;
+  }
+
+  .post-body :global(a) {
+    text-underline-offset: 3px;
+  }
+
+  .post-body :global(strong) {
+    font-weight: 700;
+  }
+
+  .post-body :global(code) {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--color-line);
+    font-size: 0.88em;
+  }
+
+  .post-body :global(pre) {
+    margin: var(--space-3) 0 0;
+    padding: var(--space-3);
+    border-radius: 12px;
+    overflow-x: auto;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .post-body :global(pre code) {
+    padding: 0;
+    background: none;
+    font-size: inherit;
+  }
+
+  .post-body :global(blockquote) {
+    margin: var(--space-3) 0 0;
+    padding: 2px 0 2px var(--space-3);
+    border-left: 3px solid var(--color-line-strong);
+    color: var(--color-text-muted);
+  }
+
+  /* Tables scroll sideways inside the column instead of stretching the page on phones. */
+  .post-body :global(table) {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: var(--space-3) 0 0;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .post-body :global(th),
+  .post-body :global(td) {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .post-body :global(th) {
+    border-bottom: 2px solid var(--color-line-strong);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .post-body :global(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .post-end {
+    margin-top: var(--space-7);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .post-end p {
+    margin: 0 0 var(--space-1);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .post-end .legal {
+    font-size: 13px;
+  }
+
+  .related {
+    margin-top: var(--space-6);
+  }
+
+  .related h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .related ul {
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .related li {
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .related li a {
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .related li a:hover {
+    text-decoration: underline;
+  }
+
+  .related li span {
+    display: block;
+    margin-top: 2px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .pager a {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .pager a:hover {
+    border-color: var(--color-line-strong);
+  }
+
+  .pager .next {
+    text-align: right;
+  }
+
+  .pager-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 720px) {
+    .page {
+      padding-inline: var(--space-4);
+      padding-top: var(--space-4);
+    }
+
+    h1 {
+      font-size: 31px;
+    }
+
+    /* The diagrams are drawn 800 units wide with small labels, so on a phone they scroll sideways
+       at a size that stays readable instead of shrinking to fit. */
+    .hero {
+      overflow-x: auto;
+    }
+
+    .hero :global(img) {
+      min-width: 640px;
+    }
+
+    .hero-hint {
+      display: block;
+    }
+
+    .post-body :global(h2) {
+      margin-top: var(--space-6);
+      font-size: 24px;
+    }
+
+    .toc ol {
+      columns: 1;
+    }
+
+    .pager {
+      grid-template-columns: 1fr;
+    }
+
+    .pager .next {
+      text-align: left;
+    }
+  }
+</style>

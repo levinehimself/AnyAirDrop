@@ -1,0 +1,80 @@
+---
+import Page from '../layouts/Page.astro';
+import { CONTACT_EMAIL, FOUNDER, LEGAL_UPDATED } from '../config';
+---
+
+<Page
+  title="Editorial Policy | AnyAirDrop.com"
+  description="How AnyAirDrop.com researches, writes, sources and corrects its guides on Wi-Fi, routers, phone hotspots and local file transfer."
+  heading="Editorial policy"
+  lead="The guides on AnyAirDrop.com explain how Wi-Fi and local file transfer work. This page says how they are written, what you can rely on, and how mistakes get fixed."
+  updated={LEGAL_UPDATED}
+>
+  <h2>What we publish</h2>
+  <p>
+    Our <a href="/blog/">blog</a> explains networking technology that sits behind sending a file from one device to another:
+    Wi-Fi, routers and modems, phone hotspots, Bluetooth, NFC and the protocols that let devices find each other. Each guide
+    aims to answer a real question and to explain why things work the way they do, not only which button to press.
+  </p>
+
+  <h2>How a guide is researched</h2>
+  <ul>
+    <li>
+      <strong>Primary sources first.</strong> We draw on standards and specifications (IEEE, IETF RFCs, W3C, the Bluetooth
+      SIG, the Wi-Fi Alliance, the NFC Forum) and on documentation from the companies that build the platforms, such as
+      Apple, Google and Microsoft.
+    </li>
+    <li>
+      <strong>Every guide lists its sources</strong> at the bottom, so you can check any claim yourself.
+    </li>
+    <li>
+      <strong>Numbers are labeled.</strong> Figures such as maximum data rates are theoretical values derived from a
+      standard, and we say so. Real-world results depend on your devices, walls, neighbors and network, so we explain what
+      they depend on rather than promising a number.
+    </li>
+    <li>
+      <strong>No invented testing.</strong> Unless a guide says it contains our own measurements and describes how they were
+      taken, it does not claim any. We do not present guesses, screenshots or results we did not produce as our own work.
+    </li>
+  </ul>
+
+  <h2>How guides are written</h2>
+  <p>
+    Some guides are drafted with the help of AI writing tools, working from the sources listed in each guide.
+    {FOUNDER.name}, who publishes AnyAirDrop.com, is responsible for everything that appears on the site. Menu names and
+    settings on phones and computers change between versions and manufacturers, so where exact wording is not certain, a
+    guide tells you what to look for instead of quoting a label that may be wrong.
+  </p>
+
+  <h2>Our own tool</h2>
+  <p>
+    AnyAirDrop.com also runs a free file-transfer tool. Where a guide mentions it, the guide says it is our own tool, and the
+    explanation of how the technology works stands on its own without it. We do not write comparisons that rank products as
+    "best", and we are not paid by any device maker, carrier or router brand.
+  </p>
+
+  <h2>Advertising and independence</h2>
+  <p>
+    If advertising ever appears on this site, it will be clearly separate from the articles and will never change what a
+    guide says. Nobody can pay to have a guide written, altered or removed.
+  </p>
+
+  <h2>Keeping guides up to date</h2>
+  <p>
+    Standards and phone software change. Each guide shows the date it was published and, when we change it in a meaningful
+    way, the date it was updated. We recheck a guide when a standard it describes changes or when a reader reports a mistake.
+  </p>
+
+  <h2>Corrections</h2>
+  <p>
+    If you find something wrong, unclear or out of date, email <a href={`mailto:${CONTACT_EMAIL}?subject=Correction`}>{CONTACT_EMAIL}</a>
+    with the page address and what you found. Factual errors are fixed as soon as they are confirmed, and the guide's updated
+    date changes with them.
+  </p>
+
+  <h2>Trademarks</h2>
+  <p>
+    Names such as AirDrop, Wi-Fi, Bluetooth, Android and iPhone belong to their owners. We use them only to refer to those
+    products and technologies. AnyAirDrop.com is an independent service and is not affiliated with or endorsed by them.
+  </p>
+</Page>

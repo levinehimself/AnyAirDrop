@@ -1,0 +1,56 @@
+---
+import type { Post } from '../lib/blog';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="posts">
+  {
+    posts.map((post) => (
+      <li>
+        <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+        <span>{post.data.description}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  /* The page layout styles every list inside its text column, so these win with !important. */
+  .posts {
+    margin: var(--space-2) 0 0;
+    padding: 0 !important;
+    list-style: none;
+  }
+
+  .posts li {
+    margin: 0 !important;
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--color-line);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .posts a {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .posts a:hover {
+    text-decoration: underline;
+  }
+
+  .posts span {
+    display: block;
+    margin-top: 2px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+</style>

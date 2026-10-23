@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>The three phases of a Quick Share transfer</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <defs>
+    <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0F172A"/>
+    </marker>
+    <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2563EB"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">Quick Share: find, confirm, then switch to a faster link</text>
+
+  <!-- Phase 1 -->
+  <rect x="24" y="64" width="240" height="250" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="144" y="94" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">1. Discover</text>
+  <rect x="40" y="124" width="72" height="40" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="76" y="149" text-anchor="middle" font-size="13" fill="#0F172A">Sender</text>
+  <rect x="176" y="124" width="72" height="40" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="212" y="149" text-anchor="middle" font-size="13" fill="#0F172A">Receiver</text>
+  <line x1="120" y1="144" x2="168" y2="144" stroke="#2563EB" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round" marker-start="url(#ab)" marker-end="url(#ab)"/>
+  <text x="144" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Bluetooth Low Energy</text>
+  <text x="144" y="224" text-anchor="middle" font-size="14" fill="#475569">Receiver advertises,</text>
+  <text x="144" y="242" text-anchor="middle" font-size="14" fill="#475569">sender discovers.</text>
+  <text x="144" y="268" text-anchor="middle" font-size="14" fill="#475569">Visibility setting</text>
+  <text x="144" y="286" text-anchor="middle" font-size="14" fill="#475569">decides who is seen.</text>
+
+  <!-- Phase 2 -->
+  <rect x="280" y="64" width="240" height="250" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="400" y="94" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">2. Confirm</text>
+  <rect x="318" y="118" width="64" height="48" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="350" y="150" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">4821</text>
+  <rect x="418" y="118" width="64" height="48" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="450" y="150" text-anchor="middle" font-size="20" font-weight="700" fill="#0F172A">4821</text>
+  <text x="400" y="148" text-anchor="middle" font-size="20" font-weight="700" fill="#15803D">=</text>
+  <text x="400" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Key exchange and PIN</text>
+  <text x="400" y="224" text-anchor="middle" font-size="14" fill="#475569">Both screens show the</text>
+  <text x="400" y="242" text-anchor="middle" font-size="14" fill="#475569">same PIN (example only).</text>
+  <text x="400" y="268" text-anchor="middle" font-size="14" fill="#475569">Receiver taps Accept.</text>
+  <text x="400" y="286" text-anchor="middle" font-size="14" fill="#475569">The link is encrypted.</text>
+
+  <!-- Phase 3 -->
+  <rect x="536" y="64" width="240" height="250" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="656" y="94" text-anchor="middle" font-size="18" font-weight="700" fill="#2563EB">3. Transfer</text>
+  <rect x="552" y="124" width="72" height="40" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="588" y="149" text-anchor="middle" font-size="13" fill="#0F172A">Sender</text>
+  <rect x="688" y="124" width="72" height="40" rx="8" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+  <text x="724" y="149" text-anchor="middle" font-size="13" fill="#0F172A">Receiver</text>
+  <line x1="632" y1="144" x2="680" y2="144" stroke="#0F172A" stroke-width="5" marker-end="url(#ad)"/>
+  <text x="656" y="198" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Faster Wi-Fi link</text>
+  <text x="656" y="224" text-anchor="middle" font-size="14" fill="#475569">Wi-Fi LAN, Wi-Fi Direct,</text>
+  <text x="656" y="242" text-anchor="middle" font-size="14" fill="#475569">hotspot or WebRTC.</text>
+  <text x="656" y="268" text-anchor="middle" font-size="14" fill="#475569">The devices negotiate</text>
+  <text x="656" y="286" text-anchor="middle" font-size="14" fill="#475569">which one to use.</text>
+
+  <!-- Footer -->
+  <text x="400" y="352" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">Bluetooth is for finding, Wi-Fi is for moving data</text>
+  <text x="400" y="376" text-anchor="middle" font-size="14" fill="#475569">The receiver must accept before any file is sent.</text>
+</svg>

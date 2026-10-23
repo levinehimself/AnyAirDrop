@@ -1,0 +1,27 @@
+---
+import { render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+import { getPosts, postsInTopic } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => {
+    const siblings = postsInTopic(posts, post.data.topic);
+    const at = siblings.findIndex((item) => item.id === post.id);
+    const related = post.data.related
+      .map((slug) => posts.find((item) => item.id === slug))
+      .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    return {
+      params: { slug: post.id },
+      props: { post, related, previous: siblings[at - 1], next: siblings[at + 1] },
+    };
+  });
+}
+
+const { post, related, previous, next } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<BlogPost post={post} headings={headings} related={related} previous={previous} next={next}>
+  <Content />
+</BlogPost>

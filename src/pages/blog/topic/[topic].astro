@@ -1,0 +1,38 @@
+---
+import Page from '../../../layouts/Page.astro';
+import PostList from '../../../components/PostList.astro';
+import { TOPICS, TOPIC_KEYS } from '../../../lib/topics';
+import { getPosts, postsInTopic } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return TOPIC_KEYS.filter((key) => postsInTopic(posts, key).length > 0).map((key) => ({
+    params: { topic: key },
+    props: { key, posts: postsInTopic(posts, key) },
+  }));
+}
+
+const { key, posts } = Astro.props;
+const topic = TOPICS[key];
+const others = TOPIC_KEYS.filter((other) => other !== key);
+---
+
+<Page
+  title={`${topic.name}: guides | AnyAirDrop.com`}
+  description={`${topic.summary} ${posts.length} plain-language guides.`}
+  heading={topic.name}
+  lead={topic.summary}
+>
+  <PostList posts={posts} />
+
+  <h2>Other topics</h2>
+  <ul class="other">
+    {
+      others.map((other) => (
+        <li>
+          <a href={`/blog/topic/${other}/`}>{TOPICS[other].name}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Page>

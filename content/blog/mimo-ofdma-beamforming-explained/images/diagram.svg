@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" role="img" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title>OFDMA lets one transmission carry data for several devices</title>
+  <rect x="0.5" y="0.5" width="799" height="399" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+
+  <text x="30" y="38" font-size="20" font-weight="700" fill="#0F172A">OFDMA: one transmission, several devices</text>
+  <text x="30" y="60" font-size="14" fill="#475569">Vertical: channel frequency. Horizontal: time. Blue: data actually sent.</text>
+
+  <text x="40" y="96" font-size="16" font-weight="700" fill="#0F172A">Without OFDMA: three turns</text>
+  <text x="460" y="96" font-size="16" font-weight="700" fill="#2563EB">With OFDMA: one turn</text>
+  <rect x="40" y="110" width="92" height="160" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="86" y="170" text-anchor="middle" font-size="13" fill="#475569">channel</text>
+  <text x="86" y="188" text-anchor="middle" font-size="13" fill="#475569">mostly idle</text>
+  <rect x="50" y="238" width="72" height="24" rx="4" fill="#2563EB"/>
+  <text x="86" y="292" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">A</text>
+  <rect x="160" y="110" width="92" height="160" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="206" y="170" text-anchor="middle" font-size="13" fill="#475569">channel</text>
+  <text x="206" y="188" text-anchor="middle" font-size="13" fill="#475569">mostly idle</text>
+  <rect x="170" y="238" width="72" height="24" rx="4" fill="#2563EB"/>
+  <text x="206" y="292" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">B</text>
+  <rect x="280" y="110" width="92" height="160" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="326" y="170" text-anchor="middle" font-size="13" fill="#475569">channel</text>
+  <text x="326" y="188" text-anchor="middle" font-size="13" fill="#475569">mostly idle</text>
+  <rect x="290" y="238" width="72" height="24" rx="4" fill="#2563EB"/>
+  <text x="326" y="292" text-anchor="middle" font-size="16" font-weight="700" fill="#0F172A">C</text>
+  <rect x="460" y="110" width="92" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="470" y="123" width="72" height="24" rx="4" fill="#2563EB"/>
+  <text x="568" y="143" font-size="16" font-weight="700" fill="#0F172A">A</text>
+  <rect x="460" y="163" width="92" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="470" y="176" width="72" height="24" rx="4" fill="#2563EB"/>
+  <text x="568" y="196" font-size="16" font-weight="700" fill="#0F172A">B</text>
+  <rect x="460" y="216" width="92" height="54" rx="6" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <rect x="470" y="229" width="72" height="24" rx="4" fill="#2563EB"/>
+  <text x="568" y="249" font-size="16" font-weight="700" fill="#0F172A">C</text>
+  <text x="602" y="150" font-size="14" fill="#475569">Same data, one turn</text>
+  <text x="602" y="172" font-size="14" fill="#475569">instead of three.</text>
+  <text x="602" y="194" font-size="14" fill="#475569">Fewer waits and</text>
+  <text x="602" y="216" font-size="14" fill="#475569">fewer headers.</text>
+
+  <text x="30" y="334" font-size="14" fill="#0F172A">Helps most with many small packets: messages, acknowledgements, sensors.</text>
+  <text x="30" y="356" font-size="14" fill="#0F172A">One large download still needs a wide, fast slice, so OFDMA does not speed it up.</text>
+</svg>
