@@ -867,7 +867,9 @@
   /* Desktop: size the radar to the window so the whole page fits without scrolling. */
   @media (min-width: 721px) and (min-height: 640px) {
     .radar {
-      width: min(86vw, clamp(200px, calc(100dvh - 500px), 440px));
+      /* Sized for the tallest state, with a device connected (it adds a line above the
+         pairing area), so the QR code never touches the footer. */
+      width: min(86vw, clamp(200px, calc(100dvh - 530px), 440px));
       margin-top: var(--space-3);
     }
   }
