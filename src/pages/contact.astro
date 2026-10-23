@@ -1,17 +1,49 @@
 ---
 import Page from '../layouts/Page.astro';
-import { CONTACT_EMAIL, GITHUB_URL } from '../config';
+import { CONTACT_EMAIL, FOUNDER, GITHUB_URL, PROJECTS } from '../config';
+
+const mail = (subject: string) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
+
+const cards = [
+  { label: 'Best for anything', title: 'Email', detail: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
+  { label: 'Something not working', title: 'Report a problem', detail: 'Tell me what happened', href: mail('Problem report') },
+  { label: 'Make it better', title: 'Suggest an idea', detail: 'Features and fixes you would like', href: mail('Idea') },
+  { label: 'Who is behind this', title: 'Meet the founder', detail: `${FOUNDER.name} on LinkedIn`, href: FOUNDER.linkedin },
+];
 ---
 
 <Page
   title="Contact AnyAirDrop.com"
-  description="Contact AnyAirDrop.com: report a problem, ask a question about privacy, or share an idea."
-  heading="Contact us"
-  lead="Questions, problems and ideas are all welcome."
+  description="Contact AnyAirDrop.com: report a problem, ask a question about privacy, suggest an idea or get in touch with the founder."
+  heading="Let’s talk"
+  lead={`Found a bug, have an idea, or a question about privacy? Write to me: I’m ${FOUNDER.name}, I run AnyAirDrop.com on my own, and I read every message myself.`}
   type="ContactPage"
 >
-  <h2>Email</h2>
-  <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
+  <p class="reply">I usually reply within 48 hours</p>
+
+  <ul class="cards">
+    {
+      cards.map((card) => (
+        <li>
+          <a href={card.href}>
+            <span class="card-label">{card.label}</span>
+            <span class="card-title">{card.title}</span>
+            <span class="card-detail">{card.detail}</span>
+            <span class="card-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>What I can help with</h2>
+  <ul>
+    <li><strong>Problems:</strong> a transfer that won’t start, a device that doesn’t show up, or a browser that misbehaves.</li>
+    <li><strong>Ideas:</strong> features you would like, or things that feel confusing.</li>
+    <li><strong>Privacy questions:</strong> how your information is handled. The <a href="/privacy/">privacy page</a> explains it in full.</li>
+    <li><strong>Press and partnerships:</strong> happy to help where I can.</li>
+    <li><strong>Security reports:</strong> put “Security” in the subject line and give me time to fix it before you share it publicly.</li>
+  </ul>
 
   <h2>Reporting a problem</h2>
   <p>The more detail you give, the faster it can be fixed. Please include:</p>
@@ -19,21 +51,122 @@ import { CONTACT_EMAIL, GITHUB_URL } from '../config';
     <li>The two devices involved, for example “iPhone 15, iOS 19” and “Windows 11 laptop”.</li>
     <li>The browser on each one, for example Safari or Chrome.</li>
     <li>Whether you were on the same Wi-Fi, a VPN, guest Wi-Fi or mobile data.</li>
+    <li>The route and speed shown when the transfer finished, if you saw them.</li>
     <li>What you expected to happen, and what happened instead.</li>
   </ul>
   <p>
     Developers can also open an issue on <a href={`${GITHUB_URL}/issues`}>GitHub</a>.
   </p>
 
-  <h2>Please do not send us your files</h2>
+  <h2>Please do not send me your files</h2>
   <p>
     Never attach private photos, documents or passwords to a message. A screenshot of the problem, with anything private
-    covered up, is all we need.
+    covered up, is all I need. Your files never pass through our servers, so I can’t see, recover or inspect them.
   </p>
 
-  <h2>Privacy and other questions</h2>
+  <p>The ground rules for using the site are in the <a href="/terms/">terms of use</a>.</p>
+
+  <h2>Other projects</h2>
   <p>
-    For questions about how AnyAirDrop.com handles data, start with the <a href="/about/">about page</a>, then write to us
-    at the address above.
+    I also run
+    {PROJECTS.map((project, i) => (
+      <>
+        <a href={project.url}>{project.name}</a>
+        {i < PROJECTS.length - 1 ? ' and ' : '.'}
+      </>
+    ))}
+    Messages about those go to their own contact pages.
   </p>
 </Page>
+
+<style>
+  .reply {
+    display: inline-block;
+    margin-top: var(--space-3);
+    padding: 4px 14px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 999px;
+    font-size: 13px !important;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cards {
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: 0 !important; /* the page's list style would indent the cards */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .cards li {
+    margin: 0;
+  }
+
+  .cards li + li {
+    margin-top: 0 !important;
+  }
+
+  .cards a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 118px;
+    height: 100%;
+    padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: border-color var(--dur-color) ease;
+  }
+
+  .cards a:hover {
+    border-color: var(--color-accent);
+  }
+
+  .card-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .card-title {
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .card-detail {
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .card-arrow {
+    position: absolute;
+    right: var(--space-3);
+    top: var(--space-3);
+    font-size: 18px;
+    color: var(--color-link);
+  }
+
+  @media (max-width: 560px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+
+    .cards a {
+      min-height: 0;
+    }
+  }
+</style>

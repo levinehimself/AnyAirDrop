@@ -6,15 +6,18 @@ interface Props {
   description: string;
   heading: string;
   lead?: string;
+  /** For policy pages: shown as "Last updated …" under the introduction. */
+  updated?: string;
+  /** Extra structured-data nodes (for example the person behind the site). */
+  extraJsonLd?: Record<string, unknown>[];
   type?: 'AboutPage' | 'ContactPage' | 'WebPage';
   noindex?: boolean;
 }
 
-const { title, description, heading, lead, type = 'WebPage', noindex = false } = Astro.props;
+const { title, description, heading, lead, updated, extraJsonLd = [], type = 'WebPage', noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 
-const jsonLd = {
-  '@context': 'https://schema.org',
+const page = {
   '@type': type,
   '@id': `${url}#page`,
   url,
@@ -23,6 +26,7 @@ const jsonLd = {
   isPartOf: { '@id': 'https://anyairdrop.com/#website' },
   publisher: { '@id': 'https://anyairdrop.com/#organization' },
 };
+const jsonLd = { '@context': 'https://schema.org', '@graph': [page, ...extraJsonLd] };
 ---
 
 <Base title={title} description={description} jsonLd={jsonLd} noindex={noindex}>
@@ -30,6 +34,7 @@ const jsonLd = {
     <article class="prose">
       <h1>{heading}</h1>
       {lead && <p class="lead">{lead}</p>}
+      {updated && <p class="updated">Last updated {updated}</p>}
       <slot />
     </article>
   </main>
@@ -60,6 +65,12 @@ const jsonLd = {
     margin: var(--space-2) 0 0;
     font-size: 19px;
     line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .prose .updated {
+    margin: var(--space-2) 0 0;
+    font-size: 15px;
     color: var(--color-text-muted);
   }
 

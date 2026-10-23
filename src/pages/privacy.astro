@@ -1,0 +1,128 @@
+---
+import Page from '../layouts/Page.astro';
+import { CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
+---
+
+<Page
+  title="Privacy Policy | AnyAirDrop.com"
+  description="What AnyAirDrop.com does and does not collect: no accounts, no ads, no trackers, and your files are never stored on our servers."
+  heading="Privacy"
+  lead="AnyAirDrop.com is built to need as little of your information as possible. This page explains exactly what is involved when you use it."
+  updated={LEGAL_UPDATED}
+>
+  <h2>The short version</h2>
+  <ul>
+    <li>There are no accounts, no ads, no analytics and no tracking scripts.</li>
+    <li>Your files are never uploaded to or stored on our servers. They go from one device to the other.</li>
+    <li>
+      Our server only introduces your devices to each other. It briefly handles a device name, the kind of device and
+      browser, and connection details, and keeps no database of users or transfers.
+    </li>
+    <li>Everything that is kept lives on your own devices, and you can delete it at any time.</li>
+  </ul>
+
+  <h2>Your files</h2>
+  <p>
+    When two devices can reach each other, your browser connects directly to the other browser, and the files travel
+    between them over an encrypted connection. They do not pass through our server, and their names and contents are never
+    sent to it.
+  </p>
+  <p>
+    If a network blocks direct connections, the transfer can go through an encrypted relay run by Cloudflare. The relay
+    forwards the encrypted data without being able to read it, and nothing is stored there. The page tells you when this is
+    happening. Because a relay moves your data over the internet, it counts towards your mobile or home data allowance.
+  </p>
+  <p>Nothing starts until the receiving person taps Accept, unless they have chosen to accept files from a trusted device automatically.</p>
+
+  <h2>What our server handles while you use the site</h2>
+  <p>To introduce two devices, a small signaling service handles the following while your page is open:</p>
+  <ul>
+    <li>A device name: a random one like “Sage Finch”, or the name you chose.</li>
+    <li>The kind of device (phone, tablet or computer), its operating system and its browser.</li>
+    <li>A random identifier created for your tab, used only to route messages between devices.</li>
+    <li>
+      A way to place devices in the same room: either a one-way hash of your network’s public address (so devices on the
+      same Wi-Fi find each other), a six-digit pairing code, or the secret key of a trusted device.
+    </li>
+    <li>The connection details browsers exchange to open a direct connection, which include network addresses.</li>
+  </ul>
+  <p>
+    This information is held in memory while your device is connected and is gone when you close the page. We do not write
+    it to a database, and we do not build profiles. The hash is used as a room name and is not kept anywhere else by our
+    code. A hash of an address is not a perfect shield, so please treat the shared-network matching as something a
+    determined person could undo.
+  </p>
+
+  <h2>What the other device learns</h2>
+  <p>
+    A direct connection works by the two devices exchanging their network addresses. The device you connect to will see your
+    device name, the kind of device and browser, and the network addresses needed to connect. If that matters to you, use a
+    pairing code only with people you know, and remember that a VPN changes the address that is shared.
+  </p>
+
+  <h2>Companies that help run the site</h2>
+  <p>AnyAirDrop.com relies on two kinds of provider, each with its own privacy policy:</p>
+  <ul>
+    <li>
+      <strong>Cloudflare</strong> provides the domain’s DNS, the protection and delivery in front of the site, the
+      signaling service and the relay. Like any such provider it processes technical data such as IP addresses and request
+      details, and may keep standard logs and set technical security cookies. See
+      <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare’s privacy policy</a>.
+    </li>
+    <li>
+      <strong>Our web hosting provider</strong> serves the pages and keeps standard server logs, for example your IP
+      address, the time, the page requested and your browser.
+    </li>
+  </ul>
+  <p>We do not control how long those providers keep their logs, and we do not use these logs to identify or follow visitors.</p>
+
+  <h2>Cookies and data on your device</h2>
+  <p>AnyAirDrop.com does not set cookies of its own. It uses your browser’s storage for these things:</p>
+  <ul>
+    <li><strong>Kept until you clear it:</strong> your light or dark theme, a device name you chose, your list of trusted devices (each holds a secret key), and whether trusted devices are added automatically.</li>
+    <li><strong>Kept until you close the tab:</strong> a random device identifier, your pairing code and your temporary device name.</li>
+    <li>
+      <strong>Temporary file space:</strong> large incoming files are written to your browser’s private storage while they
+      arrive, and are cleaned up afterwards.
+    </li>
+  </ul>
+  <p>
+    You can remove any of this from your browser’s settings. Trusted devices can also be removed one by one from the
+    Trusted list under the radar.
+  </p>
+
+  <h2>Trusted devices</h2>
+  <p>
+    When two devices trust each other, they share a long secret key stored on both. It lets them find each other on any
+    network. Anyone who obtains the key could join that private room and see that those two devices are online, so
+    protect the devices you use, and remove a trusted device if you lose access to it. A trusted device cannot send you
+    files without your approval unless you turn that on for it. You can switch off the automatic adding of devices in the
+    Trusted list.
+  </p>
+
+  <h2>If you write to us</h2>
+  <p>
+    If you email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, we receive your address and your message, and use
+    them only to answer you. We keep the conversation for as long as it is useful, and delete it when you ask. Please
+    never attach private files or passwords.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    Because there are no accounts and we keep no user database, there is usually nothing about you that we can look up.
+    You still have the rights your local law gives you, such as asking what we hold, asking us to correct or delete it,
+    and complaining to a data protection authority. Write to us and we will help as far as we can.
+  </p>
+
+  <h2>Children</h2>
+  <p>AnyAirDrop.com is not aimed at children under 13, and we do not knowingly collect information from them.</p>
+
+  <h2>Changes</h2>
+  <p>
+    If this page changes, the date at the top changes too. The code that does all of this is open for anyone to read on
+    <a href={GITHUB_URL}>GitHub</a>.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, or see the <a href="/contact/">contact page</a>.</p>
+</Page>

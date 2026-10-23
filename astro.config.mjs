@@ -13,6 +13,9 @@ export default defineConfig({
   site: 'https://anyairdrop.com',
   output: 'static',
   trailingSlash: 'always',
+  // Compression drops the space when a link starts on a new line in the source, which glues
+  // words together ("runs<a>WiserWork</a>"). Browsers collapse the whitespace themselves.
+  compressHTML: false,
   // The blog index stays out of the sitemap until the first post is published.
   integrations: [svelte(), sitemap({ filter: (page) => !page.endsWith('/blog/') })],
   vite: {

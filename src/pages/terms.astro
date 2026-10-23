@@ -1,0 +1,86 @@
+---
+import Page from '../layouts/Page.astro';
+import { CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
+---
+
+<Page
+  title="Terms of Use | AnyAirDrop.com"
+  description="The rules for using AnyAirDrop.com: what the service is, what you are responsible for, and what we cannot promise."
+  heading="Terms of use"
+  lead="These terms are short on purpose. By using AnyAirDrop.com you agree to them, so please read them once."
+  updated={LEGAL_UPDATED}
+>
+  <h2>What AnyAirDrop.com is</h2>
+  <p>
+    AnyAirDrop.com is a free tool that helps two devices send files to each other through their web browsers. It
+    introduces the devices to each other, and the files then travel between them, directly or through an encrypted
+    relay. We do not host, store or review your files. How the service handles information is described in the
+    <a href="/privacy/">privacy page</a>.
+  </p>
+
+  <h2>Who can use it</h2>
+  <p>
+    You may use AnyAirDrop.com if you are old enough to agree to these terms where you live, and at least 13 years old.
+    If you are using it for a company or another person, you confirm you may do so on their behalf.
+  </p>
+
+  <h2>You are responsible for your files</h2>
+  <p>You decide what you send and what you accept. When you use AnyAirDrop.com you agree not to:</p>
+  <ul>
+    <li>Send anything illegal, or anything you have no right to share, such as content that breaches someone’s copyright or privacy.</li>
+    <li>Send malware, or files meant to harm a device or a person.</li>
+    <li>Send files to people who have not asked for them, or use the service to harass, scam or threaten anyone.</li>
+    <li>Interfere with the service, overload it, probe it for weaknesses without permission, or get around its limits.</li>
+    <li>Use the relay for anything other than moving files between the people taking part in a transfer.</li>
+  </ul>
+
+  <h2>We cannot see what is sent</h2>
+  <p>
+    Files go from one device to the other, so we cannot check them and we are not responsible for what people send each
+    other. Only accept files from people you know and trust, and treat unexpected files with the same care as an unexpected
+    email attachment. Accepting a file is your decision.
+  </p>
+
+  <h2>Trusted devices</h2>
+  <p>
+    You can mark devices as trusted so they find each other on any network. You are responsible for the devices that
+    hold those keys and for removing a trusted device you no longer control. If you turn on the option to add devices
+    automatically after a transfer, or to accept files from a device without asking, you accept the risks that come with it.
+  </p>
+
+  <h2>The service can change</h2>
+  <p>
+    AnyAirDrop.com is free and provided as it is. We may change it, limit it or stop it at any time, and we may block
+    anyone who misuses it. Speed depends on your devices, your Wi-Fi, your VPN and your browser, and we cannot promise a
+    particular speed or that a transfer will always succeed.
+  </p>
+
+  <h2>No warranty, and limits on our liability</h2>
+  <p>
+    We do not promise that AnyAirDrop.com will be uninterrupted, error free or suitable for a particular purpose. To the
+    extent the law allows, we are not liable for lost or damaged files, for anything you receive from another person, or for
+    other losses that come from using the service. Nothing in these terms limits any right you have by law that cannot be
+    limited, such as liability for something we cause by fraud.
+  </p>
+
+  <h2>Independence and trademarks</h2>
+  <p>
+    AnyAirDrop.com is an independent project. It is not affiliated with, endorsed by or sponsored by Apple Inc. or any other
+    device maker. Names and trademarks mentioned belong to their owners.
+  </p>
+
+  <h2>Open source</h2>
+  <p>
+    The code is released under the MIT license and is available on <a href={GITHUB_URL}>GitHub</a>. That license covers the
+    code. These terms cover your use of the service on this website.
+  </p>
+
+  <h2>Changes to these terms</h2>
+  <p>
+    We may update these terms. The date at the top shows when they last changed, and using the service after a change means
+    you accept the new version. If part of these terms turns out to be unenforceable, the rest still applies.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Questions about these terms: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, or see the <a href="/contact/">contact page</a>.</p>
+</Page>
