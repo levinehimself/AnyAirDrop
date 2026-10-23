@@ -97,11 +97,21 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
       for (let i = 0; i < this.files.length; i++) {
         const file = this.files[i];
         this.link.sendJSON({ t: 'file', xid: this.xid, i });
+        // The next block is read while the current one is sent, so a slow disk or photo
+        // library never leaves the network waiting.
+        const read = (from: number): Promise<ArrayBuffer> => {
+          const block = file.slice(from, from + READ_BLOCK).arrayBuffer();
+          block.catch(() => {}); // A cancelled transfer never awaits it.
+          return block;
+        };
+        let upcoming = file.size > 0 ? read(0) : null;
         for (let offset = 0; offset < file.size; offset += READ_BLOCK) {
-          const block = await file.slice(offset, offset + READ_BLOCK).arrayBuffer();
+          const block = await upcoming!;
+          upcoming = offset + READ_BLOCK < file.size ? read(offset + READ_BLOCK) : null;
           for (let start = 0; start < block.byteLength; start += chunk) {
             if (this.stopped) throw new Error(this.stopped);
-            const piece = block.slice(start, start + chunk);
+            // A view onto the block: no copy per message.
+            const piece = new Uint8Array(block, start, Math.min(chunk, block.byteLength - start));
             await this.link.sendBinary(piece, this.abort.signal);
             if (this.stopped) throw new Error(this.stopped);
             sent += piece.byteLength;

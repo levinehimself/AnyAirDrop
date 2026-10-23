@@ -156,7 +156,7 @@ export class PeerLink extends Emitter<LinkEvents> {
     this.dc.send(JSON.stringify(message));
   }
 
-  async sendBinary(chunk: ArrayBuffer, signal?: AbortSignal): Promise<void> {
+  async sendBinary(chunk: Uint8Array<ArrayBuffer>, signal?: AbortSignal): Promise<void> {
     if (this.dc.bufferedAmount > HIGH_WATER) {
       await new Promise<void>((resolve) => {
         const done = () => {

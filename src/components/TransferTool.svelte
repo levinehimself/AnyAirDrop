@@ -104,15 +104,23 @@
           : 'Tap a device to send files',
   );
 
-  const routeLabel = $derived(
-    route === 'lan'
+  function routeText(r: Route): string {
+    return r === 'lan'
       ? 'Direct over your Wi-Fi · nothing uploaded'
-      : route === 'internet'
+      : r === 'internet'
         ? 'Direct connection · nothing stored on a server'
-        : route === 'relay'
+        : r === 'relay'
           ? 'Through an encrypted relay'
-          : 'Encrypted, device to device',
-  );
+          : 'Encrypted, device to device';
+  }
+  const routeLabel = $derived(routeText(route));
+
+  // Live speed while a transfer runs, and the route and average speed once it is done, so a
+  // slow transfer can be explained (for example, a VPN pushing it through the relay).
+  let speed = $state(0);
+  let startedAt = 0;
+  let lastRun = $state<{ route: Route; rate: number } | null>(null);
+  const rate = (bytes: number): string => `${formatBytes(bytes)}/s`;
 
   function place(list: RemotePeer[]): void {
     for (const id of [...slotOf.keys()]) {
@@ -259,12 +267,14 @@
 
     try {
       const result = await transfer.run(() => {
+        startStats();
         view = { kind: 'sending', peer, transfer };
         void holdAwake();
         void readRoute(transfer.link);
       });
       if (result === 'done') {
         view = { kind: 'sent', peer, count: files.length };
+        void finishStats(transfer.link, transfer.total);
         void autoTrustPeer(peer);
       }
       else if (result === 'declined') view = { kind: 'notice', title: `${peer.name} declined`, detail: 'Nothing was sent.' };
@@ -294,12 +304,41 @@
   // Chunks arrive hundreds of times a second; repaint the bar about ten times a second.
   let latest: [number, number] | null = null;
   let flushTimer: ReturnType<typeof setTimeout> | undefined;
+  let tick: { at: number; done: number } | null = null;
   function setProgress(d: number, t: number): void {
     latest = [d, t];
     flushTimer ??= setTimeout(() => {
       flushTimer = undefined;
-      if (latest) [done, total] = latest;
+      if (!latest) return;
+      [done, total] = latest;
+      const now = performance.now();
+      if (tick && now > tick.at) {
+        const instant = ((done - tick.done) / (now - tick.at)) * 1000;
+        speed = speed === 0 ? instant : speed * 0.7 + instant * 0.3;
+      }
+      tick = { at: now, done };
     }, 100);
+  }
+
+  function startStats(): void {
+    startedAt = performance.now();
+    speed = 0;
+    tick = null;
+    lastRun = null;
+  }
+
+  // Called when a transfer completes: reads the route that was really used.
+  async function finishStats(link: PeerLink, bytes: number): Promise<void> {
+    const seconds = (performance.now() - startedAt) / 1000;
+    if (bytes < 1024 * 1024 || seconds <= 0) return;
+    let used: Route = route;
+    try {
+      used = await link.route();
+    } catch {
+      // Keep what was read earlier.
+    }
+    route = used;
+    lastRun = { route: used, rate: bytes / seconds };
   }
 
   function onIncoming(transfer: IncomingTransfer): void {
@@ -313,6 +352,7 @@
       zipNote = '';
       lastReceived = { peerId: transfer.peer.id, at: Date.now() };
       view = { kind: 'received', peer: transfer.peer, files };
+      void finishStats(transfer.link, transfer.total);
       releaseAwake();
     });
     transfer.on('failed', (reason) => {
@@ -332,6 +372,7 @@
     if (view.kind !== 'incoming') return;
     const transfer = view.transfer;
     trustNote = null;
+    startStats();
     done = 0;
     total = transfer.total;
     route = 'unknown';
@@ -583,6 +624,16 @@
   }
 </script>
 
+{#snippet runInfo(run: { route: Route; rate: number })}
+  <p class="small muted" role="status">
+    {routeText(run.route).split(' · ')[0]} · {rate(run.rate)} on average
+    {#if run.route === 'relay'}
+      <br />This went through the relay, which is slower than your Wi-Fi. If a VPN is on, turn on its “allow local network”
+      option, or pause it, and send again.
+    {/if}
+  </p>
+{/snippet}
+
 <div class="tool">
   <div class="radar" role="group" aria-label="Nearby devices">
     <span class="ring" aria-hidden="true"></span>
@@ -699,13 +750,16 @@
       <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={pct}>
         <span style:width={`${pct}%`}></span>
       </div>
-      <p class="small muted">{routeLabel} · {formatBytes(done)} of {formatBytes(total)}</p>
+      <p class="small muted">
+        {routeLabel} · {formatBytes(done)} of {formatBytes(total)}{#if speed > 0} · {rate(speed)}{/if}
+      </p>
       <button type="button" class="text-btn" onclick={stop}>Cancel</button>
     {:else if view.kind === 'sent'}
       <p class="title done">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4L19 7" /></svg>
         Sent {countFiles(view.count)} to {view.peer.name}
       </p>
+      {#if lastRun}{@render runInfo(lastRun)}{/if}
       {#if trustNote}
         <p class="small muted" role="status">
           {trustNote.name} is now a trusted device. <button type="button" class="link-btn" onclick={undoTrustNote}>Undo</button>
@@ -737,6 +791,7 @@
           </li>
         {/each}
       </ul>
+      {#if lastRun}{@render runInfo(lastRun)}{/if}
       {#if zipNote}<p class="small muted" role="status">{zipNote}</p>{/if}
       {#if trustNote}
         <p class="small muted" role="status">
