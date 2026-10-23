@@ -108,7 +108,7 @@
     return r === 'lan'
       ? 'Direct over your Wi-Fi · nothing uploaded'
       : r === 'internet'
-        ? 'Direct connection · nothing stored on a server'
+        ? 'Over the internet, not your Wi-Fi · nothing stored on a server'
         : r === 'relay'
           ? 'Through an encrypted relay'
           : 'Encrypted, device to device';
@@ -640,9 +640,10 @@
 {#snippet runInfo(run: { route: Route; rate: number })}
   <p class="small muted" role="status">
     {routeText(run.route).split(' · ')[0]} · {rate(run.rate)} on average
-    {#if run.route === 'relay'}
-      <br />This went through the relay, which is slower than your Wi-Fi. If a VPN is on, turn on its “allow local network”
-      option, or pause it, and send again.
+    {#if run.route === 'relay' || run.route === 'internet'}
+      <br />This went {run.route === 'relay' ? 'through the relay' : 'over the internet'} instead of straight across your
+      Wi-Fi, which is slower. If a VPN is on, turn it off on both devices (or turn on its “allow local network” option)
+      and send again.
     {/if}
   </p>
 {/snippet}
