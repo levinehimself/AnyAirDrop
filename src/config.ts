@@ -45,14 +45,27 @@ export function listSeparator(i: number, n: number): string {
 }
 
 /**
- * Google AdSense publisher ID, like 'ca-pub-1234567890123456'. Leave it empty until the AdSense
- * account exists: while it is empty the site has no ads, no AdSense tags and the policy pages say
- * so. Setting it switches on, in the same deploy, the verification meta tag on every page, the
- * ads on guide pages (never on the homepage or the transfer tool) and the matching wording in the
- * Privacy, Terms and Editorial policy pages. Bump LEGAL_UPDATED in the same commit.
+ * Go-live switch for Google AdSense. Leave both values empty until the AdSense account exists:
+ * the site then has no ads, no AdSense tags, no ads.txt, and the policy pages say so.
+ *
+ * To go live, set both in one commit:
+ *   ADSENSE_PUBLISHER_ID  the publisher ID, like 'ca-pub-1234567890123456'
+ *   ADS_LIVE_SINCE        today's date as 'YYYY-MM-DD' (shown as "Last updated" on the policy pages)
+ * The next deploy then switches on together: the verification meta tag on every page, the ads on
+ * guide pages (never the homepage, never a page with the transfer tool), /ads.txt, and the matching
+ * wording in the Privacy, Terms and Editorial policy pages. If one of the two values is missing or
+ * malformed the build fails on purpose, so a half-configured site never reaches the live server.
  */
 export const ADSENSE_PUBLISHER_ID = '';
+export const ADS_LIVE_SINCE = '';
 export const ADS_ENABLED = /^ca-pub-\d{10,20}$/.test(ADSENSE_PUBLISHER_ID);
+
+if (ADSENSE_PUBLISHER_ID && !ADS_ENABLED) {
+  throw new Error(`ADSENSE_PUBLISHER_ID must look like 'ca-pub-1234567890123456', got '${ADSENSE_PUBLISHER_ID}'.`);
+}
+if (ADS_ENABLED && (!/^\d{4}-\d{2}-\d{2}$/.test(ADS_LIVE_SINCE) || Number.isNaN(Date.parse(ADS_LIVE_SINCE)))) {
+  throw new Error(`Set ADS_LIVE_SINCE to the go-live date as 'YYYY-MM-DD' in src/config.ts, got '${ADS_LIVE_SINCE}'.`);
+}
 
 /**
  * Ad unit IDs (the `data-ad-slot` numbers) from AdSense > Ads > By ad unit, for the three places
@@ -61,5 +74,10 @@ export const ADS_ENABLED = /^ca-pub-\d{10,20}$/.test(ADSENSE_PUBLISHER_ID);
  */
 export const ADSENSE_SLOTS = { top: '', middle: '', end: '' };
 
-/** Shown on the Privacy and Terms pages. Change it whenever either page changes. */
-export const LEGAL_UPDATED = 'October 23, 2026';
+/**
+ * Shown on the Privacy and Terms pages. Once ads are live it follows ADS_LIVE_SINCE; if those pages
+ * change again later, update ADS_LIVE_SINCE to that day.
+ */
+export const LEGAL_UPDATED = ADS_ENABLED
+  ? new Date(`${ADS_LIVE_SINCE}T00:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
+  : 'October 23, 2026';
