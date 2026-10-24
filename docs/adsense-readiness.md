@@ -31,7 +31,7 @@ column when something changes.
 | A1 | Search Console Domain property (DNS TXT in Cloudflare) | Person | Open |
 | A2 | Submit `sitemap-index.xml`, check it lists everything and not the draft | Person | Open |
 | A3 | Check Manual actions + Security issues, request indexing for key pages | Person | Open |
-| A4 | Old Blogger URLs return 410 (`public/.htaccess`) | Done in code | Deployed once pushed; person checks Search Console Pages report and the Wayback Machine |
+| A4 | Old Blogger URLs return 410 (`public/.htaccess`) | Rule deployed; **not taking effect** | Checked 2026-10-24 after the deploy finished: `/2022/09/test.html` and `/search/label/test` still return LiteSpeed's 404 instead of 410. The host may ignore rewrite rules in `.htaccess`. Fallback: a Cloudflare custom rule (Security > WAF) for `starts_with(http.request.uri.path, "/search/label/") or starts_with(http.request.uri.path, "/feeds/") or http.request.uri.path matches "^/20[0-9]{2}/"` with action Block and a custom response of status 410. A person must add it. Also check the Search Console Pages report and the Wayback Machine |
 | B1 | Privacy policy: Advertising section | Done in code | Staged behind `ADS_ENABLED` |
 | B2 | Google-certified consent message (EEA, UK, Switzerland) | Person, in AdSense: Privacy & messaging | Open, week 4 |
 | B3 | Editorial policy wording about ads | Done in code | Staged behind `ADS_ENABLED` |
