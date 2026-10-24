@@ -41,7 +41,7 @@ column when something changes.
 | C2 | Finish and publish "How to AirDrop to Android" | Code done; content needs C1 data | Draft in `content/blog/airdrop-to-android/` |
 | C3 | Publish new guides at a steady pace (about 2 a week) | Person | Not automated, on purpose: see below |
 | C4 | Keep the AI-assistance disclosure | Nothing to do | Kept |
-| C5 | Homepage: How it works, FAQ, Popular guides | Done in code | Deployed once pushed |
+| C5 | Homepage: How it works, FAQ, Popular guides | **Dropped by the owner** | The homepage stays a single screen with no scrolling, as originally designed. Do not add sections to it. The risk the proposal names (a reviewer sees very little text on the first page) is accepted |
 | D1 | Apply only when the gate is met | Person | Week 4 |
 | D2 | AdSense meta tag on every page | Done in code | Staged behind `ADS_ENABLED` |
 | D3 | Ads on guide pages only, never on the tool | Done in code | Staged behind `ADS_ENABLED` |
@@ -60,7 +60,7 @@ pattern the proposal warns about. Guides need a person who tests and reviews the
 - [ ] Consent message for the EEA, UK and Switzerland is published in AdSense
 - [ ] 10 guides have a real "How we tested" box, results and screenshots, every number measured
 - [ ] "AirDrop to Android" is live, indexed, no TODOs
-- [ ] Homepage has How it works, FAQ and Popular guides
+- [x] ~~Homepage has How it works, FAQ and Popular guides~~ (dropped by the owner: the homepage stays one screen)
 - [ ] AdSense meta tag on every page, ad script on guide pages only
 - [ ] A test email to hello@anyairdrop.com arrived
 - [ ] Site crawled with no broken links; 5 topic pages and 10 random guides spot-checked on a phone
