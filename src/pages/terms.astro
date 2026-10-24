@@ -1,6 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import { CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
+import { ADS_ENABLED, CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
 ---
 
 <Page
@@ -62,6 +62,15 @@ import { CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
     other losses that come from using the service. Nothing in these terms limits any right you have by law that cannot be
     limited, such as liability for something we cause by fraud.
   </p>
+
+  {
+    ADS_ENABLED && (
+      <>
+        <h2>Ads and third-party links</h2>
+        <p>Some pages show ads and links from third parties. We don’t control their content and aren’t responsible for it.</p>
+      </>
+    )
+  }
 
   <h2>Independence and trademarks</h2>
   <p>

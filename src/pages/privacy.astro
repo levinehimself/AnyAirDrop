@@ -1,18 +1,28 @@
 ---
 import Page from '../layouts/Page.astro';
-import { CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
+import { ADS_ENABLED, CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
+
+const description = ADS_ENABLED
+  ? 'What AnyAirDrop.com does and does not collect: no accounts, no analytics, ads only on guides, and your files are never stored on our servers.'
+  : 'What AnyAirDrop.com does and does not collect: no accounts, no ads, no trackers, and your files are never stored on our servers.';
 ---
 
 <Page
   title="Privacy Policy | AnyAirDrop.com"
-  description="What AnyAirDrop.com does and does not collect: no accounts, no ads, no trackers, and your files are never stored on our servers."
+  description={description}
   heading="Privacy"
   lead="AnyAirDrop.com is built to need as little of your information as possible. This page explains exactly what is involved when you use it."
   updated={LEGAL_UPDATED}
 >
   <h2>The short version</h2>
   <ul>
-    <li>There are no accounts, no ads, no analytics and no tracking scripts.</li>
+    {
+      ADS_ENABLED ? (
+        <li>There are no accounts and no analytics. Our guides show ads from Google, which uses cookies. The transfer tool never shows ads.</li>
+      ) : (
+        <li>There are no accounts, no ads, no analytics and no tracking scripts.</li>
+      )
+    }
     <li>Your files are never uploaded to or stored on our servers. They go from one device to the other.</li>
     <li>
       Our server only introduces your devices to each other. It briefly handles a device name, the kind of device and
@@ -76,8 +86,41 @@ import { CONTACT_EMAIL, GITHUB_URL, LEGAL_UPDATED } from '../config';
   </ul>
   <p>We do not control how long those providers keep their logs, and we do not use these logs to identify or follow visitors.</p>
 
+  {
+    ADS_ENABLED && (
+      <>
+        <h2>Advertising</h2>
+        <p>Our guides (pages under /blog/) show ads served by Google AdSense. The file-transfer tool on the homepage never shows ads.</p>
+        <ul>
+          <li>Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites.</li>
+          <li>
+            Google’s use of advertising cookies enables it and its partners to serve ads to you based on your visits to this
+            site and/or other sites on the internet.
+          </li>
+          <li>
+            You can opt out of personalized advertising in <a href="https://adssettings.google.com">Google’s Ads Settings</a>.
+            You can also opt out of some third-party vendors’ use of cookies for personalized advertising at
+            <a href="https://www.aboutads.info/choices">www.aboutads.info/choices</a>.
+          </li>
+          <li>
+            Visitors in the European Economic Area, the United Kingdom and Switzerland are asked for consent before personalized
+            ads are shown, and can change that choice at any time from the privacy-choices link on each page.
+          </li>
+        </ul>
+        <p>
+          Google lists the advertising technology providers that may serve ads on guide pages in its
+          <a href="https://support.google.com/admanager/answer/9012903">ad technology providers list</a>.
+        </p>
+      </>
+    )
+  }
+
   <h2>Cookies and data on your device</h2>
-  <p>AnyAirDrop.com does not set cookies of its own. It uses your browser’s storage for these things:</p>
+  <p>
+    AnyAirDrop.com does not set cookies of its own.{
+      ADS_ENABLED && ' Google sets advertising cookies on the guide pages, as described under Advertising below.'
+    } It uses your browser’s storage for these things:
+  </p>
   <ul>
     <li><strong>Kept until you clear it:</strong> your light or dark theme, a device name you chose, your list of trusted devices (each holds a secret key), and whether trusted devices are added automatically.</li>
     <li><strong>Kept until you close the tab:</strong> a random device identifier, your pairing code and your temporary device name.</li>

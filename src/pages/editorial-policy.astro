@@ -1,6 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import { CONTACT_EMAIL, FOUNDER, LEGAL_UPDATED } from '../config';
+import { ADS_ENABLED, CONTACT_EMAIL, FOUNDER, LEGAL_UPDATED } from '../config';
 ---
 
 <Page
@@ -54,10 +54,19 @@ import { CONTACT_EMAIL, FOUNDER, LEGAL_UPDATED } from '../config';
   </p>
 
   <h2>Advertising and independence</h2>
-  <p>
-    If advertising ever appears on this site, it will be clearly separate from the articles and will never change what a
-    guide says. Nobody can pay to have a guide written, altered or removed.
-  </p>
+  {
+    ADS_ENABLED ? (
+      <p>
+        Guides show ads from Google AdSense. Ads are kept visually separate from the article, never appear on the transfer
+        tool, and never change what a guide says. Nobody can pay to have a guide written, altered or removed.
+      </p>
+    ) : (
+      <p>
+        If advertising ever appears on this site, it will be clearly separate from the articles and will never change what a
+        guide says. Nobody can pay to have a guide written, altered or removed.
+      </p>
+    )
+  }
 
   <h2>Keeping guides up to date</h2>
   <p>

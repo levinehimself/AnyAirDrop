@@ -44,5 +44,22 @@ export function listSeparator(i: number, n: number): string {
   return i === n - 2 ? ' and ' : ', ';
 }
 
+/**
+ * Google AdSense publisher ID, like 'ca-pub-1234567890123456'. Leave it empty until the AdSense
+ * account exists: while it is empty the site has no ads, no AdSense tags and the policy pages say
+ * so. Setting it switches on, in the same deploy, the verification meta tag on every page, the
+ * ads on guide pages (never on the homepage or the transfer tool) and the matching wording in the
+ * Privacy, Terms and Editorial policy pages. Bump LEGAL_UPDATED in the same commit.
+ */
+export const ADSENSE_PUBLISHER_ID = '';
+export const ADS_ENABLED = /^ca-pub-\d{10,20}$/.test(ADSENSE_PUBLISHER_ID);
+
+/**
+ * Ad unit IDs (the `data-ad-slot` numbers) from AdSense > Ads > By ad unit, for the three places
+ * inside a guide: after the introduction, at the midpoint and before "Keep reading". An empty
+ * one is simply not shown, so Auto ads alone also work.
+ */
+export const ADSENSE_SLOTS = { top: '', middle: '', end: '' };
+
 /** Shown on the Privacy and Terms pages. Change it whenever either page changes. */
 export const LEGAL_UPDATED = 'October 23, 2026';

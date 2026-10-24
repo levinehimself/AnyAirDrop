@@ -3,7 +3,10 @@ import { Image } from 'astro:assets';
 import Base from './Base.astro';
 import { TOPICS } from '../lib/topics';
 import { formatDate, readingMinutes, type Post } from '../lib/blog';
-import { CONTACT_EMAIL, FOUNDER } from '../config';
+import AdSlot from '../components/AdSlot.astro';
+import TestedBox from '../components/TestedBox.astro';
+import TransferTool from '../components/TransferTool.svelte';
+import { ADS_ENABLED, CONTACT_EMAIL, FOUNDER } from '../config';
 
 interface Props {
   post: Post;
@@ -14,7 +17,7 @@ interface Props {
 }
 
 const { post, headings, related, previous, next } = Astro.props;
-const { title, description, topic, publishDate, updatedDate, heroImage, heroAlt } = post.data;
+const { title, description, topic, publishDate, updatedDate, heroImage, heroAlt, tested, embedTool } = post.data;
 const topicInfo = TOPICS[topic];
 const url = new URL(`/blog/${post.id}/`, Astro.site).toString();
 const minutes = readingMinutes(post);
@@ -66,6 +69,7 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
   ogType="article"
   publishedTime={publishDate.toISOString()}
   modifiedTime={(updatedDate ?? publishDate).toISOString()}
+  ads={!embedTool}
 >
   <main class="page">
     <article class="post">
@@ -109,9 +113,52 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
         )
       }
 
+      {
+        embedTool && (
+          <div class="tool">
+            <TransferTool client:load />
+          </div>
+        )
+      }
+
+      {tested && <TestedBox {...tested} />}
+
       <div class="post-body">
         <slot />
       </div>
+
+      {
+        ADS_ENABLED && !embedTool && (
+          <>
+            {/* The top and middle slots start here and are moved into the article by the script below. */}
+            <div class="ad-pool" hidden>
+              <AdSlot position="top" />
+              <AdSlot position="middle" />
+            </div>
+            <AdSlot position="end" />
+            <script is:inline>
+              (function () {
+                var body = document.querySelector('.post-body');
+                var pool = document.querySelector('.ad-pool');
+                if (!body || !pool) return;
+                var headings = body.querySelectorAll(':scope > h2');
+                var top = pool.querySelector('[data-ad-position="top"]');
+                var middle = pool.querySelector('[data-ad-position="middle"]');
+                // After the introduction: before the first section heading.
+                if (top && headings.length > 0) headings[0].before(top);
+                // At the midpoint, and only when the guide is long enough for it not to crowd the first one.
+                if (middle && headings.length >= 4) headings[Math.floor(headings.length / 2)].before(middle);
+                document.querySelectorAll('.ad-slot').forEach(function (slot) {
+                  if (slot.closest('.ad-pool')) return;
+                  try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                  } catch (e) {}
+                });
+              })();
+            </script>
+          </>
+        )
+      }
 
       <footer class="post-end">
         <p>
@@ -270,6 +317,10 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
 
   .toc a:hover {
     text-decoration: underline;
+  }
+
+  .tool {
+    margin-top: var(--space-4);
   }
 
   /* The post's own markdown is rendered inside this wrapper, so its elements are styled globally. */
