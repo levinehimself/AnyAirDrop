@@ -21,6 +21,20 @@ const blog = defineCollection({
       /** Slugs of two to four closely related posts, shown at the end. */
       related: z.array(z.string()).min(2).max(4),
       draft: z.boolean().default(false),
+      /**
+       * First-hand testing behind the guide, shown as a "How we tested" box. Only fill it in from a
+       * real test session: every value must be something that was actually done and measured.
+       */
+      tested: z
+        .object({
+          devices: z.array(z.string()).min(1),
+          network: z.string(),
+          files: z.string(),
+          date: z.coerce.date(),
+        })
+        .optional(),
+      /** Mounts the transfer tool above the article. Ads are never loaded on such a page. */
+      embedTool: z.boolean().default(false),
     }),
 });
 

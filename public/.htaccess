@@ -12,3 +12,10 @@
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
+
+# Old Blogger-style URLs from the domain's previous owner: gone for good (410), so search
+# engines drop them instead of retrying. None of these paths exist on this site.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(20[0-9]{2}/|search/label/|feeds/) - [G,L]
+</IfModule>
