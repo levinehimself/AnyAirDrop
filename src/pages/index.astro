@@ -1,6 +1,48 @@
 ---
 import Base from '../layouts/Base.astro';
 import TransferTool from '../components/TransferTool.svelte';
+import { getPosts } from '../lib/blog';
+
+// The six guides people most need when a transfer does not work the way they expect.
+const POPULAR = [
+  'transfer-files-between-pc-and-phone-over-wifi',
+  'devices-cant-find-each-other-troubleshooting',
+  'is-local-file-transfer-safe-encryption-explained',
+  'local-transfer-vs-cloud-upload',
+  'wifi-link-speed-vs-real-speed',
+  'how-airdrop-works',
+];
+const posts = await getPosts();
+const popular = POPULAR.map((slug) => posts.find((post) => post.id === slug)).filter((post): post is NonNullable<typeof post> => Boolean(post));
+
+const steps = [
+  { title: 'Open the site on both devices', text: 'Go to AnyAirDrop.com on each phone or computer. Nothing to install and no account to make.' },
+  { title: 'Pick the device', text: 'Devices on the same Wi-Fi appear on the radar with a random name. Tap one, or scan the QR code or type the six-digit code to pair across networks.' },
+  { title: 'Send and accept', text: 'Choose files. The other person taps Accept, and the files go straight from one browser to the other.' },
+];
+
+const faq = [
+  {
+    q: 'Is it safe?',
+    a: 'Files travel directly from one browser to the other over an encrypted connection and are never stored on our servers. Nothing starts until the receiving person taps Accept. The privacy page lists exactly what our server does see: a device name, the kind of device and connection details, never your files.',
+  },
+  {
+    q: 'Is there a size limit?',
+    a: 'The tool sets none. Large incoming files are written to the browser’s private storage as they arrive, so the practical limit is the free space on the receiving device.',
+  },
+  {
+    q: 'Does it use mobile data?',
+    a: 'Not when both devices are on the same Wi-Fi: the files stay on your network. If a network blocks direct connections, the transfer can go through an encrypted relay over the internet, and the page tells you when that happens, because then it counts towards your data allowance.',
+  },
+  {
+    q: 'Why can’t my devices see each other?',
+    a: 'Usually they are on different networks, one is on a guest network, the router isolates devices from each other, or a VPN is on. Our troubleshooting guide walks through each cause, and a pairing code works across networks.',
+  },
+  {
+    q: 'Do I need an app or an account?',
+    a: 'No. It runs in the browser on iPhone, Android, Windows, Mac and Linux, and there are no accounts.',
+  },
+];
 
 const title = 'AnyAirDrop.com: Send Files Between iPhone, Android, Windows and Mac';
 const description =
@@ -44,30 +86,53 @@ const jsonLd = {
 
     <TransferTool client:load />
     <noscript><p class="lead">AnyAirDrop.com needs JavaScript to find nearby devices.</p></noscript>
+
+    <div class="info">
+      <section aria-labelledby="how-title">
+        <h2 id="how-title">How it works</h2>
+        <ol class="steps">
+          {
+            steps.map((step) => (
+              <li>
+                <strong>{step.title}</strong>
+                <span>{step.text}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section aria-labelledby="faq-title">
+        <h2 id="faq-title">Common questions</h2>
+        <dl class="faq">
+          {
+            faq.map((item) => (
+              <>
+                <dt>{item.q}</dt>
+                <dd>{item.a}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section aria-labelledby="guides-title">
+        <h2 id="guides-title">Popular guides</h2>
+        <ul class="guides">
+          {
+            popular.map((post) => (
+              <li>
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="all"><a href="/blog/">All guides</a></p>
+      </section>
+    </div>
   </main>
 </Base>
 
-<style is:global>
-  /* Desktop: the whole homepage fits in the window, with no page scrolling. */
-  @media (min-width: 721px) and (min-height: 640px) {
-    body {
-      height: 100dvh;
-      overflow: hidden;
-    }
-
-    /* Content never overflows at normal sizes; if a tiny window ever makes it, it can
-       still scroll, but without drawing a scrollbar. */
-    body > main {
-      min-height: 0;
-      overflow-y: auto;
-      scrollbar-width: none;
-    }
-
-    body > main::-webkit-scrollbar {
-      display: none;
-    }
-  }
-</style>
 
 <style>
   main {
@@ -98,6 +163,118 @@ const jsonLd = {
     line-height: 1.5;
     color: var(--color-text-muted);
     text-wrap: balance;
+  }
+
+  /* The text sections sit below the tool, so the tool is what loads in view and the rest scrolls. */
+  .info {
+    width: 100%;
+    max-width: 860px;
+    margin: var(--space-8) 0 var(--space-7);
+    text-align: left;
+  }
+
+  .info section + section {
+    margin-top: var(--space-7);
+  }
+
+  .info h2 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .steps li {
+    counter-increment: step;
+    padding: var(--space-3);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .steps li::before {
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-bottom: var(--space-1);
+    border-radius: 50%;
+    background: var(--color-brand);
+    color: var(--color-on-accent);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .steps strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 17px;
+    color: var(--color-text);
+  }
+
+  .faq {
+    margin: var(--space-2) 0 0;
+  }
+
+  .faq dt {
+    margin-top: var(--space-3);
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .faq dd {
+    margin: 4px 0 0;
+    max-width: 720px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .guides {
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 var(--space-4);
+  }
+
+  .guides li {
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--color-line);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .all {
+    margin: var(--space-2) 0 0;
+    font-size: 15px;
+  }
+
+  @media (max-width: 720px) {
+    .info {
+      margin-top: var(--space-7);
+    }
+
+    .steps,
+    .guides {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Short desktop windows: a smaller headline keeps the tool in view. */
