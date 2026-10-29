@@ -1,6 +1,3 @@
-// Hands browsers the ICE servers they need: STUN to find a direct path, and short-lived
-// Cloudflare Realtime TURN credentials so a relay can carry the transfer when a network
-// blocks direct connections. The long-term TURN key never leaves the worker.
 
 export interface IceEnv {
   ICE_LIMITER?: RateLimit;
@@ -21,7 +18,6 @@ const STUN_ONLY: IceServer[] = [{ urls: ['stun:stun.cloudflare.com:3478'] }];
 const DEFAULT_TTL_SECONDS = 4 * 60 * 60;
 const MIN_TTL_SECONDS = 10 * 60;
 const MAX_TTL_SECONDS = 48 * 60 * 60;
-// After a failed credential request, have clients ask again in a few minutes.
 const RETRY_AFTER_ERROR_MS = 10 * 60 * 1000;
 
 export async function handleIce(request: Request, env: IceEnv): Promise<Response> {
@@ -37,8 +33,6 @@ export async function handleIce(request: Request, env: IceEnv): Promise<Response
     return new Response('Method not allowed', { status: 405, headers: { Allow: 'GET, OPTIONS' } });
   }
 
-  // Credentials cost nothing to mint but relay traffic is billed, so cap how fast any
-  // one address can collect them.
   if (env.ICE_LIMITER) {
     const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
     const { success } = await env.ICE_LIMITER.limit({ key: `ice:${ip}` });
@@ -72,9 +66,6 @@ export async function handleIce(request: Request, env: IceEnv): Promise<Response
   }
 }
 
-// The page normally calls this on its own origin. A browser request from any other site
-// is refused unless that origin is listed in ALLOWED_ORIGINS (comma-separated). Requests
-// without fetch metadata (non-browser clients) still go through the rate limit.
 function corsHeaders(request: Request, env: IceEnv): Record<string, string> | null {
   const origin = request.headers.get('Origin');
   const allowed = (env.ALLOWED_ORIGINS ?? '')
@@ -97,8 +88,6 @@ function urlList(server: IceServer): string[] {
   return Array.isArray(server.urls) ? server.urls : [server.urls];
 }
 
-// Keep only well-formed entries, and drop alternate port 53, which browsers block and
-// would otherwise time out on.
 function sanitize(input: unknown): IceServer[] {
   if (!Array.isArray(input)) return [];
   const servers: IceServer[] = [];

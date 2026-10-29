@@ -1,6 +1,3 @@
-// Runs before every build (npm "prebuild"). Fails the build, and so the deploy, when a published
-// guide still has a TODO or screenshot placeholder in it, or links to a page of this site that
-// does not exist. Drafts (draft: true) are skipped: they are allowed to be unfinished.
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 

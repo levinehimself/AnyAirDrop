@@ -19,7 +19,6 @@ const MAX_MESSAGE_BYTES = 64 * 1024;
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    // The trailing-slash form matches the site's URL style, so it passes the Astro dev proxy.
     if (url.pathname === '/ws/ice' || url.pathname === '/ws/ice/') return handleIce(request, env);
     if (url.pathname === '/ws/whoami' || url.pathname === '/ws/whoami/') return whoami(request);
     if (url.pathname !== '/ws') return new Response('Not found', { status: 404 });
@@ -27,9 +26,6 @@ export default {
       return new Response('Expected a WebSocket upgrade', { status: 426 });
     }
 
-    // A pairing code puts two devices in their own room, wherever they are. A trusted-device
-    // token (64 random hex characters, known only to devices that trust each other) does the
-    // same, permanently. Without either, devices behind the same network address share a room.
     const code = url.searchParams.get('pair');
     const trust = url.searchParams.get('trust');
     let room: string;
@@ -51,7 +47,6 @@ export default {
 export class Room extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
-    // Keep-alive pings are answered without waking the object.
     ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong'));
   }
 
@@ -78,7 +73,6 @@ export class Room extends DurableObject<Env> {
     if (msg.type === 'hello') {
       const peer = toPeer(msg);
       if (!peer) return;
-      // A reload or reconnect replaces the old socket for the same device.
       for (const other of this.ctx.getWebSockets()) {
         if (other !== ws && (other.deserializeAttachment() as Peer | null)?.id === peer.id) {
           other.serializeAttachment(null);
@@ -102,7 +96,6 @@ export class Room extends DurableObject<Env> {
     try {
       ws.close(code, reason);
     } catch {
-      // Already closed.
     }
   }
 
@@ -138,7 +131,6 @@ export class Room extends DurableObject<Env> {
       try {
         ws.send(text);
       } catch {
-        // The socket is closing; its close handler will clean up.
       }
     }
   }
@@ -160,9 +152,6 @@ function toPeer(msg: Record<string, unknown>): Peer | null {
   };
 }
 
-// Devices on one Wi-Fi share a public IPv4 address, or an IPv6 /64 prefix. The key is
-// hashed so raw addresses never become room names. Private and loopback addresses
-// (local development) all share one room.
 async function networkKey(ip: string | null): Promise<string> {
   if (!ip || isPrivate(ip)) return 'local';
   let basis = ip;
@@ -193,10 +182,6 @@ function ipv6Prefix64(ip: string): string {
   return full.slice(0, 4).map((part) => part.padStart(4, '0')).join(':');
 }
 
-// Diagnostics for "why don't my two devices see each other?": which address family this
-// connection arrives on and a short label for the shared-network room it would join.
-// Devices only find each other automatically when their labels match. The address itself
-// is never returned.
 async function whoami(request: Request): Promise<Response> {
   const site = request.headers.get('Sec-Fetch-Site');
   if (site && site !== 'same-origin' && site !== 'none') return new Response('Forbidden', { status: 403 });

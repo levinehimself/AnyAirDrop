@@ -15,10 +15,8 @@ type HubEvents = {
   peers: [RemotePeer[]];
   status: [HubStatus];
   incoming: [IncomingTransfer];
-  /** Another device asks to be trusted: answer with answerTrust(). */
   trustoffer: [peer: RemotePeer, xid: string, token: string, auto: boolean];
   trustcancelled: [xid: string];
-  /** A trusted device removed this device from its list. */
   trustrevoked: [token: string];
 };
 
@@ -30,10 +28,6 @@ interface PeerEntry {
   rooms: Set<string>;
 }
 
-/**
- * The transfer engine's front door: joins signaling rooms, tracks nearby devices,
- * opens WebRTC links on demand and routes transfer messages to the right transfer.
- */
 export class Hub extends Emitter<HubEvents> {
   readonly me: Identity = loadIdentity();
   status: HubStatus = 'connecting';
@@ -54,13 +48,11 @@ export class Hub extends Emitter<HubEvents> {
     super();
     this.forceRelay = options.forceRelay ?? false;
     this.ice = new IceProvider(iceEndpoint(endpoint));
-    // Renewed relay credentials reach connections that are already open.
     this.ice.on('updated', (servers) => {
       for (const link of this.links.values()) link.updateIceServers(servers);
     });
   }
 
-  /** True once the worker has handed out relay (TURN) credentials. */
   get relayAvailable(): boolean {
     return this.ice.relay;
   }
@@ -70,20 +62,17 @@ export class Hub extends Emitter<HubEvents> {
     this.addRoom('net', this.endpoint);
   }
 
-  /** Joins a private room shared with whoever enters the same six-digit code. */
   joinPair(code: string): void {
     const key = `pair:${code}`;
     if (!this.rooms.has(key)) this.addRoom(key, `${this.endpoint}?pair=${code}`);
   }
 
-  /** Joins the secret room shared with a trusted device. */
   joinTrust(token: string): void {
     if (!isToken(token)) return;
     const key = trustRoom(token);
     if (!this.rooms.has(key)) this.addRoom(key, `${this.endpoint}?trust=${token}`);
   }
 
-  /** Stops looking for a trusted device. */
   leaveTrust(token: string): void {
     const key = trustRoom(token);
     const room = this.rooms.get(key);
@@ -94,14 +83,12 @@ export class Hub extends Emitter<HubEvents> {
     this.prune();
   }
 
-  /** The device currently online in a trusted room, if any. */
   trustedPeer(token: string): RemotePeer | undefined {
     const key = trustRoom(token);
     for (const entry of this.peers.values()) if (entry.rooms.has(key)) return entry.info;
     return undefined;
   }
 
-  /** The trusted-room token this device was found through, or null if it is not trusted. */
   trustTokenOf(peerId: string): string | null {
     for (const key of this.peers.get(peerId)?.rooms ?? []) {
       if (key.startsWith('trust:')) return key.slice('trust:'.length);
@@ -109,11 +96,6 @@ export class Hub extends Emitter<HubEvents> {
     return null;
   }
 
-  /**
-   * Asks a connected device to become a trusted device. Resolves with their answer; when it
-   * is 'accepted' this device has already joined the shared room and the caller should store
-   * the token.
-   */
   async offerTrust(
     peerId: string,
     signal?: AbortSignal,
@@ -136,7 +118,6 @@ export class Hub extends Emitter<HubEvents> {
         try {
           link.sendJSON({ t: 'trust-cancel', xid });
         } catch {
-          // Channel already gone.
         }
         finish('cancelled');
       };
@@ -151,17 +132,14 @@ export class Hub extends Emitter<HubEvents> {
     return { answer: result, token };
   }
 
-  /** Replies to a trustoffer event. Accepting joins the shared room. */
   answerTrust(peerId: string, xid: string, token: string, accepted: boolean): void {
     try {
       this.links.get(peerId)?.sendJSON({ t: accepted ? 'trust-accept' : 'trust-decline', xid });
     } catch {
-      // Channel already gone: the other device will time out.
     }
     if (accepted) this.joinTrust(token);
   }
 
-  /** Tells any online devices in a trusted room that this device no longer trusts them, then leaves it. */
   async revokeTrust(token: string): Promise<void> {
     const key = trustRoom(token);
     const ids = [...this.peers].filter(([, entry]) => entry.rooms.has(key)).map(([id]) => id);
@@ -172,14 +150,12 @@ export class Hub extends Emitter<HubEvents> {
           await link.ready(5000);
           link.sendJSON({ t: 'trust-revoke', xid: randomHex(8), token });
         } catch {
-          // Offline or unreachable: they keep the entry until they remove it themselves.
         }
       }),
     );
     this.leaveTrust(token);
   }
 
-  /** Changes this device's name and tells every room so other radars update. */
   rename(name: string): void {
     this.me.name = name;
     for (const room of this.rooms.values()) room.rehello();
@@ -257,7 +233,6 @@ export class Hub extends Emitter<HubEvents> {
     for (const [id, entry] of this.peers) {
       if (entry.rooms.size > 0) continue;
       this.peers.delete(id);
-      // An open link can finish its transfer even after the device leaves signaling.
       if (!this.isBusy(id)) {
         this.links.get(id)?.close();
         this.links.delete(id);
@@ -326,7 +301,6 @@ export class Hub extends Emitter<HubEvents> {
       return;
     }
     if (msg.t === 'trust-revoke') {
-      // Only a device found through that trusted room can revoke it.
       if (isToken(msg.token) && this.peers.get(peerId)?.rooms.has(trustRoom(msg.token))) {
         this.emit('trustrevoked', msg.token);
       }
@@ -366,7 +340,6 @@ export class Hub extends Emitter<HubEvents> {
   }
 }
 
-/** The signaling endpoint: same origin by default, overridable at build time. */
 export function signalingEndpoint(): string {
   const configured = import.meta.env.PUBLIC_SIGNAL_URL as string | undefined;
   if (configured) return configured;

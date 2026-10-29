@@ -1,4 +1,3 @@
-// Exercises the signaling worker directly: pairing-room isolation, signal relay, leave events.
 const base = process.argv[2] ?? 'ws://127.0.0.1:8787/ws';
 const hex = (n) => [...crypto.getRandomValues(new Uint8Array(n))].map((b) => b.toString(16).padStart(2, '0')).join('');
 
@@ -18,8 +17,6 @@ function client(label, url) {
 }
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-// Poll instead of sleeping a fixed time, so the test also works against the deployed
-// worker, where messages take a network round trip.
 async function until(predicate, ms = 4000) {
   const end = Date.now() + ms;
   while (Date.now() < end) {
@@ -31,7 +28,6 @@ async function until(predicate, ms = 4000) {
 const results = [];
 const check = (name, ok) => results.push(`${ok ? 'PASS' : 'FAIL'}  ${name}`);
 
-// Random codes, so a run against production never lands in a real user's pairing room.
 const code = String(100000 + Math.floor(Math.random() * 800000));
 const otherCode = String(Number(code) + 1);
 
@@ -64,7 +60,6 @@ const badResult = await new Promise((r) => {
 });
 check('Malformed code is rejected', badResult === 'rejected');
 
-// Trusted devices: a secret 64-hex token is a permanent private room, wherever the devices are.
 const token = hex(32);
 const t1 = client('T1', `${base}?trust=${token}`);
 await t1.ready;
@@ -78,7 +73,6 @@ await until(() => t3.inbox.some((m) => m.type === 'peers'));
 check('Trusted room: a different token sees nobody', t3.inbox.find((m) => m.type === 'peers')?.peers.length === 0);
 t1.ws.send(JSON.stringify({ type: 'signal', to: t2.id, data: { trusted: true } }));
 check('Trusted room: signals are relayed', await until(() => t2.inbox.some((m) => m.type === 'signal' && m.from === t1.id)));
-// A rename is a second hello on the same socket; the others see the new name.
 t1.ws.send(JSON.stringify({ type: 'hello', id: t1.id, name: 'Renamed', device: 'phone', os: 'Test', browser: 'Node' }));
 check('Rename reaches the others', await until(() => t2.inbox.some((m) => m.type === 'peer-joined' && m.peer.id === t1.id && m.peer.name === 'Renamed')));
 const badTrust = new WebSocket(`${base}?trust=${hex(31)}`);

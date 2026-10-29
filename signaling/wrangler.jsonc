@@ -1,8 +1,4 @@
 {
-  // Signaling server for AnyAirDrop.com: introduces devices to each other so their
-  // browsers can open a direct WebRTC connection, and hands out short-lived relay (TURN)
-  // credentials for networks that block direct connections. File data never passes
-  // through this worker.
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "anyairdrop-signal",
   "main": "src/index.ts",
@@ -11,23 +7,13 @@
     "bindings": [{ "name": "ROOMS", "class_name": "Room" }]
   },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Room"] }],
-  // Caps how often one address can fetch relay credentials from /ws/ice.
   "ratelimits": [
     { "name": "ICE_LIMITER", "namespace_id": "1001", "simple": { "limit": 30, "period": 60 } }
   ],
   "vars": {
-    // How long relay credentials stay valid, in seconds. Browsers refresh them before then.
     "TURN_TTL": "14400"
   },
-  // Relay secrets (Cloudflare dashboard > Realtime > TURN keys). Without them the worker
-  // serves STUN only and everything else keeps working:
-  //   npx wrangler secret put TURN_KEY_ID --config signaling/wrangler.jsonc
-  //   npx wrangler secret put TURN_KEY_API_TOKEN --config signaling/wrangler.jsonc
-  // Locally, put them in signaling/.dev.vars (see .dev.vars.example).
   "observability": { "enabled": true },
-  // /ws/whoami/ reports which shared-network group a device lands in (see ?debug=1).
-  // The site's pages come from the cPanel host behind Cloudflare's proxy; only /ws and
-  // /ws/ice/ on these hostnames reach this worker.
   "routes": [
     { "pattern": "anyairdrop.com/ws*", "zone_name": "anyairdrop.com" },
     { "pattern": "www.anyairdrop.com/ws*", "zone_name": "anyairdrop.com" }

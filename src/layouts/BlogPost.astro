@@ -130,7 +130,6 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
       {
         ADS_ENABLED && !embedTool && (
           <>
-            {/* The top and middle slots start here and are moved into the article by the script below. */}
             <div class="ad-pool" hidden>
               <AdSlot position="top" />
               <AdSlot position="middle" />
@@ -144,9 +143,7 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
                 var headings = body.querySelectorAll(':scope > h2');
                 var top = pool.querySelector('[data-ad-position="top"]');
                 var middle = pool.querySelector('[data-ad-position="middle"]');
-                // After the introduction: before the first section heading.
                 if (top && headings.length > 0) headings[0].before(top);
-                // At the midpoint, and only when the guide is long enough for it not to crowd the first one.
                 if (middle && headings.length >= 4) headings[Math.floor(headings.length / 2)].before(middle);
                 document.querySelectorAll('.ad-slot').forEach(function (slot) {
                   if (slot.closest('.ad-pool')) return;
@@ -323,7 +320,6 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
     margin-top: var(--space-4);
   }
 
-  /* The post's own markdown is rendered inside this wrapper, so its elements are styled globally. */
   .post-body {
     margin-top: var(--space-4);
   }
@@ -402,7 +398,6 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
     color: var(--color-text-muted);
   }
 
-  /* Tables scroll sideways inside the column instead of stretching the page on phones. */
   .post-body :global(table) {
     display: block;
     width: max-content;
@@ -428,7 +423,6 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
     white-space: nowrap;
   }
 
-  /* A figure inside the article: a markdown image with an italic caption line under it. */
   .post-body :global(p:has(> img)) {
     margin-top: var(--space-5);
     margin-bottom: 0;
@@ -558,8 +552,6 @@ const correction = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Correc
       font-size: 31px;
     }
 
-    /* The diagrams are drawn 800 units wide with small labels, so on a phone they scroll sideways
-       at a size that stays readable instead of shrinking to fit. */
     .hero {
       overflow-x: auto;
     }

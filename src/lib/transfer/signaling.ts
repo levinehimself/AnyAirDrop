@@ -21,7 +21,6 @@ type SignalingEvents = {
 const PING_MS = 25_000;
 const MAX_BACKOFF_MS = 15_000;
 
-/** One WebSocket to one signaling room, with keep-alive and automatic reconnect. */
 export class SignalingRoom extends Emitter<SignalingEvents> {
   private ws: WebSocket | null = null;
   private attempts = 0;
@@ -42,7 +41,6 @@ export class SignalingRoom extends Emitter<SignalingEvents> {
     this.open();
   }
 
-  /** Tells the room this device's details changed (for example, it was renamed). */
   rehello(): void {
     if (this.ws?.readyState !== WebSocket.OPEN) return;
     const { id, name, device, os, browser } = this.me;
@@ -96,7 +94,6 @@ export class SignalingRoom extends Emitter<SignalingEvents> {
       const wasConnected = this.connected;
       this.connected = false;
       if (wasConnected || this.attempts === 0) this.emit('close');
-      // 4000 = another tab with the same device id took over this connection.
       if (this.stopped || event.code === 4000) return;
       const delay = Math.min(MAX_BACKOFF_MS, 500 * 2 ** this.attempts++);
       this.reconnectTimer = setTimeout(() => this.open(), delay);

@@ -4,7 +4,6 @@ import type { Post } from '../lib/blog';
 
 interface Props {
   posts: Post[];
-  /** The first images load at once; lower ones wait until they scroll into view. */
   eager?: number;
 }
 
@@ -17,7 +16,6 @@ const { posts, eager = 0 } = Astro.props;
       <li>
         <a href={`/blog/${post.id}/`}>
           <span class="thumb">
-            {/* The title below names the post, so the picture adds no extra words for screen readers. */}
             <Image src={post.data.heroImage} alt="" widths={[360, 720]} sizes="(min-width: 1000px) 330px, (min-width: 640px) 45vw, 92vw" loading={i < eager ? 'eager' : 'lazy'} />
           </span>
           <span class="title">{post.data.title}</span>
@@ -29,7 +27,6 @@ const { posts, eager = 0 } = Astro.props;
 </ul>
 
 <style>
-  /* The page layout styles every list inside its text column, so these win with !important. */
   .posts {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

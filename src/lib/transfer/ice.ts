@@ -7,11 +7,6 @@ export const FALLBACK_ICE: RTCIceServer[] = [
 const RETRY_MS = 60_000;
 const MAX_REFRESH_MARGIN_MS = 30 * 60 * 1000;
 
-/**
- * Keeps a current list of ICE servers from the signaling worker's /ws/ice endpoint,
- * including short-lived relay (TURN) credentials when the worker has a TURN key, and
- * fetches fresh ones before they expire.
- */
 export class IceProvider extends Emitter<{ updated: [RTCIceServer[]] }> {
   servers: RTCIceServer[] = FALLBACK_ICE;
   relay = false;
@@ -49,13 +44,11 @@ export class IceProvider extends Emitter<{ updated: [RTCIceServer[]] }> {
         }
       }
     } catch {
-      // Offline or blocked: keep the servers we have and try again shortly.
     }
     if (!this.stopped) this.timer = setTimeout(() => void this.load(), next);
   }
 }
 
-/** /ws on the signaling host becomes /ws/ice/ over HTTP(S). */
 export function iceEndpoint(signalUrl: string): string {
   const url = new URL(signalUrl);
   url.protocol = url.protocol === 'wss:' ? 'https:' : 'http:';

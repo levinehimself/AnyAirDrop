@@ -1,20 +1,14 @@
-# Apache settings for the cPanel host.
 
-# The GitHub deploy keeps a list of uploaded files here; it is not for visitors.
 <Files ".ftp-deploy-sync-state.json">
   Require all denied
 </Files>
 
-# Built scripts, styles and fonts have a content hash in their names, so a new version
-# always gets a new name and browsers can keep these for a year.
 <IfModule mod_headers.c>
   <FilesMatch "\.(js|css|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
 
-# Old Blogger-style URLs from the domain's previous owner: gone for good (410), so search
-# engines drop them instead of retrying. None of these paths exist on this site.
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteRule ^(20[0-9]{2}/|search/label/|feeds/) - [G,L]

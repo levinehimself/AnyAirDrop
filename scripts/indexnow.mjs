@@ -1,11 +1,3 @@
-// Tells search engines that support IndexNow (Bing, Yandex, Seznam, Naver and others) that
-// pages were added or changed, so they are crawled sooner. Run it after a deploy:
-//
-//   npm run indexnow                       every page in the sitemap
-//   npm run indexnow -- https://anyairdrop.com/about/    only the pages you list
-//
-// The key is not a secret: IndexNow checks it by fetching the key file from the site, so
-// the file in public/ must be live before this runs.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
 const HOST = 'anyairdrop.com';
@@ -45,7 +37,6 @@ const response = await fetch('https://api.indexnow.org/indexnow', {
   body: JSON.stringify({ host: HOST, key, keyLocation: `${SITE}/${keyFile}`, urlList: urls }),
 });
 
-// 200 and 202 mean accepted. 403 means the key file could not be verified, 422 a bad address.
 console.log(`${response.status} ${response.statusText}: submitted ${urls.length} page${urls.length === 1 ? '' : 's'}`);
 for (const url of urls) console.log(`  ${url}`);
 process.exit(response.status === 200 || response.status === 202 ? 0 : 1);

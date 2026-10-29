@@ -1,11 +1,9 @@
-/** Where incoming file bytes are written while they arrive. */
 export interface Sink {
   write(chunk: ArrayBuffer): Promise<void>;
   finish(): Promise<File>;
   abort(): Promise<void>;
 }
 
-// Below this size, holding the file in memory is simplest and fast everywhere.
 const DISK_THRESHOLD = 32 * 1024 * 1024;
 
 class MemorySink implements Sink {
@@ -33,12 +31,8 @@ interface WritableLike {
   abort(): Promise<void>;
 }
 
-// Network messages are 64 KB, but the file system is much faster (often 2 to 3 times) when
-// it is given a megabyte at a time, and phones are slowest at small writes.
 const DISK_BLOCK = 1024 * 1024;
 
-// Large files stream into the browser's private file system (OPFS) instead of memory,
-// so multi-gigabyte videos don't exhaust a phone's RAM.
 class DiskSink implements Sink {
   private pending: ArrayBuffer[] = [];
   private pendingBytes = 0;
@@ -93,7 +87,6 @@ function incomingDir(ownerId: string): Promise<FileSystemDirectoryHandle | null>
       }
       const root = await navigator.storage.getDirectory();
       const dir = await root.getDirectoryHandle('incoming', { create: true });
-      // Remove files left behind by earlier visits (other tabs' entries start with their id).
       const keys = (dir as unknown as { keys(): AsyncIterable<string> }).keys();
       for await (const key of keys) {
         if (!key.startsWith(ownerId)) await dir.removeEntry(key).catch(() => {});
@@ -120,7 +113,6 @@ export async function createSink(
         const writable = (await (handle as unknown as { createWritable(): Promise<WritableLike> }).createWritable());
         return new DiskSink(dir, entry, handle, writable, meta.name, meta.type);
       } catch {
-        // Fall through to memory, e.g. when storage quota is exceeded.
       }
     }
   }

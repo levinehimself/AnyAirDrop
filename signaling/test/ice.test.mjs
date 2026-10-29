@@ -1,4 +1,3 @@
-// Checks the relay-credential endpoint. Works with or without a TURN key configured.
 const base = process.argv[2] ?? 'http://127.0.0.1:8787/ws/ice/';
 const results = [];
 const check = (name, ok) => results.push(`${ok ? 'PASS' : 'FAIL'}  ${name}`);

@@ -1,8 +1,6 @@
-/* Quiet Radar tokens. Source: design-system/anyairdrop/MASTER.md */
 :root {
   color-scheme: light dark;
 
-  /* Light theme: also the fallback when the device's preference is unknown */
   --color-bg: #f8fafc;
   --color-surface: #ffffff;
   --color-text: #0f172a;
@@ -17,14 +15,10 @@
   --color-success: #15803d;
   --color-scrim: rgba(15, 23, 42, 0.25);
 
-  /* QR code: always dark modules on a white tile (every scanner reads it). The frame
-     around the tile is what separates it from the page. */
   --qr-frame: #0b1220;
 
   --font-sans: 'Urbanist Variable', 'Urbanist', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  /* Only for the logo wordmark. */
   --font-brand: 'Unbounded Variable', 'Unbounded', var(--font-sans);
-  /* The logo's blue: the accent on light, a touch brighter on dark so it keeps its contrast. */
   --color-brand: #2563eb;
 
   --space-1: 8px;
@@ -43,8 +37,6 @@
   --dur-enter: 350ms;
 }
 
-/* Dark theme. Applied when the device prefers dark and the visitor has not chosen
-   light, or when the visitor chose dark with the toggle (data-theme="dark"). */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --color-bg: #0b1220;

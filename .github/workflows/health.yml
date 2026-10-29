@@ -1,8 +1,3 @@
-# Weekly check that the live site still works, even when nobody has pushed code.
-# A failure sends the usual GitHub failure email. Run it by hand from the Actions tab.
-#
-# GitHub pauses scheduled workflows in a public repository after 60 days without
-# activity; if the emails stop, re-enable this workflow in the Actions tab.
 name: Health check
 
 on:
@@ -25,8 +20,6 @@ jobs:
         with:
           node-version: 24
 
-      # Each check is tried three times, 20 seconds apart, so a short blip at Cloudflare or
-      # the host does not raise a false alarm.
       - name: Run the checks
         run: |
           retry() {

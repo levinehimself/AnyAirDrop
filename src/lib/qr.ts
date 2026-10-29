@@ -1,15 +1,12 @@
 import qrcode from 'qrcode-generator';
 
 export type QrImage = {
-  /** SVG path of the dark modules, one unit per module. */
   path: string;
-  /** SVG viewBox that includes a blank margin (the "quiet zone") around the code. */
   viewBox: string;
 };
 
 const QUIET_ZONE = 3;
 
-/** Builds a QR code for `text` as SVG data, so nothing is drawn from a remote image. */
 export function makeQr(text: string): QrImage {
   const qr = qrcode(0, 'M');
   qr.addData(text);

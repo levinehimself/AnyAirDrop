@@ -1,6 +1,5 @@
 type Handler = (...args: unknown[]) => void;
 
-/** Minimal typed event emitter shared by the transfer engine classes. */
 export class Emitter<Events extends Record<string, unknown[]>> {
   private handlers = new Map<keyof Events, Set<Handler>>();
 

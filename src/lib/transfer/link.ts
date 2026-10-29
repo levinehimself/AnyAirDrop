@@ -16,19 +16,12 @@ interface SignalData {
 
 export interface LinkOptions {
   iceServers?: RTCIceServer[];
-  /** Testing aid: send everything through the relay even when a direct path exists. */
   forceRelay?: boolean;
 }
 
-// Keep a few MB queued so the network stays busy without holding a whole file in memory.
-// A smaller queue also means a cancel takes effect sooner on a slow connection.
 const HIGH_WATER = 4 * 1024 * 1024;
 const LOW_WATER = 1024 * 1024;
 
-/**
- * A WebRTC connection to one other device, with one ordered, reliable data channel.
- * Uses the "perfect negotiation" pattern so either side can start the connection.
- */
 export class PeerLink extends Emitter<LinkEvents> {
   readonly pc: RTCPeerConnection;
   readonly dc: RTCDataChannel;
@@ -46,10 +39,7 @@ export class PeerLink extends Emitter<LinkEvents> {
   ) {
     super();
     this.polite = myId < peerId;
-    // With relay servers in the list, ICE still prefers a direct path and only falls
-    // back to the relay when the network blocks one.
     this.pc = new RTCPeerConnection({ iceServers, iceTransportPolicy: forceRelay ? 'relay' : 'all' });
-    // Both sides create the same pre-negotiated channel, so neither waits for the other's.
     this.dc = this.pc.createDataChannel('files', { negotiated: true, id: 0, ordered: true });
     this.dc.binaryType = 'arraybuffer';
     this.dc.bufferedAmountLowThreshold = LOW_WATER;
@@ -92,10 +82,6 @@ export class PeerLink extends Emitter<LinkEvents> {
     return this.dc.readyState === 'closed' || this.pc.connectionState === 'closed';
   }
 
-  /**
-   * Swaps in fresh ICE servers, e.g. renewed relay credentials. If the connection has
-   * already failed or dropped, retries it so the new servers get a chance.
-   */
   updateIceServers(iceServers: RTCIceServer[]): void {
     if (this.pc.signalingState === 'closed') return;
     try {
@@ -108,14 +94,12 @@ export class PeerLink extends Emitter<LinkEvents> {
     if (state === 'failed' || state === 'disconnected') this.pc.restartIce();
   }
 
-  /** Largest message every browser in use accepts; Safari is the strictest. */
   get chunkSize(): number {
     const max = this.pc.sctp?.maxMessageSize || 65536;
     return Math.max(16 * 1024, Math.min(64 * 1024, max));
   }
 
   handleSignal(data: SignalData): void {
-    // Process in arrival order: a candidate must never overtake its description.
     this.queue = this.queue
       .then(() => this.applySignal(data))
       .catch((err) => console.warn('[AnyAirDrop] signaling error', err));
@@ -143,7 +127,6 @@ export class PeerLink extends Emitter<LinkEvents> {
 
   ready(timeoutMs = 20_000): Promise<void> {
     if (this.isOpen) return Promise.resolve();
-    // Creating the channel already queued negotiation; just wait for it to open.
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('connect-timeout')), timeoutMs);
       this.opened.then(() => {
@@ -176,10 +159,6 @@ export class PeerLink extends Emitter<LinkEvents> {
     this.dc.send(chunk);
   }
 
-  /**
-   * How the bytes travel (same network, across the internet, or through a relay), the
-   * round-trip delay of that path and whether it runs over TCP, which is slower than UDP.
-   */
   async stats(): Promise<{ route: Route; rttMs: number | null; viaTcp: boolean }> {
     const stats = await this.pc.getStats();
     let pairId: string | undefined;

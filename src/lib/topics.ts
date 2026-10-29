@@ -1,4 +1,3 @@
-/** The five topics the blog covers. The key is used in frontmatter and in /blog/topic/<key>/. */
 export const TOPICS = {
   'wifi-basics': {
     name: 'How Wi-Fi works',

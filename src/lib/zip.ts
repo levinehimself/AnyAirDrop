@@ -7,11 +7,8 @@ export interface ZipInput {
 
 export type ZipResult = 'saved' | 'cancelled' | 'too-large';
 
-// Without a save dialog the archive is built in memory before it downloads, so very large
-// ones are refused there and can still be saved file by file.
 const MEMORY_LIMIT = 1024 * 1024 * 1024;
 
-/** Makes names unique inside the archive: "a.pdf", "a (2).pdf", "a (3).pdf". */
 export function uniqueNames(names: string[]): string[] {
   const used = new Set<string>();
   return names.map((name) => {
@@ -30,11 +27,6 @@ type SaveFilePicker = (options: {
   types: { description: string; accept: Record<string, string[]> }[];
 }) => Promise<{ createWritable(): Promise<WritableStream> }>;
 
-/**
- * Packs the files into one ZIP and saves it. Files are stored as they are (no extra
- * compression), which is fast and does not hurt photos, videos or documents that are
- * already compressed. Where the browser has a save dialog the ZIP streams straight to disk.
- */
 export async function saveAsZip(files: ZipInput[], zipName: string): Promise<ZipResult> {
   const names = uniqueNames(files.map((f) => f.name));
   const make = (): Response =>
@@ -51,7 +43,6 @@ export async function saveAsZip(files: ZipInput[], zipName: string): Promise<Zip
       writable = await handle.createWritable();
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return 'cancelled';
-      // The dialog is unavailable here (for example, in a frame): fall back to a download.
     }
     if (writable) {
       await make().body!.pipeTo(writable);

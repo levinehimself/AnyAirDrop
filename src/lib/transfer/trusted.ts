@@ -1,21 +1,12 @@
-/**
- * Trusted devices. Two devices that trust each other share a secret room token. Each
- * joins that room whenever AnyAirDrop.com is open, so they find each other on any
- * network, including through different VPNs. The token never leaves the two devices
- * except as the name of that room.
- */
 export interface TrustedDevice {
-  /** 64 hex characters: the secret name of the shared signaling room. */
   token: string;
   name: string;
   device: string;
   os: string;
-  /** Accept transfers from this device without asking. Off unless the person turns it on. */
   autoAccept: boolean;
   addedAt: number;
 }
 
-/** A trusted device plus whether it is online right now (for the list on screen). */
 export interface TrustedRow extends TrustedDevice {
   online: boolean;
 }
@@ -51,7 +42,6 @@ export function loadTrusted(): TrustedDevice[] {
   }
 }
 
-/** Returns false when the browser would not store the list (private mode, blocked data). */
 export function saveTrusted(list: TrustedDevice[]): boolean {
   try {
     localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX_TRUSTED)));
@@ -63,7 +53,6 @@ export function saveTrusted(list: TrustedDevice[]): boolean {
 
 const AUTO_KEY = 'anyairdrop:autotrust';
 
-/** After a completed transfer, remember the other device as trusted. On unless switched off. */
 export function loadAutoTrust(): boolean {
   try {
     return localStorage.getItem(AUTO_KEY) !== 'off';
@@ -77,7 +66,6 @@ export function saveAutoTrust(on: boolean): void {
     if (on) localStorage.removeItem(AUTO_KEY);
     else localStorage.setItem(AUTO_KEY, 'off');
   } catch {
-    // Storage blocked: the choice lasts until the page is closed.
   }
 }
 

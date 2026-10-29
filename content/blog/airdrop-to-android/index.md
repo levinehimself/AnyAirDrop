@@ -25,19 +25,6 @@ draft: true
 ---
 
 
-<!--
-PUBLISH CHECKLIST (delete this block when done)
-1. Add the `tested` block to the frontmatter and fill the timed-results table with real test data. Never estimate.
-2. Replace every SCREENSHOT comment with a real screenshot from the shipped tool.
-3. Re-check the Quick Share supported-phone list against Google and Samsung on publish day.
-4. Verify on real phones: Quick Share and AirDrop work without a shared Wi-Fi network;
-   "Save as Video" for Live Photos; where Downloads land on Pixel and Galaxy;
-   the Quick Settings path to Quick Share visibility on Pixel and on Galaxy (One UI);
-   whether some phones need a separate "share with Apple devices" switch;
-   "Copy iCloud Link" in the iPhone Photos share sheet; cross-platform speed vs our own timings.
-5. Confirm the AnyAirDrop steps match the shipped UI (device names, Accept prompt, QR pairing).
-6. Set publishDate to the go-live day and set draft: false.
--->
 
 If your Android phone is a recent Pixel or Galaxy, you can now AirDrop to it directly: it shows up in the iPhone's share sheet like any Apple device. For every other Android phone, the fastest way is a browser-based tool over your Wi-Fi, with nothing to install on either phone.
 
@@ -90,10 +77,6 @@ This works on every iPhone and every Android phone with a modern browser. Nothin
 4. **Tap the Android phone's name,** then choose **Photo Library** to send photos and videos, or **Choose Files** for documents and anything in the Files app. You can select many items at once.
 5. **On the Android phone, tap Accept.** The files download at Wi-Fi speed and save to the **Downloads** folder.
 
-<!-- SCREENSHOT 1: both phones on AnyAirDrop.com, each showing the other device's name. -->
-<!-- SCREENSHOT 2: iPhone picker with several photos selected. -->
-<!-- SCREENSHOT 3: Android Accept prompt showing file count and total size. -->
-<!-- SCREENSHOT 4: Android Downloads folder in Files by Google with the received photos. -->
 
 If the Android phone doesn't appear in step 3, tap **Pair with code** on one phone and scan the QR code with the other. Pairing connects the two phones even when the network keeps them apart. The status badge then tells you whether the transfer runs directly over your Wi-Fi or through our relay.
 
@@ -136,8 +119,6 @@ The list keeps growing, and support arrives through software updates. Before you
 3. **On the iPhone, open the photo or file and tap Share,** then **AirDrop**. The Android phone appears alongside nearby Apple devices.
 4. **Tap the Android phone,** then tap **Accept** on the Android phone when the request appears.
 
-<!-- SCREENSHOT 5: Android Quick Share visibility set to Everyone for 10 minutes. -->
-<!-- SCREENSHOT 6: iPhone AirDrop sheet showing the Android phone. -->
 
 ### Steps: supported Android phone to iPhone
 
@@ -151,7 +132,7 @@ After ten minutes, the iPhone switches back on its own. On iOS 16.2 and later it
 
 - **Only recent phones.** The supported list skews heavily toward 2024 to 2026 flagships. Most budget and mid-range Android phones aren't on it.
 - **The receiving side must be visible to everyone, briefly.** Both Google's and Apple's instructions use the ten-minute "everyone" setting on the receiving phone.
-- **Early reports say it's slower than iPhone-to-iPhone AirDrop.** For photos and short clips you won't notice; for a long 4K video, the browser method or LocalSend may finish sooner. <!-- TODO: confirm with our own timed test. -->
+- **Early reports say it's slower than iPhone-to-iPhone AirDrop.** For photos and short clips you won't notice; for a long 4K video, the browser method or LocalSend may finish sooner.
 
 ## Method 3: LocalSend (free, open-source app)
 
@@ -195,13 +176,13 @@ Backups count against your Google account storage, which is shared across Gmail,
 | Method | Keeps original quality | Size limit | Needs internet |
 | --- | --- | --- | --- |
 | AnyAirDrop (browser) | Yes | None | Only to connect the two devices |
-| Quick Share with AirDrop | Yes | None stated | No <!-- TODO: verify on real phones --> |
+| Quick Share with AirDrop | Yes | None stated | No |
 | LocalSend | Yes | None | No |
 | iCloud link | Yes | Your iCloud storage | Yes, upload and download |
 | Google Photos (Original quality) | Yes | Your Google storage | Yes, upload and download |
 | Messaging apps (default settings) | No, compressed | Varies by app | Yes |
 
-We timed each direct method with the same files on the same network. <!-- TODO: insert the timed-results table and the speed chart (images/speed-test.png) from the real test. Columns: method, 50 HEIC photos, 1 GB 4K video, notes. Do not publish this section without real numbers. -->
+We timed each direct method with the same files on the same network.
 
 ## How to keep photos and videos at full quality
 

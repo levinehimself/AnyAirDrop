@@ -29,8 +29,6 @@ function pick<T>(list: readonly T[]): T {
   return list[n[0] % list.length];
 }
 
-// Per tab, so two tabs in one browser show up as two devices. Storage can be
-// unavailable (private mode, blocked site data): fall back to a fresh value.
 function sessionValue(key: string, make: () => string): string {
   try {
     const existing = sessionStorage.getItem(key);
@@ -79,12 +77,9 @@ export function detectDevice(
   return { device, os, browser };
 }
 
-// A name the person chose is kept on this device for good (localStorage). Without one,
-// each tab gets a random friendly name.
 const NAME_KEY = 'anyairdrop:devicename';
 export const MAX_NAME_LENGTH = 24;
 
-/** Trims a typed name, drops control characters and limits its length. */
 export function cleanName(raw: string): string {
   return raw.replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim().slice(0, MAX_NAME_LENGTH);
 }
@@ -97,10 +92,6 @@ function savedName(): string {
   }
 }
 
-/**
- * Remembers a new name for this device. An empty name clears the saved one, so the
- * device goes back to its random name. Returns the name now in use.
- */
 export function saveName(raw: string): string {
   const name = cleanName(raw);
   try {
@@ -112,7 +103,6 @@ export function saveName(raw: string): string {
       sessionStorage.removeItem('anyairdrop:name');
     }
   } catch {
-    // Storage blocked: the name still applies until the page is closed.
   }
   return name || sessionValue('anyairdrop:name', randomName);
 }

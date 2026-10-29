@@ -14,16 +14,11 @@ export interface ReceivedFile extends FileMeta {
   file: File;
 }
 
-// Control messages travel as JSON on the same ordered channel as the binary chunks,
-// so "file", the chunks and "eof" always arrive in the order they were sent.
 export type Control =
   | { t: 'offer'; xid: string; files: FileMeta[]; total: number }
   | { t: 'accept' | 'decline' | 'busy' | 'cancel' | 'done' | 'ack'; xid: string }
   | { t: 'file' | 'eof'; xid: string; i: number }
-  // The receiver tells the sender how many bytes have actually arrived, so both bars agree.
   | { t: 'prog'; xid: string; n: number }
-  // Trusted devices: one side proposes a secret room token, the other accepts or declines.
-  // Either side can later revoke it.
   | { t: 'trust-offer'; xid: string; token: string; auto?: boolean }
   | { t: 'trust-accept' | 'trust-decline' | 'trust-cancel'; xid: string }
   | { t: 'trust-revoke'; xid: string; token: string };
@@ -37,7 +32,6 @@ export function parseControl(text: string): Control | null {
   }
 }
 
-/** Checks an incoming offer and makes its file names safe to save. */
 export function validateOffer(msg: { files?: unknown }): { files: FileMeta[]; total: number } | null {
   if (!Array.isArray(msg.files) || msg.files.length === 0 || msg.files.length > 1000) return null;
   const files: FileMeta[] = [];
@@ -62,7 +56,6 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
   onSettled: (() => void) | null = null;
   private waiter: ((msg: Control) => void) | null = null;
   private stopped: string | null = null;
-  // Wakes a send that is waiting for the buffer to drain, so a cancel takes effect at once.
   private readonly abort = new AbortController();
 
   constructor(
@@ -74,8 +67,6 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
     this.total = files.reduce((sum, f) => sum + f.size, 0);
   }
 
-  // Bytes the receiver says it has received. Once these arrive they are the progress shown,
-  // not what this side has queued, which can run megabytes ahead on a slow connection.
   private confirmed = 0;
   private receiverReports = false;
 
@@ -95,7 +86,6 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
     this.waiter?.(msg);
   }
 
-  /** Resolves when the receiver confirms every file, or with their refusal. */
   async run(onAccepted: () => void): Promise<'done' | 'declined' | 'busy'> {
     try {
       await this.link.ready();
@@ -113,11 +103,9 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
       for (let i = 0; i < this.files.length; i++) {
         const file = this.files[i];
         this.link.sendJSON({ t: 'file', xid: this.xid, i });
-        // The next block is read while the current one is sent, so a slow disk or photo
-        // library never leaves the network waiting.
         const read = (from: number): Promise<ArrayBuffer> => {
           const block = file.slice(from, from + READ_BLOCK).arrayBuffer();
-          block.catch(() => {}); // A cancelled transfer never awaits it.
+          block.catch(() => {});
           return block;
         };
         let upcoming = file.size > 0 ? read(0) : null;
@@ -126,13 +114,10 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
           upcoming = offset + READ_BLOCK < file.size ? read(offset + READ_BLOCK) : null;
           for (let start = 0; start < block.byteLength; start += chunk) {
             if (this.stopped) throw new Error(this.stopped);
-            // A view onto the block: no copy per message.
             const piece = new Uint8Array(block, start, Math.min(chunk, block.byteLength - start));
             await this.link.sendBinary(piece, this.abort.signal);
             if (this.stopped) throw new Error(this.stopped);
             sent += piece.byteLength;
-            // Until the receiver reports (an older page on the other device never does), show
-            // what has left the buffer, not what is merely queued.
             if (!this.receiverReports) {
               this.emit('progress', Math.max(0, sent - this.link.dc.bufferedAmount), this.total);
             }
@@ -160,7 +145,6 @@ export class OutgoingTransfer extends Emitter<{ progress: [done: number, total: 
     try {
       if (reason === 'cancelled') this.link.sendJSON({ t: 'cancel', xid: this.xid });
     } catch {
-      // Channel already gone.
     }
     this.waiter?.({ t: 'cancel', xid: this.xid });
   }
@@ -251,7 +235,6 @@ export class IncomingTransfer extends Emitter<IncomingEvents> {
       await this.sink.write(data);
       this.received += data.byteLength;
       this.emit('progress', this.received, this.total);
-      // Tell the sender how much has really arrived, a few times a second.
       const now = performance.now();
       if (now - this.lastReportAt >= PROGRESS_REPORT_MS || this.received >= this.total) {
         this.lastReportAt = now;
@@ -288,7 +271,6 @@ export class IncomingTransfer extends Emitter<IncomingEvents> {
     try {
       this.link.sendJSON(msg);
     } catch {
-      // Channel already gone.
     }
   }
 }

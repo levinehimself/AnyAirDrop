@@ -36,7 +36,6 @@
 
   type PlacedPeer = RemotePeer & { left: string; top: string; trusted: boolean };
 
-  // Where devices sit on the radar: angles (degrees, clockwise from 3 o'clock).
   const SLOT_ANGLES = [215, 335, 95, 275, 155, 35, 245, 65];
 
   let hub: Hub | null = null;
@@ -54,7 +53,6 @@
   let codeInput = $state('');
   let pairNote = $state('');
 
-  // Trusted devices: kept on this device, and found again through a secret room.
   let trusted = $state<TrustedDevice[]>([]);
   let onlineTokens = $state<string[]>([]);
   let trustedOpen = $state(false);
@@ -62,8 +60,6 @@
   const trustedRows = $derived<TrustedRow[]>(trusted.map((t) => ({ ...t, online: onlineTokens.includes(t.token) })));
   const untrustedPeers = $derived(peers.filter((p) => !p.trusted));
 
-  // After a completed transfer both devices remember each other as trusted (can be turned
-  // off). The receiver only agrees to a device it has just received files from.
   let autoTrust = $state(true);
   let trustNote = $state<{ token: string; peerId: string; name: string } | null>(null);
   const autoDeclined = new Set<string>();
@@ -73,8 +69,6 @@
   let zipBusy = $state(false);
   let zipNote = $state('');
 
-  // ?debug=1 shows which shared-network group this device lands in. Two devices find each
-  // other automatically only when their groups match.
   let debugNet = $state('');
   let relayOn = $state(false);
 
@@ -89,7 +83,6 @@
   const sheetOpen = $derived(view.kind !== 'idle');
   const peerNames = $derived(peers.map((p) => p.name).join(', '));
   const myCodeLabel = $derived(myCode ? `${myCode.slice(0, 3)} ${myCode.slice(3)}` : '');
-  // Scanning this opens AnyAirDrop.com/?pair=… on the other device, which joins our room.
   const qr = $derived(myCode ? makeQr(`${location.origin}/?pair=${myCode}`) : null);
 
   const hint = $derived(
@@ -115,14 +108,11 @@
   }
   const routeLabel = $derived(routeText(route));
 
-  // Live speed while a transfer runs, and the route and average speed once it is done, so a
-  // slow transfer can be explained (for example, a VPN pushing it through the relay).
   let speed = $state(0);
   let rtt = $state<number | null>(null);
   let startedAt = 0;
   let lastRun = $state<{ route: Route; rate: number } | null>(null);
   const rate = (bytes: number): string => `${formatBytes(bytes)}/s`;
-  // A transfer that is not going straight across the Wi-Fi and is crawling: say why.
   const slowRoute = $derived(
     (route === 'relay' || route === 'internet') && speed > 0 && speed < 1_000_000 && done < total,
   );
@@ -154,7 +144,6 @@
 
   onMount(() => {
     canHover = matchMedia('(hover: hover)').matches;
-    // ?relay=force sends everything through the relay: a QA aid for testing that path.
     const params = new URL(location.href).searchParams;
     hub = new Hub(signalingEndpoint(), { forceRelay: params.get('relay') === 'force' });
     myName = hub.me.name;
@@ -193,12 +182,8 @@
         .catch(() => (debugNet = 'unknown (could not reach the server)'));
       setTimeout(() => (relayOn = hub?.relayAvailable ?? false), 2500);
     }
-    // Join our own pairing room right away, so the code on screen works from the first
-    // second. It keeps two devices connected even when a VPN gives them different
-    // public addresses, because it does not depend on the network address at all.
     myCode = loadCode();
     hub.joinPair(myCode);
-    // A shared link like AnyAirDrop.com/?pair=123456 joins that pairing room directly.
     const code = params.get('pair');
     if (code && /^\d{6}$/.test(code)) hub.joinPair(code);
     return () => {
@@ -212,7 +197,6 @@
       const saved = sessionStorage.getItem('anyairdrop:code');
       if (saved && /^\d{6}$/.test(saved)) return saved;
     } catch {
-      // Storage unavailable: use a fresh code.
     }
     const n = new Uint32Array(1);
     crypto.getRandomValues(n);
@@ -220,7 +204,6 @@
     try {
       sessionStorage.setItem('anyairdrop:code', code);
     } catch {
-      // Not persisted; fine.
     }
     return code;
   }
@@ -242,7 +225,6 @@
     event.preventDefault();
     dragOver = null;
     if (!free) return;
-    // Dropped folders arrive as empty, typeless entries; skip them.
     const files = Array.from(event.dataTransfer?.files ?? []).filter((f) => f.size > 0 || f.type !== '');
     if (files.length === 0) return;
     view = { kind: 'confirm', peer, files };
@@ -306,7 +288,6 @@
 
   let cancelOutgoing: (() => void) | null = null;
 
-  // Chunks arrive hundreds of times a second; repaint the bar about ten times a second.
   let latest: [number, number] | null = null;
   let flushTimer: ReturnType<typeof setTimeout> | undefined;
   let tick: { at: number; done: number } | null = null;
@@ -333,7 +314,6 @@
     lastRun = null;
   }
 
-  // Called when a transfer completes: reads the route that was really used.
   async function finishStats(link: PeerLink, bytes: number): Promise<void> {
     const seconds = (performance.now() - startedAt) / 1000;
     if (bytes < 1024 * 1024 || seconds <= 0) return;
@@ -341,7 +321,6 @@
     try {
       used = await link.route();
     } catch {
-      // Keep what was read earlier.
     }
     route = used;
     lastRun = { route: used, rate: bytes / seconds };
@@ -369,7 +348,6 @@
           : { kind: 'notice', title: 'Transfer stopped', detail: 'The connection was lost before every file arrived.' };
       releaseAwake();
     });
-    // A trusted device the person chose to auto-accept skips the question.
     const token = hub?.trustTokenOf(transfer.peer.id);
     if (token && trusted.find((t) => t.token === token)?.autoAccept) accept();
   }
@@ -405,13 +383,10 @@
     trustNote = null;
   }
 
-  // Tapping outside the phone sheet closes it only when nothing is in progress.
   function dismiss(): void {
     if (view.kind === 'confirm' || view.kind === 'sent' || view.kind === 'notice') reset();
   }
 
-  // Read the route shortly after the transfer starts, and again a few seconds in, because the
-  // browser can settle on a different path once the connection is busy.
   async function readRoute(link: PeerLink): Promise<void> {
     for (const wait of [400, 2600]) {
       await new Promise((r) => setTimeout(r, wait));
@@ -476,7 +451,6 @@
     myName = name;
   }
 
-  // Marks which trusted devices are online and keeps their saved names current.
   function syncTrusted(): void {
     if (!hub) return;
     const online: string[] = [];
@@ -552,7 +526,6 @@
     }
   }
 
-  // Sender side, right after a completed transfer: quietly propose to remember each other.
   async function autoTrustPeer(peer: RemotePeer): Promise<void> {
     if (!hub || !autoTrust || !canStore || trusted.length >= TRUSTED_LIMIT) return;
     if (hub.trustTokenOf(peer.id) != null || autoDeclined.has(peer.id)) return;
@@ -565,7 +538,6 @@
         autoDeclined.add(peer.id);
       }
     } catch {
-      // The other device went away; nothing to remember.
     }
   }
 
@@ -585,8 +557,6 @@
     if (!hub) return;
     const blocked = !free || !canStore || trusted.length >= TRUSTED_LIMIT || trusted.some((t) => t.token === token);
     if (auto) {
-      // Only accepted from a device we have just received files from, so nobody can add
-      // themselves without delivering something this person accepted.
       const justReceived =
         lastReceived != null && lastReceived.peerId === peer.id && Date.now() - lastReceived.at < AUTO_TRUST_WINDOW_MS;
       const ok = autoTrust && justReceived && !blocked && hub.trustTokenOf(peer.id) == null;
@@ -864,11 +834,8 @@
     margin-top: var(--space-6);
   }
 
-  /* Desktop: size the radar to the window so the whole page fits without scrolling. */
   @media (min-width: 721px) and (min-height: 640px) {
     .radar {
-      /* Sized for the tallest state, with a device connected (it adds a line above the
-         pairing area), so the QR code never touches the footer. */
       width: min(86vw, clamp(200px, calc(100dvh - 530px), 440px));
       margin-top: var(--space-3);
     }
@@ -1222,8 +1189,6 @@
     gap: 16px;
   }
 
-  /* Dark modules on a white tile in both themes, so any camera reads it. The solid frame
-     gives it strong contrast against the page: near-black on the light theme. */
   .qr-frame {
     display: flex;
     flex: none;
@@ -1244,7 +1209,6 @@
     fill: #0b1220;
   }
 
-  /* The label, the code and the hint share one centered column. */
   .mycode-text {
     display: flex;
     flex-direction: column;
@@ -1320,7 +1284,6 @@
     display: none;
   }
 
-  /* Phones: anything beyond the idle hint rises as a bottom sheet. */
   @media (max-width: 720px) {
     .radar {
       margin-top: var(--space-5);
