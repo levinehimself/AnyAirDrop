@@ -10,7 +10,7 @@ Built with UI UX Pro Max guidance: style "Minimalism & Swiss Style", landing pat
 
 ## Principles
 
-1. **The tool comes first.** The top of the homepage is the header, one headline, one line of copy, the radar and the pairing code row, so the tool is usable without scrolling. Below it, for readers and for AdSense review, sit plain-text sections separated by hairlines: how it works, why people use it, what the server sees, questions, and six guides. The page scrolls normally.
+1. **The tool comes first.** The top of the homepage is the header, one headline, one line of copy, the radar and the pairing code row, so the tool is usable without scrolling. Below it, for readers and for AdSense review, sit plain-text sections separated by hairlines: how it works, why people use it, what the server sees, questions, and three guides. The page scrolls normally.
 2. **One accent.** Blue marks only "You", primary buttons, links and the selected device.
 3. **Thin, quiet, flat.** 1px hairlines, no shadows, no gradients, no cards on the homepage.
 4. **Explain elsewhere.** FAQs, feature grids, how-it-works and comparisons live on guide pages, linked from the footer.

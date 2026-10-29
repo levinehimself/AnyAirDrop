@@ -418,3 +418,8 @@ This file holds every comment that used to live inside the source files. The fil
 - **Line 55, on `--dur-enter: 350ms;`:** device appears, sheet slides up (300ms)
 - **Line 56, on `--pulse: 3.2s;`:** one radar pulse loop
 
+
+### `content/blog/webrtc-data-channels-explained/index.md`
+
+- **Line 96, on `const CHUNK = 16 * 1024;`:** 16 KiB per message
+- **Line 97, on `const HIGH_WATER = 1024 * 1024;`:** pause above 1 MiB queued

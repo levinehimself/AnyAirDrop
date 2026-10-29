@@ -22,16 +22,8 @@ const faqs = [
     a: 'Yes. It runs in the browser, so it works between iPhone, Android, Windows, Mac and Linux, in any combination, as long as both devices have a modern browser.',
   },
   {
-    q: 'Is there a limit on file size?',
-    a: 'We set no limit. Large files stream across in pieces, so a long video does not have to fit in memory. The practical limit is your Wi-Fi speed and the free space on the receiving device.',
-  },
-  {
     q: 'Why can’t my devices see each other?',
     a: 'Usually they are on different networks, or the router stops devices from talking to each other (guest networks often do). Pair the devices with the six-digit code or the QR code instead, or follow the step-by-step troubleshooting guide in the blog.',
-  },
-  {
-    q: 'What happens if the network blocks direct connections?',
-    a: 'An encrypted relay can carry the transfer instead, and the page tells you when that is happening, so you know the files are not going over your Wi-Fi alone.',
   },
 ];
 
@@ -39,9 +31,6 @@ const featuredSlugs = [
   'transfer-files-between-pc-and-phone-over-wifi',
   'devices-cant-find-each-other-troubleshooting',
   'is-local-file-transfer-safe-encryption-explained',
-  'local-transfer-vs-cloud-upload',
-  'why-phone-hotspots-are-slow',
-  'how-wifi-works',
 ];
 const allPosts = await getPosts();
 const featured = featuredSlugs.map((slug) => allPosts.find((post) => post.id === slug)).filter((post) => post !== undefined);
@@ -95,20 +84,20 @@ const jsonLd = {
 
     <div class="more">
       <section aria-labelledby="how">
-        <h2 id="how">How it works</h2>
+        <h2 id="how"><svg class="head-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>How it works</span></h2>
         <ol class="steps">
           <li>
-            <span class="num" aria-hidden="true">1</span>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="13" height="10" rx="1.5"/><path d="M6 19h5"/><rect x="17" y="8" width="5" height="11" rx="1.2"/></svg></span>
             <h3>Open it on both devices</h3>
             <p>Visit AnyAirDrop.com on the phone and the computer. Devices on the same Wi-Fi appear on the radar by themselves, each with a random name.</p>
           </li>
           <li>
-            <span class="num" aria-hidden="true">2</span>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10"/><path d="M12 10V8.5a1.5 1.5 0 0 1 3 0V11"/><path d="M15 11v-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.5 14.5a1.5 1.5 0 0 1 2.4-1.7L9 16"/></svg></span>
             <h3>Pick the other device</h3>
             <p>Choose the files and tap the device you want to send to. On a different network, type its six-digit code or scan its QR code.</p>
           </li>
           <li>
-            <span class="num" aria-hidden="true">3</span>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg></span>
             <h3>Accept, and it goes straight across</h3>
             <p>Nothing starts until the receiving device taps Accept. Then the files travel from one browser to the other, encrypted.</p>
           </li>
@@ -116,44 +105,40 @@ const jsonLd = {
       </section>
 
       <section aria-labelledby="why">
-        <h2 id="why">Why people use it</h2>
+        <h2 id="why"><svg class="head-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg><span>Why people use it</span></h2>
         <dl class="points">
           <div>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/><path d="m4 4 16 16"/></svg></span>
             <dt>No app, no account</dt>
             <dd>It runs in the browser you already have, on iPhone, Android, Windows, Mac and Linux. There is nothing to install and nothing to sign up for.</dd>
           </div>
           <div>
-            <dt>Device to device</dt>
-            <dd>Files are not uploaded to a server and are never stored. They go directly between the two browsers whenever the devices can reach each other.</dd>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M8 12h8"/><path d="m13.5 9.5 2.5 2.5-2.5 2.5"/></svg></span>
+            <dt>Device to device, encrypted</dt>
+            <dd>Files are never uploaded or stored. They go directly between the two browsers, encrypted, and only after the receiver accepts.</dd>
           </div>
           <div>
-            <dt>Encrypted</dt>
-            <dd>The browser encrypts every connection it opens, and a transfer only starts after the receiver accepts it.</dd>
-          </div>
-          <div>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12c3-5 6-5 9 0s6 5 9 0"/></svg></span>
             <dt>No size limit from us</dt>
             <dd>Large files stream in pieces, so a long video does not have to fit in memory. Photos, videos, documents and whole folders as a ZIP all work.</dd>
           </div>
           <div>
+            <span class="step-ico"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1.8"/><path d="M7.5 7.5a6.4 6.4 0 0 0 0 9M16.5 7.5a6.4 6.4 0 0 1 0 9M4.6 4.6a10.5 10.5 0 0 0 0 14.8M19.4 4.6a10.5 10.5 0 0 1 0 14.8"/></svg></span>
             <dt>Finds devices your way</dt>
             <dd>Automatically on the same Wi-Fi, with a code or QR code across networks, or through trusted devices that find each other every time.</dd>
-          </div>
-          <div>
-            <dt>Honest about the route</dt>
-            <dd>The page shows the live speed and tells you plainly if a transfer is going over the internet instead of your Wi-Fi.</dd>
           </div>
         </dl>
       </section>
 
       <section aria-labelledby="private">
-        <h2 id="private">What our server sees</h2>
+        <h2 id="private"><svg class="head-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span>What our server sees</span></h2>
         <p>
           Our server only introduces devices to each other. To do that it briefly sees a device name, the kind of device and browser, and either a hashed match of the shared network, the pairing code you typed, or the secret key of a trusted device. It never sees your files or their names, and it keeps no user database. The <a href="/privacy/">privacy page</a> and the <a href="/about/">about page</a> explain it in full.
         </p>
       </section>
 
       <section aria-labelledby="faq">
-        <h2 id="faq">Questions</h2>
+        <h2 id="faq"><svg class="head-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1.9-1.1 1.8"/><path d="M12 17h.01"/></svg><span>Questions</span></h2>
         <div class="faq">
           {
             faqs.map((faq) => (
@@ -167,7 +152,7 @@ const jsonLd = {
       </section>
 
       <section aria-labelledby="guides">
-        <h2 id="guides">Guides from the blog</h2>
+        <h2 id="guides"><svg class="head-ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16"/><path d="M9 8h7"/></svg><span>Guides from the blog</span></h2>
         <p class="section-lead">Plain-language explanations of the technology behind sending files between your own devices.</p>
         <PostList posts={featured} />
         <p class="all"><a href="/blog/">See all guides</a></p>
@@ -255,16 +240,29 @@ const jsonLd = {
     list-style: none;
   }
 
-  .num {
+  .step-ico {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--color-line-strong);
-    border-radius: 50%;
-    font-size: 15px;
-    font-weight: 700;
+    border-radius: 12px;
     color: var(--color-accent);
+  }
+
+  .more h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .head-ico {
+    flex: none;
+    color: var(--color-accent);
+  }
+
+  .points dt {
+    margin-top: var(--space-2);
   }
 
   .steps h3 {

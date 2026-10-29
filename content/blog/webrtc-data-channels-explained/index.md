@@ -93,8 +93,8 @@ The remedy is *backpressure*: the sender pauses when the buffer is getting full 
 Here is a short sketch of a sender. It is simplified: it assumes the channel is already open, and it leaves out error handling and a way for the receiver to cancel.
 
 ```js
-const CHUNK = 16 * 1024;          // 16 KiB per message
-const HIGH_WATER = 1024 * 1024;   // pause above 1 MiB queued
+const CHUNK = 16 * 1024;
+const HIGH_WATER = 1024 * 1024;
 
 async function sendFile(file, channel) {
   channel.bufferedAmountLowThreshold = 256 * 1024;
