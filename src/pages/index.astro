@@ -240,14 +240,32 @@ const jsonLd = {
     list-style: none;
   }
 
+  .steps li,
+  .points > div {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    column-gap: var(--space-2);
+    align-items: center;
+  }
+
+  .steps li > p,
+  .points dd {
+    grid-column: 1 / -1;
+  }
+
   .step-ico {
     display: grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
+    width: 34px;
+    height: 34px;
     border: 1px solid var(--color-line-strong);
-    border-radius: 12px;
+    border-radius: 10px;
     color: var(--color-accent);
+  }
+
+  .step-ico svg {
+    width: 18px;
+    height: 18px;
   }
 
   .more h2 {
@@ -261,12 +279,8 @@ const jsonLd = {
     color: var(--color-accent);
   }
 
-  .points dt {
-    margin-top: var(--space-2);
-  }
-
   .steps h3 {
-    margin: var(--space-2) 0 0;
+    margin: 0;
     font-size: 18px;
     line-height: 1.3;
     font-weight: 700;
