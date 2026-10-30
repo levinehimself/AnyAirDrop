@@ -1,9 +1,15 @@
 ---
+import { Image, getImage } from 'astro:assets';
 import Page from '../layouts/Page.astro';
-import { FOUNDER, GITHUB_URL, PROJECTS, listSeparator } from '../config';
+import founderPhoto from '../assets/about/founder.jpg';
+import channelPicture from '../assets/about/levine-tech-talks.jpg';
+import { ADS_ENABLED, CONTACT_EMAIL, FOUNDER, GITHUB_URL, PROJECTS, YOUTUBE } from '../config';
+import { getPosts } from '../lib/blog';
 
-const nameParts = FOUNDER.name.split(' ');
-const initials = nameParts[0][0] + nameParts[nameParts.length - 1][0];
+const posts = await getPosts();
+const topicCount = new Set(posts.map((post) => post.data.topic)).size;
+
+const shareImage = await getImage({ src: founderPhoto, width: 640, height: 640, format: 'jpg' });
 
 const founderJsonLd = {
   '@type': 'Person',
@@ -11,26 +17,96 @@ const founderJsonLd = {
   name: FOUNDER.name,
   jobTitle: FOUNDER.title,
   url: 'https://anyairdrop.com/about/',
-  sameAs: [FOUNDER.linkedin, ...PROJECTS.map((project) => project.url)],
+  image: new URL(shareImage.src, Astro.site).toString(),
+  sameAs: [FOUNDER.linkedin, YOUTUBE.url, GITHUB_URL, ...PROJECTS.map((project) => project.url)],
   knowsAbout: FOUNDER.skills,
   worksFor: { '@id': 'https://anyairdrop.com/#organization' },
 };
+
+const facts = [
+  { value: String(posts.length), label: `guides in ${topicCount} topics` },
+  { value: 'Free', label: 'no account, no app' },
+  { value: 'Open', label: 'source, MIT license' },
+];
 ---
 
 <Page
-  title="About AnyAirDrop.com: Free File Sharing Between Any Devices"
-  description="AnyAirDrop.com sends files between phones and computers over your Wi-Fi, in the browser. Learn how it works, what our server sees, and who is behind it."
+  title="About AnyAirDrop.com: Who Runs It, How It Works and Why"
+  description="AnyAirDrop.com sends files between phones and computers over your Wi-Fi, in the browser. Meet the founder, see how the site is run and funded, and how your data is handled."
   heading="About AnyAirDrop.com"
-  lead="AnyAirDrop.com sends files between iPhones, Android phones, Windows PCs, Macs and Linux computers over your Wi-Fi, right in the browser. No app, no account, no upload."
+  lead="AnyAirDrop.com sends files between iPhones, Android phones, Windows PCs, Macs and Linux computers over your Wi-Fi, right in the browser. No app, no account, no upload. This page says who runs it, how it works and how it is paid for."
   type="AboutPage"
   extraJsonLd={[founderJsonLd]}
 >
+  <ul class="facts" aria-label="At a glance">
+    {
+      facts.map((fact) => (
+        <li>
+          <span class="fact-value">{fact.value}</span>
+          <span class="fact-label">{fact.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Who is behind it</h2>
+  <div class="founder">
+    <Image
+      class="portrait"
+      src={founderPhoto}
+      alt={`${FOUNDER.name}, founder of AnyAirDrop.com, standing outdoors in a white shirt and sunglasses`}
+      width={160}
+      height={160}
+      widths={[160, 320]}
+      sizes="160px"
+      loading="eager"
+    />
+    <div class="founder-body">
+      <p class="founder-name">{FOUNDER.name}</p>
+      <p class="founder-role">{FOUNDER.title} and publisher</p>
+      <p>
+        Hi, I’m {FOUNDER.name}. I’m a full-stack developer who likes fast, privacy-first web tools, and I design, build and
+        look after AnyAirDrop.com myself. I am responsible for everything published here, and I read every message that
+        comes in.
+      </p>
+      <ul class="links" aria-label={`${FOUNDER.name} online`}>
+        <li><a href={YOUTUBE.url}>YouTube</a></li>
+        <li><a href={FOUNDER.linkedin}>LinkedIn</a></li>
+        <li><a href={GITHUB_URL}>GitHub</a></li>
+      </ul>
+      <ul class="skills" aria-label="Areas of work">
+        {FOUNDER.skills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </div>
+  </div>
+
   <h2>Why it exists</h2>
   <p>
     Sending a photo or a video from one device to another is harder than it should be when the two devices come from
     different companies. AnyAirDrop.com is a small, free tool that makes it one tap: open the page on both devices, tap the
     other one, and the files go straight across.
   </p>
+  <p>
+    The <a href="/blog/">blog</a> grew out of the questions people have while using it: why two devices cannot see each
+    other, why a hotspot is slow, what a router actually does. It has {posts.length} guides on Wi-Fi, routers, phone modems
+    and local file transfer, each explaining the technology from the radio up and listing its sources.
+  </p>
+
+  <h2>Also on YouTube</h2>
+  <p>
+    I am also the owner of the YouTube channel <strong>{YOUTUBE.name}</strong>, an educational tech channel with
+    step-by-step fixes and how-tos for Windows, games, streaming and hardware problems. It has more than 15,000 subscribers
+    and over 100 videos, and several of its tutorials have each passed 400,000 views. The same approach goes into the guides
+    on this site: explain the problem plainly, show the steps, and say what to check when they do not work.
+  </p>
+  <a class="channel" href={YOUTUBE.url}>
+    <Image class="channel-picture" src={channelPicture} alt="" width={64} height={64} widths={[64, 128]} sizes="64px" />
+    <span class="channel-text">
+      <span class="channel-name">{YOUTUBE.name}</span>
+      <span class="channel-handle">{YOUTUBE.handle} on YouTube</span>
+    </span>
+    <span class="channel-cta">Watch the channel <span aria-hidden="true">→</span></span>
+  </a>
 
   <h2>How your files travel</h2>
   <ul>
@@ -73,32 +149,35 @@ const founderJsonLd = {
     typed, or the secret key of a trusted device. It never sees your files or their names, and it keeps no user database.
   </p>
   <p>
-    Like any website, the companies that host it keep standard technical logs, such as IP addresses. We do not run ads or
-    trackers on the transfer screen, and there is nothing to sign up for. The <a href="/privacy/">privacy page</a>
-    explains it in full, and the <a href="/terms/">terms of use</a> cover the ground rules.
+    Like any website, the companies that host it keep standard technical logs, such as IP addresses. The
+    <a href="/privacy/">privacy page</a> explains it in full, and the <a href="/terms/">terms of use</a> cover the ground
+    rules.
   </p>
 
-  <h2>Who is behind it</h2>
-  <div class="founder">
-    <span class="avatar" aria-hidden="true">{initials}</span>
-    <div class="founder-body">
-      <p class="founder-name">{FOUNDER.name}</p>
-      <p class="founder-role">{FOUNDER.title}</p>
+  <h2>How the site is run and paid for</h2>
+  {
+    ADS_ENABLED ? (
       <p>
-        {FOUNDER.name} is a builder dedicated to fast, privacy-first web tools. He designs, builds and looks after
-        AnyAirDrop.com himself, and reads every message that comes in. He also runs
-        {PROJECTS.map((project, i) => (
-          <>
-            <a href={project.url}>{project.name}</a>{listSeparator(i, PROJECTS.length)}
-          </>
-        ))}
+        AnyAirDrop.com is free to use. It is paid for by ads from Google AdSense that appear on the guides. They never appear
+        on the transfer tool, they are kept visually separate from the articles, and they never change what a guide says.
+        Nobody can pay to have a guide written, altered or removed.
       </p>
-      <ul class="skills" aria-label="Areas of work">
-        {FOUNDER.skills.map((skill) => <li>{skill}</li>)}
-      </ul>
-      <p class="founder-link"><a href={FOUNDER.linkedin}>{FOUNDER.name} on LinkedIn</a></p>
-    </div>
-  </div>
+    ) : (
+      <p>
+        AnyAirDrop.com is free to use and currently shows no ads. If advertising is ever added, it will appear on the guides
+        only, never on the transfer tool, and it will be described on the <a href="/privacy/">privacy page</a> and in the
+        editorial policy. Nobody can pay to have a guide written, altered or removed.
+      </p>
+    )
+  }
+
+  <h2>How the guides are made</h2>
+  <p>
+    Every guide is built from primary sources such as standards and platform documentation, lists those sources at the
+    bottom, and labels theoretical numbers as theoretical. Some guides are drafted with the help of AI writing tools, and
+    I review and take responsibility for what is published. The <a href="/editorial-policy/">editorial policy</a> explains
+    the process, how guides are kept up to date and how to report a mistake.
+  </p>
 
   <h2>More projects by {FOUNDER.name}</h2>
   <ul>
@@ -118,14 +197,55 @@ const founderJsonLd = {
     <a href={GITHUB_URL}>AnyAirDrop on GitHub</a>.
   </p>
 
-  <h2>Get in touch</h2>
-  <p>Found a bug, or have an idea? Visit the <a href="/contact/">contact page</a>.</p>
+  <h2>Tell me what to improve</h2>
+  <p>
+    This site gets better through feedback, and I want to hear yours: something broken, something confusing, a guide that
+    got a fact wrong, or a topic you would like explained. Write to
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, open an issue on <a href={`${GITHUB_URL}/issues`}>GitHub</a>, or
+    use the <a href="/contact/">contact page</a>. I usually reply within 48 hours.
+  </p>
 </Page>
 
 <style>
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: var(--space-4) 0 0;
+    padding: 0 !important;
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .facts li {
+    margin: 0 !important;
+    padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  }
+
+  .facts li + li {
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .fact-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .fact-label {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+  }
+
   .founder {
     display: flex;
-    gap: var(--space-3);
+    gap: var(--space-4);
     align-items: flex-start;
     margin-top: var(--space-2);
     padding: var(--space-4);
@@ -134,18 +254,14 @@ const founderJsonLd = {
     background: var(--color-surface);
   }
 
-  .avatar {
+  .founder :global(.portrait) {
     flex: none;
-    display: grid;
-    place-items: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    width: 160px;
+    height: 160px;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .founder-body {
@@ -158,7 +274,7 @@ const founderJsonLd = {
 
   .founder-name {
     margin: 0;
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-weight: 700;
     line-height: 1.3 !important;
   }
@@ -172,6 +288,7 @@ const founderJsonLd = {
     text-transform: uppercase;
   }
 
+  .links,
   .skills {
     display: flex;
     flex-wrap: wrap;
@@ -181,10 +298,30 @@ const founderJsonLd = {
     list-style: none;
   }
 
+  .links li {
+    margin: 0 !important;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-button);
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    border-color: var(--color-link);
+  }
+
   .skills li {
     margin: 0;
     padding: 4px 12px;
-    border: 1px solid var(--color-line-strong);
+    border: 1px solid var(--color-line);
     border-radius: 999px;
     font-size: 14px !important;
     line-height: 1.4 !important;
@@ -195,14 +332,88 @@ const founderJsonLd = {
     margin-top: 0 !important;
   }
 
-  .founder-link {
-    font-size: 16px;
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: border-color var(--dur-color) ease;
+  }
+
+  .channel:hover {
+    border-color: var(--color-link);
+  }
+
+  .channel :global(.channel-picture) {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .channel-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .channel-name,
+  .channel-handle {
+    display: block;
+  }
+
+  .channel-name {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .channel-handle {
+    font-size: 15px;
+    color: var(--color-text-muted);
+  }
+
+  .channel-cta {
+    flex: none;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-link);
   }
 
   @media (max-width: 560px) {
+    .facts li {
+      padding-right: var(--space-2);
+    }
+
+    .facts li + li {
+      padding-left: var(--space-2);
+    }
+
+    .fact-value {
+      font-size: 22px;
+    }
+
+    .fact-label {
+      font-size: 13px;
+    }
+
     .founder {
       flex-direction: column;
       padding: var(--space-3);
+    }
+
+    .channel {
+      flex-wrap: wrap;
+    }
+
+    .channel-cta {
+      width: 100%;
     }
   }
 </style>

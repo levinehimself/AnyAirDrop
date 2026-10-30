@@ -10,6 +10,12 @@ export const FOUNDER = {
   skills: ['Full-stack development', 'React', 'Node.js', 'Product strategy'],
 };
 
+export const YOUTUBE = {
+  name: 'Levine Tech Talks',
+  handle: '@Optimistic_lad',
+  url: 'https://www.youtube.com/@Optimistic_lad/',
+};
+
 export const PROJECTS = [
   {
     name: 'WiserWork',
