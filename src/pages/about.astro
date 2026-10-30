@@ -55,10 +55,13 @@ const facts = [
       class="portrait"
       src={founderPhoto}
       alt={`${FOUNDER.name}, founder of AnyAirDrop.com, standing outdoors in a white shirt and sunglasses`}
-      width={160}
-      height={160}
-      widths={[160, 320]}
-      sizes="160px"
+      width={192}
+      height={240}
+      widths={[192, 384, 576]}
+      sizes="192px"
+      fit="cover"
+      position="left"
+      quality={92}
       loading="eager"
     />
     <div class="founder-body">
@@ -213,10 +216,10 @@ const facts = [
 
   .founder {
     display: flex;
-    gap: var(--space-4);
-    align-items: flex-start;
+    gap: var(--space-5);
+    align-items: center;
     margin-top: var(--space-2);
-    padding: var(--space-4);
+    padding: var(--space-5);
     border: 1px solid var(--color-line);
     border-radius: 16px;
     background: var(--color-surface);
@@ -224,12 +227,12 @@ const facts = [
 
   .founder :global(.portrait) {
     flex: none;
-    width: 160px;
-    height: 160px;
+    width: 192px;
+    height: 240px;
     border: 1px solid var(--color-line);
     border-radius: 16px;
     object-fit: cover;
-    object-position: center top;
+    object-position: left center;
   }
 
   .founder-body {
@@ -373,6 +376,8 @@ const facts = [
 
     .founder {
       flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-3);
       padding: var(--space-3);
     }
 
