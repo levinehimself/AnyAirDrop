@@ -1,6 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import { CONTACT_EMAIL, FOUNDER, GITHUB_URL, PROJECTS, listSeparator } from '../config';
+import { ADS_ENABLED, CONTACT_EMAIL, FOUNDER, GITHUB_URL, PROJECTS, YOUTUBE, listSeparator } from '../config';
 
 const mail = (subject: string) => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
 
@@ -8,14 +8,14 @@ const cards = [
   { label: 'Best for anything', title: 'Email', detail: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
   { label: 'Something not working', title: 'Report a problem', detail: 'Tell me what happened', href: mail('Problem report') },
   { label: 'Make it better', title: 'Suggest an idea', detail: 'Features and fixes you would like', href: mail('Idea') },
-  { label: 'Who is behind this', title: 'Meet the founder', detail: `${FOUNDER.name} on LinkedIn`, href: FOUNDER.linkedin },
+  { label: 'Who is behind this', title: 'Meet the founder', detail: `${FOUNDER.name}, on the About page`, href: '/about/' },
 ];
 ---
 
 <Page
-  title="Contact AnyAirDrop.com"
-  description="Contact AnyAirDrop.com: report a problem, ask a question about privacy, suggest an idea or get in touch with the founder."
-  heading="Let’s talk"
+  title="Contact AnyAirDrop.com: Support, Corrections and Feedback"
+  description="Contact AnyAirDrop.com to report a problem, ask a privacy question, report a mistake in a guide, suggest an idea or reach the founder. Every message is read by a person."
+  heading="Contact AnyAirDrop.com"
   lead={`Found a bug, have an idea, or a question about privacy? Write to me: I’m ${FOUNDER.name}, I run AnyAirDrop.com on my own, and I read every message myself.`}
   type="ContactPage"
 >
@@ -36,10 +36,29 @@ const cards = [
     }
   </ul>
 
+  <p class="address">
+    <span>Prefer webmail, or no mail app on this device? Write to <strong>{CONTACT_EMAIL}</strong>.</span>
+    <button type="button" class="copy" data-copy={CONTACT_EMAIL} hidden>Copy address</button>
+    <span class="copy-status" data-copy-status role="status"></span>
+  </p>
+
   <h2>What I can help with</h2>
   <ul>
     <li><strong>Problems:</strong> a transfer that won’t start, a device that doesn’t show up, or a browser that misbehaves.</li>
     <li><strong>Ideas:</strong> features you would like, or things that feel confusing.</li>
+    <li>
+      <strong>Mistakes in a guide:</strong> a wrong fact, an out-of-date step or a broken link.
+      <a href={mail('Correction')}>Email a correction</a> with the page address and what you found. The
+      <a href="/editorial-policy/">editorial policy</a> explains how corrections are handled.
+    </li>
+    {
+      ADS_ENABLED && (
+        <li>
+          <strong>Advertising:</strong> an ad that is misleading, inappropriate or covers the page. Send the page address and
+          what the ad showed, and I will review it and report it to Google if needed.
+        </li>
+      )
+    }
     <li><strong>Privacy questions:</strong> how your information is handled. The <a href="/privacy/">privacy page</a> explains it in full.</li>
     <li><strong>Press and partnerships:</strong> happy to help where I can.</li>
     <li><strong>Security reports:</strong> put “Security” in the subject line and give me time to fix it before you share it publicly.</li>
@@ -68,7 +87,7 @@ const cards = [
 
   <h2>Other projects</h2>
   <p>
-    I also run
+    I also run the YouTube channel <a href={YOUTUBE.url}>{YOUTUBE.name}</a> and the websites
     {PROJECTS.map((project, i) => (
       <>
         <a href={project.url}>{project.name}</a>{listSeparator(i, PROJECTS.length)}
@@ -77,6 +96,26 @@ const cards = [
     Messages about those go to their own contact pages.
   </p>
 </Page>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-copy]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+
+  if (button && status) {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? '');
+        status.textContent = 'Copied';
+      } catch {
+        status.textContent = 'Press and hold the address to copy it';
+      }
+      setTimeout(() => {
+        status.textContent = '';
+      }, 2500);
+    });
+  }
+</script>
 
 <style>
   .reply {
@@ -90,6 +129,48 @@ const cards = [
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-text-muted);
+  }
+
+  .address {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-2);
+    margin-top: var(--space-3) !important;
+    font-size: 16px !important;
+    color: var(--color-text-muted);
+  }
+
+  .address strong {
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+
+  .copy {
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-button);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color var(--dur-color) ease;
+  }
+
+  .copy[hidden] {
+    display: none;
+  }
+
+  .copy:hover {
+    border-color: var(--color-accent);
+  }
+
+  .copy-status {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-success);
   }
 
   .cards {

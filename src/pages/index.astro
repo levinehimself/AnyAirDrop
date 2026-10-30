@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import TransferTool from '../components/TransferTool.svelte';
 import PostList from '../components/PostList.astro';
 import { getPosts } from '../lib/blog';
+import { CONTACT_EMAIL, GITHUB_URL, YOUTUBE } from '../config';
 
 const title = 'AnyAirDrop.com: Send Files Between iPhone, Android, Windows and Mac';
 const description =
@@ -51,6 +52,14 @@ const jsonLd = {
       url: 'https://anyairdrop.com/',
       logo: 'https://anyairdrop.com/icon-512.png',
       founder: { '@id': 'https://anyairdrop.com/about/#founder' },
+      sameAs: [YOUTUBE.url, GITHUB_URL],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: CONTACT_EMAIL,
+        url: 'https://anyairdrop.com/contact/',
+        availableLanguage: 'English',
+      },
     },
     {
       '@type': 'WebApplication',
