@@ -9,6 +9,8 @@ scheduled job runs by then and nothing runs after. Everything later (the apply g
 using the checklists below. The jobs are: the test write-up (Nov 2, 3 and 4 at 12:17 UTC) and the final audit
 (Nov 4 at 14:17 UTC). Nov 4 12:17 UTC is 15:47 in Tehran, so it still falls on Nov 4 there.
 
+Step-by-step help for YouTube links, applying, the consent message and page speed: [adsense-setup-guide.md](adsense-setup-guide.md).
+
 This file is the shared memory for the scheduled cloud jobs and for people. Update the status
 column when something changes.
 
@@ -47,7 +49,7 @@ column when something changes.
 | C2 | Finish and publish "How to AirDrop to Android" | Code done; content needs C1 data | Draft in `content/blog/airdrop-to-android/` |
 | C3 | Publish new guides at a steady pace (about 2 a week) | Person | Not automated, on purpose: see below |
 | C4 | Keep the AI-assistance disclosure | Nothing to do | Kept |
-| C5 | Homepage: How it works, FAQ, Popular guides | **Dropped by the owner** | The homepage stays a single screen with no scrolling, as originally designed. Do not add sections to it. The risk the proposal names (a reviewer sees very little text on the first page) is accepted |
+| C5 | Homepage: How it works, FAQ, Popular guides | **Done 2026-10-29, reversed from the earlier decision** | The owner asked for it again. Below the transfer tool the homepage has How it works, Why people use it, What our server sees, four questions and three guides, and it scrolls normally. The About page was rebuilt on 2026-10-31 with the founder photo, the YouTube channel and how the site is paid for |
 | D1 | Apply only when the gate is met | Person | Week 4 |
 | D2 | AdSense meta tag on every page | Done in code | Staged behind `ADS_ENABLED` |
 | D3 | Ads on guide pages only, never on the tool | Done in code | Staged behind `ADS_ENABLED` |
@@ -66,7 +68,7 @@ pattern the proposal warns about. Guides need a person who tests and reviews the
 - [ ] Consent message for the EEA, UK and Switzerland is published in AdSense
 - [ ] 10 guides have a real "How we tested" box, results and screenshots, every number measured
 - [ ] "AirDrop to Android" is live, indexed, no TODOs
-- [x] ~~Homepage has How it works, FAQ and Popular guides~~ (dropped by the owner: the homepage stays one screen)
+- [x] Homepage has How it works, FAQ and guides below the tool (done 2026-10-29)
 - [ ] AdSense meta tag on every page, ad script on guide pages only
 - [ ] A test email to hello@anyairdrop.com arrived
 - [ ] Site crawled with no broken links; 5 topic pages and 10 random guides spot-checked on a phone

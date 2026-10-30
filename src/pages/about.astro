@@ -83,13 +83,9 @@ const facts = [
   <h2>Why it exists</h2>
   <p>
     Sending a photo or a video from one device to another is harder than it should be when the two devices come from
-    different companies. AnyAirDrop.com is a small, free tool that makes it one tap: open the page on both devices, tap the
-    other one, and the files go straight across.
-  </p>
-  <p>
-    The <a href="/blog/">blog</a> grew out of the questions people have while using it: why two devices cannot see each
-    other, why a hotspot is slow, what a router actually does. It has {posts.length} guides on Wi-Fi, routers, phone modems
-    and local file transfer, each explaining the technology from the radio up and listing its sources.
+    different companies. AnyAirDrop.com makes it one tap: open the page on both devices, tap the other one, and the files go
+    straight across. The <a href="/blog/">blog</a> grew out of the questions people have while using it, and now has
+    {posts.length} guides on Wi-Fi, routers, phone modems and local file transfer.
   </p>
 
   <h2>Also on YouTube</h2>
@@ -108,51 +104,24 @@ const facts = [
     <span class="channel-cta">Watch the channel <span aria-hidden="true">→</span></span>
   </a>
 
-  <h2>How your files travel</h2>
+  <h2>How it works</h2>
   <ul>
     <li>
-      <strong>Device to device.</strong> When both devices can reach each other, your browser connects directly to the other
-      browser and sends the file. It never passes through our server and is never stored anywhere.
+      <strong>Device to device, encrypted.</strong> Your browser connects directly to the other browser and sends the file. It
+      never passes through our server and is never stored. If a network blocks direct connections, an encrypted relay can
+      carry the transfer, and the page tells you when that is happening.
     </li>
     <li>
-      <strong>Encrypted.</strong> The browser encrypts every connection it opens. Nothing starts until the receiving device
-      taps Accept.
+      <strong>Finding each other.</strong> Devices on the same Wi-Fi appear by themselves. Otherwise, type a six-digit code,
+      scan a QR code, or use trusted devices that find each other every time.
     </li>
     <li>
-      <strong>No size limit from us.</strong> Large files stream in pieces, so a long video does not have to fit in memory.
-    </li>
-    <li>
-      <strong>If a network blocks direct connections,</strong> an encrypted relay can carry the transfer instead, and the
-      page tells you when that is happening.
+      <strong>What our server sees.</strong> It only introduces devices: a random or chosen device name, the kind of device and
+      browser, and a hashed network match, pairing code or trusted-device key. It never sees your files or their names and
+      keeps no user database. Hosts keep standard technical logs, as on any website. The
+      <a href="/privacy/">privacy page</a> has the full detail.
     </li>
   </ul>
-
-  <h2>Finding each other</h2>
-  <ul>
-    <li>
-      <strong>Automatically.</strong> Devices on the same Wi-Fi appear on the radar by themselves.
-    </li>
-    <li>
-      <strong>With a code or QR code.</strong> Every device shows a six-digit code and a QR code. Type the code, or scan
-      the QR code with the other device’s camera, and they connect even on different networks or through a VPN.
-    </li>
-    <li>
-      <strong>Trusted devices.</strong> Devices you trust find each other every time, anywhere, with no code. You still
-      approve each transfer unless you choose otherwise, and you can remove a trusted device at any time.
-    </li>
-  </ul>
-
-  <h2>What our server sees</h2>
-  <p>
-    Our server only introduces devices to each other. To do that it briefly sees a device name (random, like “Sage Finch”,
-    or one you chose), the kind of device and browser, and either a hashed match of the shared network, the pairing code you
-    typed, or the secret key of a trusted device. It never sees your files or their names, and it keeps no user database.
-  </p>
-  <p>
-    Like any website, the companies that host it keep standard technical logs, such as IP addresses. The
-    <a href="/privacy/">privacy page</a> explains it in full, and the <a href="/terms/">terms of use</a> cover the ground
-    rules.
-  </p>
 
   <h2>How the site is run and paid for</h2>
   {
@@ -173,10 +142,9 @@ const facts = [
 
   <h2>How the guides are made</h2>
   <p>
-    Every guide is built from primary sources such as standards and platform documentation, lists those sources at the
-    bottom, and labels theoretical numbers as theoretical. Some guides are drafted with the help of AI writing tools, and
-    I review and take responsibility for what is published. The <a href="/editorial-policy/">editorial policy</a> explains
-    the process, how guides are kept up to date and how to report a mistake.
+    Every guide is built from primary sources, lists them at the bottom, and labels theoretical numbers as theoretical. Some
+    are drafted with AI writing tools, and I review and take responsibility for what is published. The
+    <a href="/editorial-policy/">editorial policy</a> explains the process and how to report a mistake.
   </p>
 
   <h2>More projects by {FOUNDER.name}</h2>
@@ -192,9 +160,9 @@ const facts = [
 
   <h2>Independent and open source</h2>
   <p>
-    AnyAirDrop.com is an independent project. It is not affiliated with, endorsed by or sponsored by Apple Inc. or any other
-    device maker. The code is open source under the MIT license, so you can read exactly what it does:
-    <a href={GITHUB_URL}>AnyAirDrop on GitHub</a>.
+    AnyAirDrop.com is not affiliated with, endorsed by or sponsored by Apple Inc. or any other device maker. The code is open
+    source under the MIT license: <a href={GITHUB_URL}>AnyAirDrop on GitHub</a>. See the <a href="/terms/">terms of use</a> for
+    the ground rules.
   </p>
 
   <h2>Tell me what to improve</h2>
