@@ -16,7 +16,7 @@ interface Props {
   ads?: boolean;
 }
 
-const { title, description, jsonLd, noindex = false, ogType = 'website', ogImage, publishedTime, modifiedTime, ads = false } = Astro.props;
+const { title, description, jsonLd, noindex = false, ogType = 'website', ogImage, publishedTime, modifiedTime } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -59,7 +59,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     {}
     {ADS_ENABLED && <meta name="google-adsense-account" content={ADSENSE_PUBLISHER_ID} />}
     {
-      ADS_ENABLED && ads && (
+      ADS_ENABLED && (
         <script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}

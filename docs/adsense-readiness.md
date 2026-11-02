@@ -22,7 +22,7 @@ column when something changes.
    real publish day (C3).
 3. **Ads and policy change together.** The switch is `ADSENSE_PUBLISHER_ID` plus `ADS_LIVE_SINCE` in
    `src/config.ts`. Both empty = no ads, no AdSense tags, no `/ads.txt`, old policy wording. Both set =
-   meta tag on every page, the ad script on guide pages only (never `/`, never a page with `embedTool: true`),
+   meta tag and the ad script on every page (the in-article ad boxes stay off pages with `embedTool: true`; to keep Auto ads off `/`, use Excluded pages in AdSense),
    `/ads.txt`, and the Privacy, Terms and Editorial policy wording about ads, dated `ADS_LIVE_SINCE`. The build
    fails if only one of them is set or either is malformed.
 4. **Nobody but a person turns ads on.** Setting those two values is the go-live step. It is only done after the
@@ -69,7 +69,7 @@ pattern the proposal warns about. Guides need a person who tests and reviews the
 - [ ] 10 guides have a real "How we tested" box, results and screenshots, every number measured
 - [ ] "AirDrop to Android" is live, indexed, no TODOs
 - [x] Homepage has How it works, FAQ and guides below the tool (done 2026-10-29)
-- [ ] AdSense meta tag on every page, ad script on guide pages only
+- [ ] AdSense meta tag and ad script on every page
 - [ ] A test email to hello@anyairdrop.com arrived
 - [ ] Site crawled with no broken links; 5 topic pages and 10 random guides spot-checked on a phone
 
@@ -81,7 +81,7 @@ pattern the proposal warns about. Guides need a person who tests and reviews the
    the ads, `/ads.txt` and the matching policy text together. If the Deploy workflow fails with a message about
    `ADS_LIVE_SINCE` or `ADSENSE_PUBLISHER_ID`, one of the two values is missing or malformed: fix it and push again.
 3. After the deploy, check by hand (view-source in a browser):
-   - `https://anyairdrop.com/` has the `google-adsense-account` meta tag and no `adsbygoogle` script;
+   - `https://anyairdrop.com/` has the `google-adsense-account` meta tag and the `adsbygoogle.js` script;
    - a guide such as `/blog/how-airdrop-works/` has the meta tag, the `adsbygoogle.js` script and the labelled ad boxes;
    - `https://anyairdrop.com/ads.txt` shows `google.com, pub-<digits>, DIRECT, f08c47fec0942fa0`;
    - `/privacy/` has an Advertising section.
