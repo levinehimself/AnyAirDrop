@@ -1,0 +1,15 @@
+{
+  // 301 for the whole old domain to the tool's new home (see docs/redirect.md).
+  // Deploy: npx wrangler deploy --config redirect/wrangler.jsonc
+  "name": "old-site-redirect",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "routes": [
+    { "pattern": "anyairdrop.com/*", "zone_name": "anyairdrop.com" },
+    { "pattern": "www.anyairdrop.com/*", "zone_name": "anyairdrop.com" }
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  // No request logs are kept.
+  "observability": { "enabled": false }
+}

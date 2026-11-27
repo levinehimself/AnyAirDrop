@@ -154,7 +154,7 @@ jobs:
             if [ "$got" = "$target" ]; then echo "Homepage redirects: $got"; exit 0; fi
             sleep 3
           done
-          echo "::warning title=Redirect not seen::The homepage answered '$got' instead of '$target'. The host may ignore the .htaccess rule; see docs/redirect.md." && exit 1
+          echo "::warning title=Redirect not seen::The homepage answered '$got' instead of '$target'. Check the old-site-redirect Worker and its routes; see docs/redirect.md." && exit 1
 
   deploy-worker:
     name: Deploy signaling worker

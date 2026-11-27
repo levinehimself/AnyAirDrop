@@ -5,19 +5,22 @@ This domain only redirects there.
 
 ## How the redirect works
 
-- `public/.htaccess` answers **301** for every address, without the query string, to the new page.
-  Exceptions: `robots.txt`, `BingSiteAuth.xml`, the IndexNow key file and `/.well-known/` (certificate checks).
+- The Cloudflare Worker `old-site-redirect` ([redirect/](../redirect/), routes `anyairdrop.com/*` and
+  `www.anyairdrop.com/*`) answers **301** for every address, without the query string, to the new page.
+  Exceptions, passed through to the host: `robots.txt`, `BingSiteAuth.xml`, the IndexNow key file and `/.well-known/`
+  (certificate checks). Deploy with `npx wrangler deploy --config redirect/wrangler.jsonc`.
+- `public/.htaccess` has the same rule, but the host ignores it (checked 26 Nov 2026: pages still answered 200 after
+  the upload), which is why the Worker exists.
 - `http://` and `www.` are first sent to `https://anyairdrop.com/` by Cloudflare (Always Use HTTPS and the www rule),
   then the 301 above applies.
 - Ads are off (`src/config.ts`): the build emits no ad script and no `ads.txt`.
 - `robots.txt` allows everything and lists no sitemap, so crawlers can follow the redirects.
 - The deploy workflow and the weekly health check expect the 301.
 
-## If the host ignores the rule
+## Routes
 
-The host once ignored a `.htaccess` rule (see `adsense-readiness.md`, item A4). If the homepage stops answering 301,
-deploy a small Cloudflare Worker on the routes `anyairdrop.com/*` and `www.anyairdrop.com/*` that returns the same 301.
-A route wins over the origin, and the more specific `anyairdrop.com/ws*` route keeps going to the signaling worker.
+A Worker route wins over the origin, and the more specific `anyairdrop.com/ws*` route keeps going to the signaling
+worker (checked: `/ws/ice/` still answers JSON).
 
 ## Still to do
 
