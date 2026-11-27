@@ -145,13 +145,16 @@ jobs:
           bye
           EOF
 
-      - name: Check the live homepage
+      # Since 26 Nov 2026 every page answers 301 to the tool's new home on wiserwork.org.
+      - name: Check the live redirect
         run: |
+          target="301 https://wiserwork.org/file-data-tools/online-file-transfer"
           for i in $(seq 1 10); do
-            if curl -sf https://anyairdrop.com/ | grep -q '<title>'; then echo "Homepage is up"; exit 0; fi
+            got="$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' https://anyairdrop.com/)"
+            if [ "$got" = "$target" ]; then echo "Homepage redirects: $got"; exit 0; fi
             sleep 3
           done
-          echo "Homepage did not respond with the site" && exit 1
+          echo "::warning title=Redirect not seen::The homepage answered '$got' instead of '$target'. The host may ignore the .htaccess rule; see docs/redirect.md." && exit 1
 
   deploy-worker:
     name: Deploy signaling worker

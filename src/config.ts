@@ -39,8 +39,10 @@ export function listSeparator(i: number, n: number): string {
   return i === n - 2 ? ' and ' : ', ';
 }
 
-export const ADSENSE_PUBLISHER_ID = 'ca-pub-5483228979263143';
-export const ADS_LIVE_SINCE = '2026-11-02';
+// Ads are off: the site redirects to wiserwork.org since 26 Nov 2026, so the build emits no ad
+// script and no ads.txt.
+export const ADSENSE_PUBLISHER_ID = '';
+export const ADS_LIVE_SINCE = '';
 export const ADS_ENABLED = /^ca-pub-\d{10,20}$/.test(ADSENSE_PUBLISHER_ID);
 
 if (ADSENSE_PUBLISHER_ID && !ADS_ENABLED) {

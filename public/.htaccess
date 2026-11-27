@@ -11,5 +11,9 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^(20[0-9]{2}/|search/label/|feeds/) - [G,L]
+  # The tool moved to wiserwork.org on 26 Nov 2026. Every address answers 301 there, without the
+  # query string, except the files search engines read to verify the site and certificate checks.
+  RewriteCond %{REQUEST_URI} !^/(robots\.txt|BingSiteAuth\.xml|686b8e4a60b269e1f4c8cb8a5ec90965\.txt)$
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
+  RewriteRule ^ https://wiserwork.org/file-data-tools/online-file-transfer [R=301,L,QSD]
 </IfModule>
